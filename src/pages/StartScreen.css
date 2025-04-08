@@ -12,7 +12,7 @@
   position: relative;
   display: inline-block;
   width: 100%;
-  max-width: 360px;
+  max-width: 400px;
 }
 
 .start-image {
@@ -25,8 +25,8 @@
   bottom: 6%;
   left: 50%;
   transform: translateX(-50%);
-  width: 60%;
-  max-width: 200px;
+  width: 45%;
+  max-width: 180px;
   background: none;
   border: none;
   padding: 0;
@@ -44,4 +44,20 @@
 
 .start-button:active img {
   transform: scale(0.95);
+}
+
+.glow img {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    filter: drop-shadow(0 0 4px #ff0000);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px #ff4d4d);
+  }
+  100% {
+    filter: drop-shadow(0 0 4px #ff0000);
+  }
 }
