@@ -5,18 +5,21 @@ import mavrodikFloating from "../assets/mavrodik_floating.png";
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
   const [showMavrodik, setShowMavrodik] = useState(false);
+  const [playerName, setPlayerName] = useState<string | null>(null);
+  const [playerId, setPlayerId] = useState<number | null>(null);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
 
     if (tg) {
-      tg.expand(); // раскрыть WebApp на весь экран
+      tg.expand(); // Раскрыть WebApp
+
       const user = tg.initDataUnsafe?.user;
 
       if (user) {
-        console.log("Пользователь:", user);
-        alert(`Привет, ${user.first_name || "вкладчик"}! 👋`);
-        // Можем сохранить user.id или user.username
+        setPlayerName(user.first_name);
+        setPlayerId(user.id);
+        console.log("🧑 Игрок:", user);
       }
     }
   }, []);
@@ -40,6 +43,11 @@ export default function MMMGo() {
       <div className="glow-overlay"></div>
 
       <div className="container">
+        <h2>Привет, {playerName || "вкладчик"}!</h2>
+        <p style={{ fontSize: "14px", color: "#666" }}>
+          ID: {playerId || "неизвестен"}
+        </p>
+
         <h1>Баланс: {balance} мавродиков</h1>
         <button onClick={handleClick}>👆 Привлечь вкладчика</button>
 
