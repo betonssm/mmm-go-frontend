@@ -9,26 +9,33 @@ export default function MMMGo() {
   const handleClick = () => {
     const newBalance = balance + 100;
     setBalance(newBalance);
-
+  
     if (newBalance % 1000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
-      // Звук добавим позже
+      // Звук позже добавим
+    }
+  
+    if (navigator.vibrate) {
+      navigator.vibrate(50); // Легкая вибрация
     }
   };
 
   return (
-    <div className="container">
-      <h1>Баланс: {balance} мавродиков</h1>
-      <button onClick={handleClick}>👆 Привлечь вкладчика</button>
-
-      {showMavrodik && (
-        <img
-          src={mavrodikFloating}
-          alt="Мавродик"
-          className="floating-mavrodik"
-        />
-      )}
-    </div>
+    <>
+      <div className="glow-overlay"></div>
+  
+      <div className="container">
+        <h1>Баланс: {balance} мавродиков</h1>
+        <button onClick={handleClick}>👆 Привлечь вкладчика</button>
+  
+        {showMavrodik && (
+          <img
+            src={mavrodikFloating}
+            alt="Мавродик"
+            className="floating-mavrodik"
+          />
+        )}
+      </div>
+    </>
   );
-}
