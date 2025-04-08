@@ -1,0 +1,47 @@
+
+.start-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  height: 100vh;
+  background: linear-gradient(to bottom, #fff6cc, #ffe5a4);
+}
+
+.start-image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 360px;
+}
+
+.start-image {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.start-button {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  max-width: 200px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.start-button img {
+  width: 100%;
+  transition: transform 0.15s ease;
+}
+
+.start-button:hover img {
+  transform: scale(1.05);
+}
+
+.start-button:active img {
+  transform: scale(0.95);
+}
