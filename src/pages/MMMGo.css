@@ -20,31 +20,33 @@ button {
 }
 .floating-mavrodik {
   position: fixed;
-  bottom: -200px;
+  bottom: -300px;
   left: 50%;
   transform: translateX(-50%);
-  width: 200px;
-  animation: floatUpDown 3s ease-in-out forwards;
+  width: 90vw; /* почти весь экран */
+  max-width: 500px;
+  height: auto;
+  animation: floatFullWidth 3s ease-in-out forwards;
   z-index: 1000;
 }
 
-@keyframes floatUpDown {
+@keyframes floatFullWidth {
   0% {
-    bottom: -200px;
+    bottom: -300px;
     opacity: 0;
   }
   20% {
     opacity: 1;
   }
   50% {
-    bottom: 40%;
+    bottom: 30%;
     opacity: 1;
   }
   80% {
     opacity: 1;
   }
   100% {
-    bottom: -200px;
+    bottom: -300px;
     opacity: 0;
   }
 }
