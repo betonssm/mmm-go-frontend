@@ -20,7 +20,7 @@ export default function MMMGo() {
         setTelegramId(user.id);
 
         // Загрузка баланса
-        fetch(`http://localhost:3001/balance/${user.id}`)
+        fetch(`https://mmm-go-backend.onrender.com/balance/${user.id}`)
           .then((res) => res.json())
           .then((data) => {
             if (typeof data.balance === "number") {
@@ -49,7 +49,7 @@ export default function MMMGo() {
 
     // Сохраняем баланс
     if (telegramId) {
-      fetch("http://localhost:3001/balance", {
+      fetch("https://mmm-go-backend.onrender.com/balance", { ... })
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ telegramId, balance: newBalance }),
