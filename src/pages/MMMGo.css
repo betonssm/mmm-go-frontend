@@ -18,3 +18,30 @@ button {
   border: none;
   cursor: pointer;
 }
+.floating-mavrodik {
+  position: fixed;
+  bottom: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  animation: floatUp 2s ease-out forwards;
+  z-index: 1000;
+}
+
+@keyframes floatUp {
+  0% {
+    bottom: -150px;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  80% {
+    bottom: 40%;
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    bottom: 60%;
+  }
+}
