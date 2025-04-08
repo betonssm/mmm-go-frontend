@@ -6,20 +6,28 @@ export default function MMMGo() {
   const [balance, setBalance] = useState(0);
   const [showMavrodik, setShowMavrodik] = useState(false);
   const [playerName, setPlayerName] = useState<string | null>(null);
-  const [playerId, setPlayerId] = useState<number | null>(null);
+  const [telegramId, setTelegramId] = useState<number | null>(null);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
 
     if (tg) {
-      tg.expand(); // Раскрыть WebApp
-
+      tg.expand();
       const user = tg.initDataUnsafe?.user;
 
       if (user) {
         setPlayerName(user.first_name);
-        setPlayerId(user.id);
-        console.log("🧑 Игрок:", user);
+        setTelegramId(user.id);
+
+        // Загрузка баланса
+        fetch(`http://localhost:3001/balance/${user.id}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (typeof data.balance === "number") {
+              setBalance(data.balance);
+            }
+          })
+          .catch((err) => console.error("Ошибка загрузки баланса:", err));
       }
     }
   }, []);
@@ -28,13 +36,24 @@ export default function MMMGo() {
     const newBalance = balance + 100;
     setBalance(newBalance);
 
+    // Показ Мавродика
     if (newBalance % 1000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
 
+    // Вибрация
     if (navigator.vibrate) {
       navigator.vibrate(50);
+    }
+
+    // Сохраняем баланс
+    if (telegramId) {
+      fetch("http://localhost:3001/balance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ telegramId, balance: newBalance }),
+      }).catch((err) => console.error("Ошибка сохранения:", err));
     }
   };
 
@@ -45,7 +64,7 @@ export default function MMMGo() {
       <div className="container">
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p style={{ fontSize: "14px", color: "#666" }}>
-          ID: {playerId || "неизвестен"}
+          ID: {telegramId || "неизвестен"}
         </p>
 
         <h1>Баланс: {balance} мавродиков</h1>
