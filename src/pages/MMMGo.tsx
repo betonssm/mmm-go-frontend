@@ -12,7 +12,7 @@ export default function MMMGo() {
 
     if (newBalance % 1000 === 0) {
       setShowMavrodik(true);
-      setTimeout(() => setShowMavrodik(false), 2000);
+      setTimeout(() => setShowMavrodik(false), 3000);
       // Звук добавим позже
     }
   };
