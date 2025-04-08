@@ -34,19 +34,23 @@ button {
   0% {
     bottom: -300px;
     opacity: 0;
+    transform: translateX(-50%) rotate(0deg);
   }
   20% {
     opacity: 1;
+    transform: translateX(-50%) rotate(2deg);
   }
   50% {
     bottom: 30%;
-    opacity: 1;
+    transform: translateX(-50%) rotate(-2deg);
   }
   80% {
     opacity: 1;
+    transform: translateX(-50%) rotate(1deg);
   }
   100% {
     bottom: -300px;
     opacity: 0;
+    transform: translateX(-50%) rotate(0deg);
   }
 }
