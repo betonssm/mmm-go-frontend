@@ -35,24 +35,21 @@ export default function MMMGo() {
   const handleClick = () => {
     const newBalance = balance + 100;
     setBalance(newBalance);
-
-    // Показ Мавродика
+  
     if (newBalance % 1000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
-
-    // Вибрация
+  
     if (navigator.vibrate) {
       navigator.vibrate(50);
     }
-
-    // Сохраняем баланс
+  
     if (telegramId) {
-      fetch("https://mmm-go-backend.onrender.com/balance", { ... })
+      fetch("https://mmm-go-backend.onrender.com/balance", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ telegramId, balance: newBalance }),
+        body: JSON.stringify({ telegramId, balance: newBalance })
       }).catch((err) => console.error("Ошибка сохранения:", err));
     }
   };
