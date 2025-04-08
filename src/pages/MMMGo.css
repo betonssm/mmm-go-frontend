@@ -1,0 +1,14 @@
+
+.container {
+  text-align: center;
+  padding: 40px;
+}
+
+button {
+  font-size: 14px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  background: linear-gradient(to bottom, #ffe259, #ffa751);
+  border: none;
+  cursor: pointer;
+}
