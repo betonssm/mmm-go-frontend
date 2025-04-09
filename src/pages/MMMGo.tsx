@@ -36,11 +36,10 @@ export default function MMMGo() {
     const newBalance = balance + 100;
     setBalance(newBalance);
   
-    if (newBalance % 1000 === 0) {
+    if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
-  
     
   
     if (telegramId) {
