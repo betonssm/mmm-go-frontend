@@ -166,17 +166,17 @@ body, html {
   left: 50%;
   transform: translateX(-50%);
   width: 90vw;
-  max-width: 500px;       /* 👈 ограничение для десктопа */
-  aspect-ratio: 8 / 1.5;   /* 👈 пропорции рамки (можем подогнать) */
+  max-width: 500px;
+  height: 100px; /* 👈 фиксированная высота для полной видимости */
   background-image: url("../assets/info-bar-frame-wide.png");
-  background-size: contain;
+  background-size: 100% 100%; /* 👈 растянуть и по ширине и по высоте */
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 10px 20px;
   box-sizing: border-box;
   color: #fff;
   font-weight: bold;
