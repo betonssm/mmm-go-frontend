@@ -191,22 +191,26 @@ body, html {
   font-size: 13px;
   color: #fff;
   text-align: center;
-  margin-top: 8%;
+  margin-top: 18%;
+  line-height: 1.2;
 }
 
 .bar-bottom {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  padding: 0 30px;
+  align-items: center;
+  padding: 0 34px;
   width: 100%;
-  margin-bottom: 5%;
+  margin-top: 2%;
+  margin-bottom: 10%;
 }
 
 .rank, .investors {
   font-size: 13px;
   color: #fff;
   text-shadow: 1px 1px 2px #000;
+  line-height: 1.2;
+  text-align: center;
 }
 🖼️ 3. Подгоним ширину б
 @media (max-width: 768px) {
