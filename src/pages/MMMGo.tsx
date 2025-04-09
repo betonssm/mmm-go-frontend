@@ -7,9 +7,18 @@ export default function MMMGo() {
   const [showMavrodik, setShowMavrodik] = useState(false);
   const [playerName, setPlayerName] = useState<string | null>(null);
   const [telegramId, setTelegramId] = useState<number | null>(null);
+  const [level, setLevel] = useState(1);
+const [investors, setInvestors] = useState(0);
+const [nextLevel, setNextLevel] = useState(1000000);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
+    const newLevel = Math.floor(balance / 1000000) + 1;
+      setLevel(newLevel);
+      setNextLevel(newLevel * 1000000);
+    
+      setInvestors(Math.floor(balance / 5000)); // ← теперь 1 вкладчик на каждые 5000
+    }, [balance]);
 
     if (tg) {
       tg.expand();
@@ -33,7 +42,7 @@ export default function MMMGo() {
   }, []);
 
   const handleClick = () => {
-    const newBalance = balance + 100;
+    const newBalance = balance + 1;
     setBalance(newBalance);
   
     if (newBalance % 100000 === 0) {
@@ -53,17 +62,23 @@ export default function MMMGo() {
 
   return (
     <>
+      <div className="info-bar">
+        <div>🏢 Уровень: {level}</div>
+        <div>🧍 Вкладчики: {investors}</div>
+        <div>🔜 Следующий уровень через: {nextLevel - balance} мавродиков</div>
+      </div>
+  
       <div className="glow-overlay"></div>
-
+  
       <div className="container">
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p style={{ fontSize: "14px", color: "#666" }}>
           ID: {telegramId || "неизвестен"}
         </p>
-
+  
         <h1>Баланс: {balance} мавродиков</h1>
         <button className="coin-button" onClick={handleClick}></button>
-
+  
         {showMavrodik && (
           <img
             src={mavrodikFloating}
@@ -74,4 +89,3 @@ export default function MMMGo() {
       </div>
     </>
   );
-}
