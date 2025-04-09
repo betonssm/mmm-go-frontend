@@ -165,23 +165,24 @@ body, html {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100vw; /* 👈 растягиваем на всю ширину экрана */
-  max-width: 500px; /* можно адаптировать под нужный макс. размер */
-  height: auto;
-  aspect-ratio: 5 / 2; /* 👈 сохраняем пропорции рамки */
+  width: 100vw;
+  max-width: 500px;
+  aspect-ratio: 5 / 2;
   background-image: url("../assets/info-bar-frame.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 20px;
+  box-sizing: border-box;
   color: #fff;
   font-weight: bold;
-  font-size: 14px;
-  z-index: 10;
+  font-size: 13px;
+  text-shadow: 1px 1px 2px #000;
 }
 
 .progress-container {
@@ -200,17 +201,16 @@ body, html {
   transition: width 0.3s ease;
 }
 .bar-top {
+  margin-top: 10%;
   font-size: 15px;
-  color: #fffbd3;
-  text-shadow: 1px 1px 2px #000;
 }
 
 .bar-bottom {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  padding: 0 12px;
+  padding: 0 16px;
+  margin-bottom: 10%;
 }
 
 .rank,
