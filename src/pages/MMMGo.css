@@ -128,7 +128,7 @@ button {
 }
 
 .coin-button {
-  width: 40vw;
+  width: 45vw;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background-image: url("../assets/mavrodik-coin.png");
