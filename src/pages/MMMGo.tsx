@@ -65,7 +65,7 @@ export default function MMMGo() {
         </p>
 
         <h1>Баланс: {balance} мавродиков</h1>
-        <button onClick={handleClick}>👆 Привлечь вкладчика</button>
+        <button className="coin-button" onClick={handleClick}></button>
 
         {showMavrodik && (
           <img

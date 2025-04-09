@@ -89,3 +89,68 @@ body, html {
   overflow: hidden;
   touch-action: manipulation;
 }
+.coin-button {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-image: url("../assets/mavrodik-coin.png");
+  background-size: cover;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.3s;
+  box-shadow: 0 0 10px gold;
+  position: relative;
+  overflow: hidden;
+}
+
+.coin-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px yellow;
+}
+
+.coin-button:active {
+  animation: coinTap 0.2s ease;
+}
+
+@keyframes coinTap {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(4px) scale(0.95);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+.coin-button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%);
+  transform: rotate(0deg) translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.coin-button:active::after {
+  animation: shine 0.5s ease forwards;
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(25deg) translateX(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(25deg) translateX(100%);
+    opacity: 0;
+  }
+}
