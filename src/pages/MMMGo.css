@@ -160,62 +160,38 @@ body, html {
     opacity: 0;
   }
 }
-.info-bar {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95vw;
-  max-width: 600px;
-  height: auto;
-  aspect-ratio: 3 / 1.725; /* ширина к высоте — более крупно! */
-  background-image: url("../assets/info-bar-frame-wide.png"); /* твоя картинка */
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center;
+.info-bars {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  box-sizing: border-box;
-  color: #fff;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.bar-wrapper {
+  position: relative;
+  width: 85%;
+  max-width: 400px;
+}
+
+.bar-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.bar-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-weight: bold;
   font-size: 14px;
-  text-shadow: 1px 1px 2px #000;
-  z-index: 10;
-}
-
-
-.bar-top {
-  font-size: 13px;
-  color: #fff;
   text-align: center;
-  margin-top: 18%;
-  line-height: 1.2;
+  color: white;
+  padding: 0 10px;
 }
 
-.bar-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 34px;
-  width: 100%;
-  margin-bottom: 14%;
-  margin-top: 3%;
-}
-
-.rank, .investors {
-  font-size: 13px;
-  color: #fff;
-  text-shadow: 1px 1px 2px #000;
-  line-height: 1.4;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-🖼️ 3. Подгоним ширину б
 @media (max-width: 768px) {
   .info-bar {
     height: auto; /* будет установлено скриптом */

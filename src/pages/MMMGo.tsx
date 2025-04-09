@@ -67,13 +67,22 @@ export default function MMMGo() {
 
   return (
     <>
-      <div className="info-bar" id="info-bar">
-  <div className="bar-top">
-    🔜 До уровня: {nextLevel - balance} мавродиков
+      <div className="info-bars">
+  <div className="bar-wrapper">
+    <img src={require('../assets/bar-level.png')} className="bar-img" />
+    <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
   </div>
-  <div className="bar-bottom">
-    <div className="rank">🏅 Инвестор {level}-го ранга</div>
-    <div className="investors">🧍 Вкладчики: {investors}</div>
+  <div className="bar-wrapper">
+    <img src={require('../assets/bar-rank.png')} className="bar-img" />
+    <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
+  </div>
+  <div className="bar-wrapper">
+    <img src={require('../assets/bar-investors.png')} className="bar-img" />
+    <div className="bar-text">🧍 Вкладчики: {investors}</div>
+  </div>
+  <div className="bar-wrapper">
+    <img src={require('../assets/bar-rating.png')} className="bar-img" />
+    <div className="bar-text">📊 Рейтинг игрока: #{telegramId || 0}</div>
   </div>
 </div>
   
