@@ -26,12 +26,17 @@ useEffect(() => {
   }
 
   // логика уровней и вкладчиков
-  const newLevel = Math.floor(balance / 1000000) + 1;
-  setLevel(newLevel);
-  setNextLevel(newLevel * 1000000);
-  setInvestors(Math.floor(balance / 5000));
-}, [balance]);
-
+  useEffect(() => {
+    const tg = (window as any).Telegram?.WebApp;
+  
+    if (tg) {
+      tg.expand();
+      const user = tg.initDataUnsafe?.user;
+  
+      if (user) {
+        setPlayerName(user.first_name);
+        setTelegramId(user.id);
+  
         // Загрузка баланса
         fetch(`https://mmm-go-backend.onrender.com/balance/${user.id}`)
           .then((res) => res.json())
@@ -43,11 +48,13 @@ useEffect(() => {
           .catch((err) => console.error("Ошибка загрузки баланса:", err));
       }
     }
-  }, []);
-
-  const handleClick = () => {
-    const newBalance = balance + 1;
-    setBalance(newBalance);
+  
+    // Автоуровень и вкладчики
+    const newLevel = Math.floor(balance / 1000000) + 1;
+    setLevel(newLevel);
+    setNextLevel(newLevel * 1000000);
+    setInvestors(Math.floor(balance / 5000));
+  }, [balance]);
   
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
