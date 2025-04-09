@@ -93,13 +93,11 @@ export default function MMMGo() {
       <div className="glow-overlay"></div>
   
       <div className="container">
-        <h2>Привет, {playerName || "вкладчик"}!</h2>
-        <p style={{ fontSize: "14px", color: "#666" }}>
-          ID: {telegramId || "неизвестен"}
+      <h2>Привет, {playerName || "вкладчик"}!</h2>
+      <p className="player-id">ID: {telegramId || "неизвестен"}
         </p>
   
-        <h1 style={{ lineHeight: "1.3", wordBreak: "break-word" }}>
-  Баланс:<br />{balance} мавродиков
+        <h1>Баланс:<br />{balance} мавродиков
 </h1>
         <button className="coin-button" onClick={handleClick}></button>
   
