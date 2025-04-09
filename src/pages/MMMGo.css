@@ -249,7 +249,7 @@ html, body {
 }
 .recharge-gold-button {
   position: absolute;
-  top: -50px; /* подними кнопку чуть выше */
+  top: -60px; /* подними кнопку чуть выше */
   right: 10px; /* сдвинь правее */
   width: 110px;
   height: auto;
