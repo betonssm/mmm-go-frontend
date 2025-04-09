@@ -69,6 +69,9 @@ export default function MMMGo() {
       }).catch((err) => console.error("Ошибка сохранения:", err));
     }
   };
+  const handleRecharge = () => {
+    alert("Пополнение баланса скоро будет доступно! 💰");
+  };
 
   return (
     <>
