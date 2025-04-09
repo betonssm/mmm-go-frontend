@@ -165,11 +165,16 @@ body, html {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #fff; /* Цвет фона */
-  padding: 10px 0;
+  padding: 10px;
   display: flex;
   justify-content: space-around;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  background: linear-gradient(135deg, #fff7c0, #ffe14f);
+  border-top: 3px solid gold;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -2px 12px rgba(255, 215, 0, 0.4);
+  font-weight: bold;
+  font-size: 14px;
   z-index: 10;
 }
 
