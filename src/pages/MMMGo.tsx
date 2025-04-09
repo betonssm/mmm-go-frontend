@@ -41,9 +41,7 @@ export default function MMMGo() {
       setTimeout(() => setShowMavrodik(false), 3000);
     }
   
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
+    
   
     if (telegramId) {
       fetch("https://mmm-go-backend.onrender.com/balance", {
