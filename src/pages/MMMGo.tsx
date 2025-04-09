@@ -64,17 +64,17 @@ export default function MMMGo() {
 
   return (
     <>
-      <div className="info-bar">
-        <div>🏢 Уровень: {level}</div>
-        <div>🧍 Вкладчики: {investors}</div>
-        <div>🔜 Следующий уровень через: {nextLevel - balance} мавродиков</div>
-      </div>
-  
       <div className="progress-container">
         <div
           className="progress-bar"
           style={{ width: `${(balance / nextLevel) * 100}%` }}
         ></div>
+      </div>
+      
+      <div className="info-bar">
+        <div>🏢 Уровень: {level}</div>
+        <div>🧍 Вкладчики: {investors}</div>
+        <div>🔜 Следующий уровень через: {nextLevel - balance} мавродиков</div>
       </div>
   
       <div className="glow-overlay"></div>
