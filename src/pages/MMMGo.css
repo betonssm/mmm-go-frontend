@@ -165,25 +165,24 @@ body, html {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80vw; /* 👈 Растягиваем на 80% ширины экрана */
-  height: 90px; /* 👈 Фиксированная высота — по твоему запросу */
-  background-image: url("../assets/info-bar-frame.png");
-  background-size: 100% 100%; /* 👈 Растягиваем и по ширине, и по высоте */
+  width: 90vw; /* Ширина 90% экрана */
+  height: auto;
+  aspect-ratio: 16 / 4; /* 👈 Сохраняем правильную форму рамки */
+  background-image: url("../assets/info-bar-frame-wide.png");
+  background-size: cover; /* 👍 Без деформации */
   background-repeat: no-repeat;
   background-position: center;
-  z-index: 10;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 16px;
+  padding: 10px 20px;
   box-sizing: border-box;
-
   color: #fff;
   font-weight: bold;
   font-size: 13px;
   text-shadow: 1px 1px 2px #000;
+  z-index: 10;
 }
 
 
