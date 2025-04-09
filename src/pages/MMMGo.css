@@ -167,20 +167,20 @@ body, html {
   transform: translateX(-50%);
   width: 90vw;
   max-width: 500px;
-  height: 100px; /* 👈 фиксированная высота для полной видимости */
+  height: 130px; /* 🆙 Увеличено */
   background-image: url("../assets/info-bar-frame-wide.png");
-  background-size: 100% 100%; /* 👈 растянуть и по ширине и по высоте */
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 16px 24px; /* 🆙 Увеличены отступы */
   box-sizing: border-box;
   color: #fff;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 15px; /* 🆙 Чуть больше текст */
   text-shadow: 1px 1px 2px #000;
   z-index: 10;
 }
