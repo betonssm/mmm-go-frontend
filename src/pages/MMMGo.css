@@ -205,3 +205,49 @@ button {
   color: white;
   padding: 0 6px;
 }
+@media (max-width: 768px) {
+  .container {
+    padding: 24px;
+  }
+
+  .bar-wrapper {
+    width: 45%; /* 2 бара в ряд */
+    max-width: none;
+  }
+
+  .bar-text {
+    font-size: 13px;
+    padding: 0 6px;
+  }
+
+  .coin-button {
+    width: 40vw;
+  }
+
+  .floating-mavrodik {
+    width: 90vw;
+  }
+}
+
+@media (min-width: 769px) {
+  .container {
+    padding: 40px;
+  }
+
+  .bar-wrapper {
+    width: 22%;
+    max-width: 180px;
+  }
+
+  .bar-text {
+    font-size: 14px;
+  }
+
+  .coin-button {
+    width: 160px;
+  }
+
+  .floating-mavrodik {
+    width: 500px;
+  }
+}
