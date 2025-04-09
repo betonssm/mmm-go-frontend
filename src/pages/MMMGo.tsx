@@ -51,6 +51,24 @@ export default function MMMGo() {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
+    // Автонастройка высоты info-bar
+const resizeInfoBar = () => {
+  const bar = document.getElementById("info-bar");
+  if (bar) {
+    const screenWidth = window.innerWidth;
+    const height = Math.min(screenWidth * 0.28, 160); // Максимум 160px
+    bar.style.height = `${height}px`;
+  }
+};
+
+resizeInfoBar();
+window.addEventListener("resize", resizeInfoBar);
+
+// Очистка события при размонтировании
+return () => {
+  window.removeEventListener("resize", resizeInfoBar);
+};
+
 
     // Сохраняем на backend
     if (telegramId) {
@@ -64,7 +82,7 @@ export default function MMMGo() {
 
   return (
     <>
-      <div className="info-bar">
+      <div className="info-bar" id="info-bar">
   <div className="bar-top">
     🔜 До уровня: {nextLevel - balance} мавродиков
   </div>

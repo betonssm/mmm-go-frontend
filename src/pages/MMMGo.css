@@ -167,7 +167,7 @@ body, html {
   transform: translateX(-50%);
   width: 90vw;
   max-width: 500px;
-  height: 130px; /* 🆙 Увеличено */
+  height: auto; 
   background-image: url("../assets/info-bar-frame-wide.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
