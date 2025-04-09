@@ -98,7 +98,9 @@ export default function MMMGo() {
           ID: {telegramId || "неизвестен"}
         </p>
   
-        <h1>Баланс: {balance} мавродиков</h1>
+        <h1 style={{ lineHeight: "1.3", wordBreak: "break-word" }}>
+  Баланс:<br />{balance} мавродиков
+</h1>
         <button className="coin-button" onClick={handleClick}></button>
   
         {showMavrodik && (
