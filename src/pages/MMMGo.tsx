@@ -5,6 +5,7 @@ import barLevel from "../assets/bar-level.png";
 import barRank from "../assets/bar-rank.png";
 import barInvestors from "../assets/bar-investors.png";
 import barRating from "../assets/bar-rating.png";
+import rechargeGold from "../assets/gold-recharge-button.png";
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
@@ -78,7 +79,12 @@ export default function MMMGo() {
         </div>
 
         <div className="bar-wrapper">
-  <div className="recharge-gold-button" onClick={handleRecharge}></div> {/* вот это вставить */}
+        <img
+  src={rechargeGold}
+  className="recharge-gold-button"
+  alt="Пополнить баланс"
+  onClick={handleRecharge}
+/>
   <img src={barRank} className="bar-img" />
   <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
 </div>
