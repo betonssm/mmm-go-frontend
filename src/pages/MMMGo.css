@@ -1,13 +1,22 @@
 
+body, html {
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */ /* временно убрано */
+  touch-action: manipulation;
+}
+
 .container {
   text-align: center;
   padding: 40px;
   height: 100vh;
-  background-image: url("../assets/money-bg.png");
+  /* background-image: url("../assets/money-bg.png"); */ /* убрано временно */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: #000;
+  z-index: 2;
+  position: relative;
 }
 
 button {
@@ -18,12 +27,13 @@ button {
   border: none;
   cursor: pointer;
 }
+
 .floating-mavrodik {
   position: fixed;
   bottom: -300px;
   left: 50%;
   transform: translateX(-50%);
-  width: 90vw; /* почти весь экран */
+  width: 90vw;
   max-width: 500px;
   height: auto;
   animation: floatFullWidth 3s ease-in-out forwards;
@@ -54,6 +64,7 @@ button {
     transform: translateX(-50%) rotate(0deg);
   }
 }
+
 .glow-overlay {
   position: fixed;
   top: 0;
@@ -83,14 +94,9 @@ button {
     opacity: 0.3;
   }
 }
-body, html {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  touch-action: manipulation;
-}
+
 .coin-button {
-  width: 40vw; /* ← Увеличили до 40% ширины экрана */
+  width: 40vw;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background-image: url("../assets/mavrodik-coin.png");
@@ -108,7 +114,6 @@ body, html {
   margin: 1rem auto;
   display: block;
 }
-
 
 .coin-button:hover {
   transform: scale(1.05);
@@ -130,6 +135,7 @@ body, html {
     transform: translateY(0) scale(1);
   }
 }
+
 .coin-button::after {
   content: "";
   position: absolute;
@@ -160,17 +166,20 @@ body, html {
     opacity: 0;
   }
 }
+
 .info-bars {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
+  margin-top: 10px;
+  z-index: 3;
 }
 
 .bar-wrapper {
   position: relative;
-  width: 85%;
+  width: 90%;
   max-width: 400px;
 }
 
@@ -190,45 +199,5 @@ body, html {
   text-align: center;
   color: white;
   padding: 0 10px;
-}
-
-@media (max-width: 768px) {
-  .info-bar {
-    height: auto; /* будет установлено скриптом */
-    padding: 16px 18px;
-    font-size: 15px;
-  }
-
-  .bar-top {
-    font-size: 16px;
-    margin-top: 10px;
-  }
-
-  .bar-bottom {
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 10px;
-  }
-
-  .rank, .investors {
-    text-align: center;
-  }
-}
-
-@media (min-width: 769px) {
-  .info-bar {
-    max-width: 500px;
-    padding: 10px 16px;
-    font-size: 13px;
-  }
-
-  .bar-top {
-    font-size: 14px;
-  }
-
-  .bar-bottom {
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
+  text-shadow: 1px 1px 2px black;
 }
