@@ -17,6 +17,7 @@ body, html {
   color: #000;
   z-index: 2;
   position: relative;
+  overflow: hidden;
 }
 
 /* Выделяем заголовок отдельно */
@@ -217,6 +218,13 @@ button {
   color: #f9e48b; /* Золотисто-кремовый */
   text-shadow: 0 0 2px #000; /* Для читаемости на золоте */
   padding: 0 6px;
+}
+html, body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  touch-action: none; /* отключает скролл и зум */
 }
 @media (max-width: 768px) {
   .container {
