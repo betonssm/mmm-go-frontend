@@ -77,21 +77,23 @@ export default function MMMGo() {
           <img src={barLevel} className="bar-img" />
           <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
         </div>
-
+  
         <div className="bar-wrapper">
-        <img
-  src={rechargeGold}
-  className="recharge-gold-button"
-  alt="Пополнить баланс"
-  onClick={handleRecharge}
-/>
-  <img src={barRank} className="bar-img" />
-  <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
-</div>
+          <img
+            src={rechargeGold}
+            className="recharge-gold-button"
+            alt="Пополнить баланс"
+            onClick={handleRecharge}
+          />
+          <img src={barRank} className="bar-img" />
+          <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
+        </div>
+  
         <div className="bar-wrapper">
           <img src={barInvestors} className="bar-img" />
           <div className="bar-text">🧍 Вкладчики: {investors}</div>
         </div>
+  
         <div className="bar-wrapper">
           <img src={barRating} className="bar-img" />
           <div className="bar-text">📊 Рейтинг игрока: #{telegramId || 0}</div>
@@ -101,12 +103,10 @@ export default function MMMGo() {
       <div className="glow-overlay"></div>
   
       <div className="container">
-      <h2>Привет, {playerName || "вкладчик"}!</h2>
-      <p className="player-id">ID: {telegramId || "неизвестен"}
-        </p>
+        <h2>Привет, {playerName || "вкладчик"}!</h2>
+        <p className="player-id">ID: {telegramId || "неизвестен"}</p>
   
-        <h1>Баланс:<br />{balance} мавродиков
-</h1>
+        <h1>Баланс:<br />{balance} мавродиков</h1>
         <button className="coin-button" onClick={handleClick}></button>
   
         {showMavrodik && (
@@ -116,6 +116,9 @@ export default function MMMGo() {
             className="floating-mavrodik"
           />
         )}
+      </div>
+    </>
+  );
       </div>
       <div className="info-bars">
   <div className="bar-wrapper"><img src={barLevel} className="bar-img" /><div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div></div>
