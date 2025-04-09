@@ -72,10 +72,14 @@ export default function MMMGo() {
       </div>
       
       <div className="info-bar">
-        <div>🏢 Уровень: {level}</div>
-        <div>🧍 Вкладчики: {investors}</div>
-        <div>🔜 Следующий уровень через: {nextLevel - balance} мавродиков</div>
-      </div>
+  <div className="bar-top">
+    🔜 До уровня: {nextLevel - balance} мавродиков
+  </div>
+  <div className="bar-bottom">
+    <div className="rank">🏅 Инвестор {level}-го ранга</div>
+    <div className="investors">🧍 Вкладчики: {investors}</div>
+  </div>
+</div>
   
       <div className="glow-overlay"></div>
   
