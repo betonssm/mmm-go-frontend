@@ -175,7 +175,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 4px 16px; /* Меньше расстояние между рядами */
+  gap:2px 12px;  /* Меньше расстояние между рядами */
   padding-bottom: 12px;
   z-index: 10;
 }
@@ -199,10 +199,12 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
   font-size: 14px;
   text-align: center;
-  color: white;
+  color: #f9e48b; /* Золотисто-кремовый */
+  text-shadow: 0 0 2px #000; /* Для читаемости на золоте */
   padding: 0 6px;
 }
 @media (max-width: 768px) {
