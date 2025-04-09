@@ -165,18 +165,18 @@ body, html {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 90vw; /* Ширина 90% экрана */
-  height: auto;
-  aspect-ratio: 16 / 4; /* 👈 Сохраняем правильную форму рамки */
+  width: 90vw;
+  max-width: 500px;       /* 👈 ограничение для десктопа */
+  aspect-ratio: 8 / 1.5;   /* 👈 пропорции рамки (можем подогнать) */
   background-image: url("../assets/info-bar-frame-wide.png");
-  background-size: cover; /* 👍 Без деформации */
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 12px 20px;
   box-sizing: border-box;
   color: #fff;
   font-weight: bold;
