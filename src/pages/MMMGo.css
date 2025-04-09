@@ -166,10 +166,10 @@ body, html {
   left: 50%;
   transform: translateX(-50%);
   width: 95vw;                     /* 🆙 увеличим ширину */
-  max-width: 580px;                /* 🆙 для десктопа чуть шире */
+  max-width: 600px;                /* 🆙 для десктопа чуть шире */
   height: auto;                    /* управление через скрипт */
   background-image: url("../assets/info-bar-frame-wide.png");
-  background-size: 100% 100%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
@@ -187,18 +187,24 @@ body, html {
 
 
 .bar-top {
-  font-size: 16px;
-  margin-top: 12px; /* ↑ или ↓ для выравнивания */
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
 }
 
 .bar-bottom {
-  margin-bottom: 14px; /* ↓ подгоняет под нижние окна */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  margin-bottom: 6px;
 }
+
 .rank,
 .investors {
-  flex: 1;
   text-align: center;
 }
+🖼️ 3. Подгоним ширину б
 @media (max-width: 768px) {
   .info-bar {
     height: auto; /* будет установлено скриптом */

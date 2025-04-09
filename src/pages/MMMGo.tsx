@@ -56,7 +56,7 @@ const resizeInfoBar = () => {
   const bar = document.getElementById("info-bar");
   if (bar) {
     const screenWidth = window.innerWidth;
-    const height = Math.min(screenWidth * 0.42, 200); // Максимум 160px
+    const height = Math.min(screenWidth * 0.5, 220); // Максимум 160px
     bar.style.height = `${height}px`;
   }
 };
