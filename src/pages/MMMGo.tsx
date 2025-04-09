@@ -109,6 +109,12 @@ export default function MMMGo() {
           />
         )}
       </div>
+      <div className="info-bars">
+  <div className="bar-wrapper"><img src={barLevel} className="bar-img" /><div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div></div>
+  <div className="bar-wrapper"><img src={barRank} className="bar-img" /><div className="bar-text">🏅 Инвестор {level}-го ранга</div></div>
+  <div className="bar-wrapper"><img src={barInvestors} className="bar-img" /><div className="bar-text">🧍 Вкладчики: {investors}</div></div>
+  <div className="bar-wrapper"><img src={barRating} className="bar-img" /><div className="bar-text">📊 Рейтинг игрока: #{telegramId || 0}</div></div>
+</div>
     </>
   );
 }

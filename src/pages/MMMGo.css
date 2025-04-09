@@ -10,7 +10,7 @@ body, html {
   text-align: center;
   padding: 40px;
   height: 100vh;
-  /* background-image: url("../assets/money-bg.png"); */ /* убрано временно */
+  background-image: url("../assets/money-bg.png"); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -168,19 +168,23 @@ button {
 }
 
 .info-bars {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
-  margin-bottom: 12px;
-  margin-top: 10px;
-  z-index: 3;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.4); /* слегка затемнённая подложка */
+  z-index: 10;
 }
 
 .bar-wrapper {
   position: relative;
-  width: 90%;
-  max-width: 400px;
+  width: 45%; /* 2 на ряд */
+  max-width: 180px;
 }
 
 .bar-img {
@@ -198,6 +202,5 @@ button {
   font-size: 14px;
   text-align: center;
   color: white;
-  padding: 0 10px;
-  text-shadow: 1px 1px 2px black;
+  padding: 0 6px;
 }
