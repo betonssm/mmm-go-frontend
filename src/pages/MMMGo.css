@@ -128,6 +128,7 @@ button {
 }
 
 .coin-button {
+  margin-top: 32px; 
   width: 40vw;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
