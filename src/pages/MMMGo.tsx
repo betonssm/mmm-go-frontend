@@ -69,18 +69,25 @@ export default function MMMGo() {
         <div>🧍 Вкладчики: {investors}</div>
         <div>🔜 Следующий уровень через: {nextLevel - balance} мавродиков</div>
       </div>
-
+  
+      <div className="progress-container">
+        <div
+          className="progress-bar"
+          style={{ width: `${(balance / nextLevel) * 100}%` }}
+        ></div>
+      </div>
+  
       <div className="glow-overlay"></div>
-
+  
       <div className="container">
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p style={{ fontSize: "14px", color: "#666" }}>
           ID: {telegramId || "неизвестен"}
         </p>
-
+  
         <h1>Баланс: {balance} мавродиков</h1>
         <button className="coin-button" onClick={handleClick}></button>
-
+  
         {showMavrodik && (
           <img
             src={mavrodikFloating}
@@ -91,4 +98,3 @@ export default function MMMGo() {
       </div>
     </>
   );
-}
