@@ -15,6 +15,7 @@ export default function MMMGo() {
   const [level, setLevel] = useState(1);
   const [investors, setInvestors] = useState(0);
   const [nextLevel, setNextLevel] = useState(1000000);
+  const [highlightRecharge, setHighlightRecharge] = useState(false);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -57,7 +58,10 @@ export default function MMMGo() {
       setTimeout(() => setShowMavrodik(false), 3000);
     }
     // Автонастройка высоты info-bar
-
+    if (newBalance % 100 === 0) {
+      setHighlightRecharge(true);
+      setTimeout(() => setHighlightRecharge(false), 2000); // сброс через 2 сек
+    }
 
 
     // Сохраняем на backend
@@ -82,12 +86,12 @@ export default function MMMGo() {
         </div>
   
         <div className="bar-wrapper">
-          <img
-            src={rechargeGold}
-            className="recharge-gold-button"
-            alt="Пополнить баланс"
-            onClick={handleRecharge}
-          />
+        <img
+  src={rechargeGold}
+  className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
+  alt="Пополнить баланс"
+  onClick={handleRecharge}
+/>
           <img src={barRank} className="bar-img" />
           <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
         </div>
