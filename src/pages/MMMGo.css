@@ -204,3 +204,43 @@ body, html {
   flex: 1;
   text-align: center;
 }
+@media (max-width: 768px) {
+  .info-bar {
+    height: auto; /* будет установлено скриптом */
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+
+  .bar-top {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .bar-bottom {
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .rank, .investors {
+    text-align: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .info-bar {
+    max-width: 500px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .bar-top {
+    font-size: 14px;
+  }
+
+  .bar-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+}
