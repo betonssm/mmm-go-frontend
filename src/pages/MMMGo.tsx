@@ -76,7 +76,9 @@ export default function MMMGo() {
           <img src={barLevel} className="bar-img" />
           <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
         </div>
+
         <div className="bar-wrapper">
+        <div className="recharge-gold-button" onClick={handleRecharge}></div>
           <img src={barRank} className="bar-img" />
           <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
         </div>
