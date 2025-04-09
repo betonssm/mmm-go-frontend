@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./MMMGo.css";
 import mavrodikFloating from "../assets/mavrodik_floating.png";
+import barLevel from "../assets/bar-level.png";
+import barRank from "../assets/bar-rank.png";
+import barInvestors from "../assets/bar-investors.png";
+import barRating from "../assets/bar-rating.png";
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
