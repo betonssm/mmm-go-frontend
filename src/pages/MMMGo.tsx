@@ -78,10 +78,10 @@ export default function MMMGo() {
         </div>
 
         <div className="bar-wrapper">
-        <div className="recharge-gold-button" onClick={handleRecharge}></div>
-          <img src={barRank} className="bar-img" />
-          <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
-        </div>
+  <div className="recharge-gold-button" onClick={handleRecharge}></div> {/* вот это вставить */}
+  <img src={barRank} className="bar-img" />
+  <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
+</div>
         <div className="bar-wrapper">
           <img src={barInvestors} className="bar-img" />
           <div className="bar-text">🧍 Вкладчики: {investors}</div>
