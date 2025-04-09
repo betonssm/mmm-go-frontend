@@ -52,22 +52,7 @@ export default function MMMGo() {
       setTimeout(() => setShowMavrodik(false), 3000);
     }
     // Автонастройка высоты info-bar
-const resizeInfoBar = () => {
-  const bar = document.getElementById("info-bar");
-  if (bar) {
-    const screenWidth = window.innerWidth;
-    const height = Math.min(screenWidth * 0.5, 220); // Максимум 160px
-    bar.style.height = `${height}px`;
-  }
-};
 
-resizeInfoBar();
-window.addEventListener("resize", resizeInfoBar);
-
-// Очистка события при размонтировании
-return () => {
-  window.removeEventListener("resize", resizeInfoBar);
-};
 
 
     // Сохраняем на backend
