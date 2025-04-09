@@ -90,8 +90,8 @@ body, html {
   touch-action: manipulation;
 }
 .coin-button {
-  width: 160px;
-  height: 160px;
+  width: 35vw; /* 35% ширины экрана */
+  aspect-ratio: 1 / 1; /* делает высоту равной ширине = круг */
   border-radius: 50%;
   background-image: url("../assets/mavrodik-coin.png");
   background-size: cover;
@@ -105,6 +105,8 @@ body, html {
   outline: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  margin: 1rem auto; /* по центру и отступ */
+  display: block;
 }
 
 
