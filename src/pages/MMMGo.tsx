@@ -11,22 +11,26 @@ export default function MMMGo() {
 const [investors, setInvestors] = useState(0);
 const [nextLevel, setNextLevel] = useState(1000000);
 
-  useEffect(() => {
-    const tg = (window as any).Telegram?.WebApp;
-    const newLevel = Math.floor(balance / 1000000) + 1;
-      setLevel(newLevel);
-      setNextLevel(newLevel * 1000000);
-    
-      setInvestors(Math.floor(balance / 5000)); // ← теперь 1 вкладчик на каждые 5000
-    }, [balance]);
+useEffect(() => {
+  const tg = (window as any).Telegram?.WebApp;
 
-    if (tg) {
-      tg.expand();
-      const user = tg.initDataUnsafe?.user;
+  // логика WebApp
+  if (tg) {
+    tg.expand();
+    const user = tg.initDataUnsafe?.user;
 
-      if (user) {
-        setPlayerName(user.first_name);
-        setTelegramId(user.id);
+    if (user) {
+      setPlayerName(user.first_name);
+      setTelegramId(user.id);
+    }
+  }
+
+  // логика уровней и вкладчиков
+  const newLevel = Math.floor(balance / 1000000) + 1;
+  setLevel(newLevel);
+  setNextLevel(newLevel * 1000000);
+  setInvestors(Math.floor(balance / 5000));
+}, [balance]);
 
         // Загрузка баланса
         fetch(`https://mmm-go-backend.onrender.com/balance/${user.id}`)
