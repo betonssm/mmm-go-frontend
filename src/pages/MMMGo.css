@@ -165,9 +165,9 @@ body, html {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 90vw;
-  max-width: 500px;
-  height: auto; 
+  width: 95vw;                     /* 🆙 увеличим ширину */
+  max-width: 580px;                /* 🆙 для десктопа чуть шире */
+  height: auto;                    /* управление через скрипт */
   background-image: url("../assets/info-bar-frame-wide.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -176,29 +176,24 @@ body, html {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px; /* 🆙 Увеличены отступы */
+  padding: 16px 24px;
   box-sizing: border-box;
   color: #fff;
   font-weight: bold;
-  font-size: 15px; /* 🆙 Чуть больше текст */
+  font-size: 14px;
   text-shadow: 1px 1px 2px #000;
   z-index: 10;
 }
 
 
 .bar-top {
-  margin-top: 10%;
-  font-size: 15px;
+  font-size: 16px;
+  margin-top: 12px; /* ↑ или ↓ для выравнивания */
 }
 
 .bar-bottom {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 16px;
-  margin-bottom: 10%;
+  margin-bottom: 14px; /* ↓ подгоняет под нижние окна */
 }
-
 .rank,
 .investors {
   flex: 1;
