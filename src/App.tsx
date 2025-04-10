@@ -7,6 +7,7 @@ import RankPage from "./pages/RankPage";
 import InvestorsPage from "./pages/InvestorsPage";
 import RatingPage from "./pages/RatingPage";
 import StartScreen from "./pages/StartScreen";
+import RulesPage from "./pages/RulesPage"; // Импортируем RulesPage
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -22,6 +23,7 @@ export default function App() {
       <Route path="/rank" element={<RankPage />} />
       <Route path="/investors" element={<InvestorsPage />} />
       <Route path="/rating" element={<RatingPage />} />
+      <Route path="/rules" element={<RulesPage />} /> {/* Добавляем маршрут для страницы с правилами */}
     </Routes>
   );
 }
