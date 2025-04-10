@@ -22,7 +22,8 @@ export default function RankPage() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        paddingTop: "50px", // уменьшаем отступ сверху
+        paddingTop: "50px", // отступ сверху
+        paddingBottom: "50px", // отступ снизу (чтобы кнопка не выходила за экран)
       }}
     >
       {/* Блок с общей суммой пула */}
@@ -45,7 +46,8 @@ export default function RankPage() {
         <p>Этот пул разделяется среди топ 10% инвесторов</p>
       </div>
 
-      <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "10px" }}>
+      {/* Заголовок страницы */}
+      <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "20px" }}>
         🏅 Твой Инвесторский Ранг
       </h2>
 
@@ -61,7 +63,7 @@ export default function RankPage() {
       </p>
 
       {/* Прогресс-бар */}
-      <div style={{ width: "100%", backgroundColor: "#ddd", borderRadius: "10px", overflow: "hidden" }}>
+      <div style={{ width: "100%", backgroundColor: "#ddd", borderRadius: "10px", overflow: "hidden", marginBottom: "20px" }}>
         <div
           style={{
             width: `${progress * 100}%`,
