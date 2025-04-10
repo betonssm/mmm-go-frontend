@@ -22,7 +22,7 @@ export default function RankPage() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        paddingTop: "30px", // уменьшаем отступ сверху
+        paddingTop: "30px", // отступ сверху
         paddingBottom: "30px", // добавляем отступ снизу
       }}
     >
@@ -75,8 +75,8 @@ export default function RankPage() {
       </div>
 
       {/* Ключевые принципы */}
-      <div style={{ marginTop: "20px", padding: "20px", background: "rgba(255, 255, 255, 0.8)", borderRadius: "12px" }}>
-        <h3 style={{ color: "#ffe082" }}>📊 Ключевые принципы:</h3>
+      <div style={{ marginTop: "20px", padding: "20px", background: "rgba(0, 0, 0, 0.6)", borderRadius: "12px" }}>
+        <h3 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000" }}>📊 Ключевые принципы:</h3>
         <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
           <li><strong style={{ color: "#ffe082" }}>1. Каждый пул делится по той же формуле, как и дивиденды:</strong> 30% донат, 60% рефералы, 10% активность.</li>
           <li><strong style={{ color: "#ffe082" }}>2. Чем выше SR и вклад, тем больше токенов.</strong></li>
