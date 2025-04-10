@@ -6,8 +6,9 @@ import barRank from "../assets/bar-rank.png";
 import barInvestors from "../assets/bar-investors.png";
 import barRating from "../assets/bar-rating.png";
 import rechargeGold from "../assets/gold-recharge-button.png";
+import boostTapImage from "../assets/boost-tap-button.png";  // Изображение кнопки буста
 import { Link } from "react-router-dom";
-import rulesButton from "../assets/rules-button.png";  // Импортируем картинку кнопки с прозрачным фоном
+import rulesButton from "../assets/rules-button.png";  // Изображение кнопки "Правила"
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
@@ -19,18 +20,19 @@ export default function MMMGo() {
   const [nextLevel, setNextLevel] = useState(1000000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
 
+  // Новые состояния для буста
+  const [boostActive, setBoostActive] = useState(false);
+  const [boostCooldown, setBoostCooldown] = useState(false);
+
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
-
     if (tg) {
       tg.expand();
       const user = tg.initDataUnsafe?.user;
-
       if (user) {
         setPlayerName(user.first_name);
         setTelegramId(user.id);
-
-        // Загрузка баланса
+        // Загрузка баланса с backend
         fetch(`https://mmm-go-backend.onrender.com/balance/${user.id}`)
           .then((res) => res.json())
           .then((data) => {
@@ -50,22 +52,25 @@ export default function MMMGo() {
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
+  // Обработчик нажатия кнопки "Тап" (игровой кнопки монеты)
   const handleClick = () => {
-    const newBalance = balance + 1;
+    // Если буст активен, прибавляем 3 монеты за тап, иначе 1 монету
+    const coinsToAdd = boostActive ? 3 : 1;
+    const newBalance = balance + coinsToAdd;
     setBalance(newBalance);
 
-    // Появление Мавродика при 100000
+    // Появление Мавродика через каждые 100000 монет
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
-    // Автонастройка высоты info-bar
+    // Эффект нажатия (для автонастройки высоты info-bar)
     if (newBalance % 100 === 0) {
       setHighlightRecharge(true);
-      setTimeout(() => setHighlightRecharge(false), 2000); // сброс через 2 сек
+      setTimeout(() => setHighlightRecharge(false), 2000);
     }
 
-    // Сохраняем на backend
+    // Сохраняем баланс на backend
     if (telegramId) {
       fetch("https://mmm-go-backend.onrender.com/balance", {
         method: "POST",
@@ -74,8 +79,31 @@ export default function MMMGo() {
       }).catch((err) => console.error("Ошибка сохранения:", err));
     }
   };
+
+  // Обработчик для кнопки пополнения
   const handleRecharge = () => {
     alert("Пополнение баланса скоро будет доступно! 💰");
+  };
+
+  // Обработчик для кнопки буста
+  const handleBoostTaps = () => {
+    if (boostActive || boostCooldown) {
+      alert("Буст уже активен или на перезарядке!");
+      return;
+    }
+    // Активируем буст: за один тап начисляется 3 монеты
+    setBoostActive(true);
+    alert("Буст тапов активирован на 20 секунд!");
+    // Через 20 секунд выключаем буст и запускаем кулдаун
+    setTimeout(() => {
+      setBoostActive(false);
+      setBoostCooldown(true);
+      alert("Буст завершён. Повторно доступен через 1 час.");
+      // Через 1 час снимаем кулдаун
+      setTimeout(() => {
+        setBoostCooldown(false);
+      }, 3600000); // 1 час в миллисекундах
+    }, 20000); // 20 секунд в миллисекундах
   };
 
   return (
@@ -83,12 +111,20 @@ export default function MMMGo() {
       <div className="info-bars">
         <Link to="/level" onClick={() => navigator.vibrate?.(50)}>
           <div className="bar-wrapper">
-            <img src={barLevel} className="bar-img" />
+            <img src={barLevel} className="bar-img" alt="До уровня" />
             <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
           </div>
         </Link>
 
-        {/* Кнопка пополнения — НЕ ВНУТРИ bar-wrapper */}
+        {/* Кнопка буста тапов - размещена слева */}
+        <img
+          src={boostTapImage}
+          className="boost-tap-button"
+          alt="Буст Тапов"
+          onClick={handleBoostTaps}
+        />
+
+        {/* Кнопка пополнения — остаётся справа */}
         <img
           src={rechargeGold}
           className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
@@ -98,21 +134,21 @@ export default function MMMGo() {
 
         <Link to="/rank" onClick={() => navigator.vibrate?.(50)}>
           <div className="bar-wrapper">
-            <img src={barRank} className="bar-img" />
+            <img src={barRank} className="bar-img" alt="Инвесторский ранг" />
             <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
           </div>
         </Link>
 
         <Link to="/investors" onClick={() => navigator.vibrate?.(50)}>
           <div className="bar-wrapper">
-            <img src={barInvestors} className="bar-img" />
+            <img src={barInvestors} className="bar-img" alt="Вкладчики" />
             <div className="bar-text">🧍 Вкладчики: {investors}</div>
           </div>
         </Link>
 
         <Link to="/rating" onClick={() => navigator.vibrate?.(50)}>
           <div className="bar-wrapper">
-            <img src={barRating} className="bar-img" />
+            <img src={barRating} className="bar-img" alt="SR рейтинг" />
             <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
           </div>
         </Link>
@@ -123,10 +159,8 @@ export default function MMMGo() {
       <div className="container">
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
-
         <h1>Баланс:<br />{balance} мавродиков</h1>
         <button className="coin-button" onClick={handleClick}></button>
-
         {showMavrodik && (
           <img
             src={mavrodikFloating}
@@ -142,7 +176,7 @@ export default function MMMGo() {
             alt="Правила"
             style={{
               width: "auto",
-              height: "50px",  // или другой размер, как тебе нужно
+              height: "50px",  // можно изменить размер по необходимости
               marginTop: "20px",
               display: "block",
               marginLeft: "auto",
