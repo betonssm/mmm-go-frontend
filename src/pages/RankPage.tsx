@@ -1,11 +1,8 @@
 
-export default function RankPage() {
-  return <div style={{ padding: 20 }}>🏅 Уровни инвестора и что нужно для повышения</div>;
-}
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../MMMGo.css"; // базовые стили
-import bgImage from "../assets/bg-rank.jpg"; // свой фон
+import "../MMMGo.css";
+import bgImage from "../assets/bg-rank.jpg";
 
 export default function RankPage() {
   const navigate = useNavigate();
