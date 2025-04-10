@@ -8,14 +8,19 @@ export default function RulesPage() {
 
   return (
     <div
-      className="rules-page-container"  // Добавлен класс для прокрутки
+      className="rules-page-container" // Используем специальный класс для контейнера
       style={{
         backgroundImage: `url(/assets/bg-rules.png)`,  // фон для страницы
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        minHeight: "100vh",  // Страница должна заполнять весь экран
+        display: "flex",     // Используем flexbox для вертикального распределения
+        flexDirection: "column", // Вертикальное расположение
+        overflowY: "auto",  // Включаем вертикальную прокрутку
         paddingTop: "30px", // отступ сверху
         paddingBottom: "30px", // отступ снизу
+        padding: "0 20px",  // Добавим отступы по бокам
       }}
     >
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "20px" }}>
@@ -30,13 +35,11 @@ export default function RulesPage() {
         </p>
       </div>
 
+      {/* Другие блоки с правилами */}
       <div style={{ marginBottom: "20px", padding: "15px", background: "rgba(0, 0, 0, 0.6)", borderRadius: "12px" }}>
         <h3 style={{ color: "#ffe082" }}>2. Добыча монет "мавродики"</h3>
         <p style={{ color: "#ffe082" }}>
           Игроки добывают **мавродики** с помощью ежедневного **тапа** на главном экране. Игроки, которые не подписались на платную подписку, могут добывать до **10,000 мавродиков в сутки**. Добыча ограничена общим количеством, но может увеличиться, если количество участников игры превысит заданный лимит.
-        </p>
-        <p style={{ color: "#ffe082" }}>
-          **За каждого приведённого игрока** по реферальной ссылке базовый игрок получает **5,000 мавродиков**.
         </p>
       </div>
 
@@ -89,7 +92,7 @@ export default function RulesPage() {
         </p>
       </div>
 
-      {/* Кнопка "Правила" */}
+      {/* Кнопка "Назад" */}
       <button
         onClick={() => navigate("/")}
         style={{
