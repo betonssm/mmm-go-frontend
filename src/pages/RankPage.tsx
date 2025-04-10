@@ -2,7 +2,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css";
-import "../assets/bg-rank.png"; // Фон
+
+
 
 // Пример баланса и уровня
 const balance = 2500000; // Пример баланса
@@ -11,9 +12,15 @@ const progress = (balance % 1000000) / 1000000; // Прогресс к след�
 
 export default function RankPage() {
   const navigate = useNavigate();
-
+  
   return (
     <div
+    style={{
+      backgroundImage: `url(/assets/bg-rank.png)`, // правильный путь
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    }}
       className="info-page"
       style={{
         backgroundImage: `url(/assets/bg-rank.png)`,
