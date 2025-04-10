@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/MMMGo.css"; // правильный путь к стилям
+import "../pages/MMMGo.css"; // Убедись, что стили правильные
 
 export default function RulesPage() {
   const navigate = useNavigate();
@@ -10,18 +10,21 @@ export default function RulesPage() {
     <div
       className="info-page"
       style={{
-        backgroundImage: `url(/assets/bg-rules.png)`, // фон для страницы с правилами
+        backgroundImage: `url(/assets/bg-rules.png)`,  // фон для страницы
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         paddingTop: "30px", // отступ сверху
         paddingBottom: "30px", // отступ снизу
+        minHeight: "100vh",  // минимальная высота, чтобы страница заполняла весь экран
+        overflowY: "auto",  // прокрутка по вертикали
       }}
     >
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "20px" }}>
         📜 Правила игры MMM Go
       </h2>
 
+      {/* Правила игры */}
       <div style={{ marginBottom: "20px", padding: "15px", background: "rgba(0, 0, 0, 0.6)", borderRadius: "12px" }}>
         <h3 style={{ color: "#ffe082" }}>1. Ограничения и цели игры</h3>
         <p style={{ color: "#ffe082" }}>
@@ -88,7 +91,7 @@ export default function RulesPage() {
         </p>
       </div>
 
-      {/* Кнопка "Правила" в стиле пополнения */}
+      {/* Кнопка "Правила" */}
       <button
         onClick={() => navigate("/")}
         style={{
@@ -102,27 +105,7 @@ export default function RulesPage() {
           boxShadow: "0 0 10px #ffca28",
           display: "block",
           marginLeft: "auto",
-          marginRight: "auto", // выравнивание кнопки по центру
-        }}
-      >
-        <img src="/assets/gold-recharge-button.png" alt="Правила" style={{ width: "100%" }} />
-      </button>
-
-      {/* Кнопка "Принять" */}
-      <button
-        onClick={() => navigate("/")}
-        style={{
-          marginTop: "24px",
-          padding: "12px 24px",
-          fontSize: "16px",
-          borderRadius: "12px",
-          background: "linear-gradient(to bottom, #ffe259, #ffa751)",
-          border: "none",
-          cursor: "pointer",
-          boxShadow: "0 0 10px #ffca28",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto", // выравнивание кнопки по центру
+          marginRight: "auto", // выравнивание по центру
         }}
       >
         Принять

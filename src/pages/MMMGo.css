@@ -258,6 +258,11 @@ button {
 .recharge-gold-button:active {
   transform: scale(0.96);
 }
+.info-page {
+  min-height: 100vh;  /* Убедитесь, что страница занимает всю высоту */
+  overflow-y: auto;   /* Вертикальная прокрутка */
+  padding-bottom: 50px;  /* Добавление отступа снизу для кнопки */
+}
 
 @keyframes glowPulse {
   0% {
