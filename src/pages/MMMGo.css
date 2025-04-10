@@ -238,6 +238,7 @@ button {
   padding: 0 6px;
   line-height: 1.2;
   word-break: break-word;
+  white-space: pre-wrap;
 }
 
 html, body {
