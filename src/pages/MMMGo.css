@@ -3,12 +3,14 @@ body, html {
   margin: 0;
   padding: 0;
   touch-action: manipulation;
-  overflow: hidden;
+  overflow: auto; /* Это теперь разрешит прокрутку на всех страницах */
 }
+
 .rules-page-container {
-  min-height: 100vh;
-  overflow-y: auto;  /* Прокрутка только на странице с правилами */
-  padding: 0 20px;
+  min-height: 100vh;        /* Убедитесь, что страница с правилами занимает всю высоту экрана */
+  overflow-y: auto;         /* Вертикальная прокрутка для страницы с правилами */
+  padding: 0 20px;          /* Отступы по бокам */
+  padding-bottom: 50px;     /* Добавление отступа снизу для кнопки */
 }
 
 h1 {
@@ -210,91 +212,13 @@ button {
   left: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* по умолчанию 2x2 */
+  grid-template-columns: repeat(2, 1fr);
   justify-items: center;
   gap: 6px;
   padding: 10px 0 16px;
   background: transparent;
   z-index: 10;
   max-width: 100%;
-}
-.bar-wrapper {
-  position: relative;
-  width: 93%;
-  max-width: 360px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  margin: 0 auto;
-  transition: transform 0.15s ease, filter 0.15s ease;
-}
-.bar-wrapper:active {
-  transform: scale(0.95);
-  filter: brightness(1.1);
-}
-.bar-img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.bar-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 14px; /* увеличено для лучшей читаемости */
-  font-weight: bold;
-  color: #f8f2dc;
-  text-align: center;
-  padding: 0 8px;
-  line-height: 1.3; /* немного увеличено */
-  word-break: break-word;
-}
-
-.recharge-gold-button {
-  position: absolute;
-  top: -60px;
-  right: 10px;
-  width: 110px;
-  height: auto;
-  z-index: 10;
-}
-
-.recharge-gold-button:active {
-  transform: scale(0.96);
-}
-.info-page {
-  min-height: 100vh;  /* Убедитесь, что страница занимает всю высоту */
-  overflow-y: auto;   /* Вертикальная прокрутка */
-  padding-bottom: 50px;  /* Добавление отступа снизу для кнопки */
-}
-
-@keyframes glowPulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 5px gold;
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px yellow;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 5px gold;
-  }
-}
-
-.recharge-gold-button.animate-glow {
-  animation: glowPulse 0.6s ease-in-out 3;
-}
-
-.info-page {
-  padding: 24px;
-  color: white;
-  text-align: center;
-  font-size: 16px;
-  background: linear-gradient(to bottom, #111, #222);
-  min-height: 100vh;
 }
 
 @media (max-width: 768px) {
@@ -335,7 +259,7 @@ button {
 
   .bar-wrapper {
     width: 100%;
-    max-width: 260px; /* увеличено */
+    max-width: 260px;
   }
 
   .bar-text {
