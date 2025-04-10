@@ -10,7 +10,7 @@ export default function RankPage() {
     <div
       className="info-page"
       style={{
-        backgroundImage: `url(/assets/bg-rank.jpg)`,
+        backgroundImage: `url(/assets/bg-rank.png)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
