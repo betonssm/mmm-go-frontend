@@ -6,6 +6,7 @@ import barRank from "../assets/bar-rank.png";
 import barInvestors from "../assets/bar-investors.png";
 import barRating from "../assets/bar-rating.png";
 import rechargeGold from "../assets/gold-recharge-button.png";
+import { Link } from "react-router-dom";
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
@@ -80,34 +81,44 @@ export default function MMMGo() {
   return (
     <>
       <div className="info-bars">
-        <div className="bar-wrapper">
-          <img src={barLevel} className="bar-img" />
-          <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
-        </div>
-  
-        <div className="bar-wrapper">
-        <img
-  src={rechargeGold}
-  className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
-  alt="Пополнить баланс"
-  onClick={handleRecharge}
-/>
-          <img src={barRank} className="bar-img" />
-          <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
-        </div>
-  
-        <div className="bar-wrapper">
-          <img src={barInvestors} className="bar-img" />
-          <div className="bar-text">🧍 Вкладчики: {investors}</div>
-        </div>
-  
-        <div className="bar-wrapper">
-          <img src={barRating} className="bar-img" />
-          <div className="bar-text">📊 Рейтинг игрока: #{telegramId || 0}</div>
-        </div>
-      </div>
-  
-      <div className="glow-overlay"></div>
+  <Link to="/level">
+    <div className="bar-wrapper">
+      <img src={barLevel} className="bar-img" />
+      <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
+    </div>
+  </Link>
+
+  {/* Кнопка пополнения — НЕ ВНУТРИ bar-wrapper */}
+  <img
+    src={rechargeGold}
+    className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
+    alt="Пополнить баланс"
+    onClick={handleRecharge}
+  />
+
+  <Link to="/rank">
+    <div className="bar-wrapper">
+      <img src={barRank} className="bar-img" />
+      <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
+    </div>
+  </Link>
+
+  <Link to="/investors">
+    <div className="bar-wrapper">
+      <img src={barInvestors} className="bar-img" />
+      <div className="bar-text">🧍 Вкладчики: {investors}</div>
+    </div>
+  </Link>
+
+  <Link to="/rating">
+    <div className="bar-wrapper">
+      <img src={barRating} className="bar-img" />
+      <div className="bar-text">📊 Рейтинг игрока: #{telegramId || 0}</div>
+    </div>
+  </Link>
+</div>
+
+  <div className="glow-overlay"></div>
   
       <div className="container">
         <h2>Привет, {playerName || "вкладчик"}!</h2>
