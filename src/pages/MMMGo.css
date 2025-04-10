@@ -215,8 +215,8 @@ button {
 }
 .bar-wrapper {
   position: relative;
-  width: 62%; /* увеличено на 30% от предыдущего 48% */
-  max-width: 240px; /* увеличено от 180px */
+  width: 93%; /* увеличено на 30% от предыдущего 48% */
+  max-width: 360px; /* увеличено от 180px */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   margin: 0 auto;
