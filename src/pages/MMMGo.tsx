@@ -121,7 +121,7 @@ export default function MMMGo() {
   }}>
     <div className="bar-wrapper">
       <img src={barRating} className="bar-img" />
-      <div className="bar-text">📊 Рейтинг игрока: #{telegramId || 0}</div>
+      <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
     </div>
   </Link>
 </div>
