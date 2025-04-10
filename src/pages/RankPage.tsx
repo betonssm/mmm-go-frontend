@@ -22,22 +22,24 @@ export default function RankPage() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        paddingTop: "80px", // добавляем отступ сверху, чтобы контент не накладывался
+        paddingTop: "80px", // отступ сверху
       }}
     >
       {/* Блок с общей суммой пула */}
       <div style={{
-        position: "relative",  // изменили на relative, чтобы блок был внутри потока документа
+        position: "relative", // внутри потока документа
         marginBottom: "20px", // отступ снизу
         background: "rgba(255, 215, 0, 0.7)",
         color: "#000",
-        fontSize: "20px",
-        padding: "10px 20px",
+        fontSize: "18px", // уменьшенный размер текста
+        padding: "8px 15px", // уменьшенные отступы
         borderRadius: "12px",
         fontWeight: "bold",
         boxShadow: "0 0 10px #ffd700",
         zIndex: 10,
         textAlign: "center", // центрируем текст внутри блока
+        maxWidth: "90%", // ограничиваем ширину блока
+        margin: "0 auto", // выравнивание по центру
       }}>
         <h3>Общий пул на этот месяц: {totalPool} мавродиков</h3>
         <p>Этот пул разделяется среди топ 10% инвесторов</p>
