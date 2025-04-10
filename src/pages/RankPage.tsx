@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../MMMGo.css";
+import "../pages/MMMGo.css";
 import bgImage from "../assets/bg-rank.jpg";
 
 export default function RankPage() {
