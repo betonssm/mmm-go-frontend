@@ -47,11 +47,11 @@ export default function RankPage() {
       </div>
 
       {/* Заголовок страницы */}
-      <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "20px" }}>
+      <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "8px" }}>
         🏅 Твой Инвесторский Ранг
       </h2>
 
-      <p style={{ marginBottom: "12px", color: "#ffe082" }}>
+      <p style={{ marginBottom: "8px", color: "#ffe082" }}>
         Ты уже инвестор уровня <strong>{level}</strong>!<br />
         А может, почти...
       </p>
