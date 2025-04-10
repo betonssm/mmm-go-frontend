@@ -1,12 +1,15 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/MMMGo.css"; // импорт стилей
+import "../pages/MMMGo.css"; // правильный путь к стилям
 
 // Пример баланса и уровня
 const balance = 2500000; // Пример баланса
 const level = Math.floor(balance / 1000000); // Ранг на основе баланса
 const progress = (balance % 1000000) / 1000000; // Прогресс к следующему уровню
+
+// Пример общего пула
+const totalPool = 5000000; // Это пример общей суммы пула, её можно менять в зависимости от логики игры
 
 export default function RankPage() {
   const navigate = useNavigate();
@@ -15,12 +18,31 @@ export default function RankPage() {
     <div
       className="info-page"
       style={{
-        backgroundImage: `url(/assets/bg-rank.png)`, // правильный путь
+        backgroundImage: `url(/assets/bg-rank.png)`, // путь к фону
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
+      {/* Блок с общей суммой пула */}
+      <div style={{
+        position: "absolute",
+        top: "20px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "rgba(255, 215, 0, 0.7)",
+        color: "#000",
+        fontSize: "20px",
+        padding: "10px 20px",
+        borderRadius: "12px",
+        fontWeight: "bold",
+        boxShadow: "0 0 10px #ffd700",
+        zIndex: 10,
+      }}>
+        <h3>Общий пул на этот месяц: {totalPool} мавродиков</h3>
+        <p>Этот пул разделяется среди топ 10% инвесторов</p>
+      </div>
+
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000" }}>
         🏅 Твой Инвесторский Ранг
       </h2>
