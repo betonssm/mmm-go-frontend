@@ -1,8 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/MMMGo.css";
-import bgImage from "../assets/bg-rank.jpg";
+import "../pages/MMMGo.css"; // исправь путь, если нужно
 
 export default function RankPage() {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ export default function RankPage() {
     <div
       className="info-page"
       style={{
-        backgroundImage: `url(${bgImage})`,
+        backgroundImage: `url(/assets/bg-rank.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
