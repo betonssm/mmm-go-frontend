@@ -1,9 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/MMMGo.css";
-
-
+import "../MMMGo.css"; // импорт стилей
 
 // Пример баланса и уровня
 const balance = 2500000; // Пример баланса
@@ -12,18 +10,12 @@ const progress = (balance % 1000000) / 1000000; // Прогресс к след�
 
 export default function RankPage() {
   const navigate = useNavigate();
-  
+
   return (
     <div
-    style={{
-      backgroundImage: `url(/assets/bg-rank.png)`, // правильный путь
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-    }}
       className="info-page"
       style={{
-        backgroundImage: `url(/assets/bg-rank.png)`,
+        backgroundImage: `url(/assets/bg-rank.png)`, // правильный путь
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -33,12 +25,12 @@ export default function RankPage() {
         🏅 Твой Инвесторский Ранг
       </h2>
 
-      <p style={{ marginBottom: "12px" }}>
+      <p style={{ marginBottom: "12px", color: "#ffe082" }}>
         Ты уже инвестор уровня <strong>{level}</strong>!<br />
         А может, почти...
       </p>
 
-      <p>
+      <p style={{ color: "#ffe082" }}>
         Чем больше у тебя мавродиков, тем выше твой статус.
         <br />
         Следующий ранг откроется при новом уровне 💸
@@ -58,12 +50,12 @@ export default function RankPage() {
 
       {/* Ключевые принципы */}
       <div style={{ marginTop: "20px", padding: "20px", background: "rgba(255, 255, 255, 0.8)", borderRadius: "12px" }}>
-        <h3>📊 Ключевые принципы:</h3>
+        <h3 style={{ color: "#ffe082" }}>📊 Ключевые принципы:</h3>
         <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
-          <li><strong>1. Каждый пул делится по той же формуле, как и дивиденды:</strong> 30% донат, 600% рефералы, 10% активность.</li>
-          <li><strong>2. Чем выше SR и вклад, тем больше токенов.</strong></li>
-          <li><strong>3. Нельзя получить токены без активности.</strong></li>
-          <li><strong>4. Чем позже пришёл — тем меньше пул, но всё ещё можно заработать.</strong></li>
+          <li><strong style={{ color: "#ffe082" }}>1. Каждый пул делится по той же формуле, как и дивиденды:</strong> 30% донат, 60% рефералы, 10% активность.</li>
+          <li><strong style={{ color: "#ffe082" }}>2. Чем выше SR и вклад, тем больше токенов.</strong></li>
+          <li><strong style={{ color: "#ffe082" }}>3. Нельзя получить токены без активности.</strong></li>
+          <li><strong style={{ color: "#ffe082" }}>4. Чем позже пришёл — тем меньше пул, но всё ещё можно заработать.</strong></li>
         </ul>
       </div>
 
