@@ -1,25 +1,25 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/MMMGo.css"; // Убедись, что стили правильные
+import "../pages/MMMGo.css"; // Убедитесь, что стили правильные
 
 export default function RulesPage() {
   const navigate = useNavigate();
 
   return (
     <div
-      className="rules-page-container" // Используем специальный класс для контейнера
+      className="rules-page-container"  // Используем специальный класс для контейнера
       style={{
         backgroundImage: `url(/assets/bg-rules.png)`,  // фон для страницы
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",  // Страница должна заполнять весь экран
-        display: "flex",     // Используем flexbox для вертикального распределения
-        flexDirection: "column", // Вертикальное расположение
-        overflowY: "auto",  // Включаем вертикальную прокрутку
-        paddingTop: "30px", // отступ сверху
-        paddingBottom: "30px", // отступ снизу
+        backgroundSize: "cover",  // Фон не будет растягиваться
+        backgroundPosition: "center",  // Центрируем фон
+        backgroundRepeat: "no-repeat",  // Не повторяем фон
+        minHeight: "100vh",  // Страница должна занимать всю высоту экрана
+        display: "flex",  // Используем flexbox для вертикального распределения
+        flexDirection: "column",  // Вертикальное расположение
+        overflowY: "auto",  // Прокрутка только на странице с правилами
+        paddingTop: "30px",  // отступ сверху
+        paddingBottom: "30px",  // отступ снизу
         padding: "0 20px",  // Добавим отступы по бокам
       }}
     >
