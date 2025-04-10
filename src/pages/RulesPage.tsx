@@ -8,7 +8,7 @@ export default function RulesPage() {
 
   return (
     <div
-      className="info-page"
+      className="rules-page-container"  // Добавлен класс для прокрутки
       style={{
         backgroundImage: `url(/assets/bg-rules.png)`,  // фон для страницы
         backgroundSize: "cover",
@@ -16,8 +16,6 @@ export default function RulesPage() {
         backgroundRepeat: "no-repeat",
         paddingTop: "30px", // отступ сверху
         paddingBottom: "30px", // отступ снизу
-        minHeight: "100vh",  // минимальная высота, чтобы страница заполняла весь экран
-        overflowY: "auto",  // прокрутка по вертикали
       }}
     >
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "20px" }}>

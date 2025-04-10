@@ -5,6 +5,11 @@ body, html {
   touch-action: manipulation;
   overflow: hidden;
 }
+.rules-page-container {
+  min-height: 100vh;
+  overflow-y: auto;  /* Прокрутка только на странице с правилами */
+  padding: 0 20px;
+}
 
 h1 {
   font-family: 'Rubik', sans-serif;
