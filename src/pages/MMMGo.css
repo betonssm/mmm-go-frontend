@@ -271,9 +271,9 @@ button {
 .boost-tap-button {
   position: absolute;
   top: -60px;
-  left: 10px;  /* Кнопка размещается слева */
-  width: 110px;
-  height: auto;
+  left: 10px;  /* Размещается слева */
+  width: 110px;  /* Такая же ширина, как у кнопки пополнения */
+  height: 110px; /* Задаём фиксированную высоту, аналогичную кнопке пополнения */
   z-index: 10;
   cursor: pointer;
   transition: transform 0.15s ease;
@@ -281,6 +281,19 @@ button {
 
 .boost-tap-button:active {
   transform: scale(0.96);
+}
+/* Стили для информационного окна буста */
+.boost-info {
+  position: absolute;
+  top: 115px; /* Располагается ниже кнопки буста */
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffe082;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 11;
+  white-space: nowrap;
 }
 
 @keyframes glowPulse {
