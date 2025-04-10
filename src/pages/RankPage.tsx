@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../MMMGo.css"; // импорт стилей
+import "../pages/MMMGo.css"; // импорт стилей
 
 // Пример баланса и уровня
 const balance = 2500000; // Пример баланса
