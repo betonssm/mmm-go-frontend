@@ -194,29 +194,28 @@ button {
 }
 
 .info-bars {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+  gap: 10px;
+  padding: 12px 0 16px;
+  background: transparent;
+  z-index: 10;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
-  gap: 6px;
-  padding: 12px 0 20px;
-  background: transparent;
-  z-index: 10;
-  max-width: 100%;
 }
 
 /* Стиль каждой рамки */
 .bar-wrapper {
+  width: 90%;
+  max-width: 300px;
+  min-height: 70px;
   position: relative;
-  width: 48%;
-  max-width: 220px; /* немного шире */
-  height: 72px;      /* чуть выше */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
-  margin: 0 auto;
+  margin: 6px auto;
 }
 
 /* Изображение и текст */
@@ -231,14 +230,13 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 12px;  /* чуть меньше */
+  font-size: 15px;
   font-weight: bold;
   color: #f8f2dc;
   text-align: center;
-  padding: 0 6px;
-  line-height: 1.2;
+  padding: 0 10px;
+  line-height: 1.3;
   word-break: break-word;
-  white-space: pre-wrap;
 }
 
 html, body {
@@ -315,20 +313,22 @@ html, body {
   }
 }
 
+/* Адаптация для больших экранов */
 @media (min-width: 769px) {
   .info-bars {
-    grid-template-columns: repeat(4, 1fr); /* 4 бара в ряд */
+    grid-template-columns: repeat(4, 1fr);
     max-width: 1000px;
     margin: 0 auto;
   }
 
   .bar-wrapper {
     width: 100%;
-    max-width: 220px;
+    max-width: 240px;
+    min-height: 80px;
   }
 
   .bar-text {
-    font-size: 14px;
-    padding: 0 8px;
+    font-size: 16px;
+    padding: 0 12px;
   }
 }
