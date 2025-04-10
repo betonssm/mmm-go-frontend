@@ -204,21 +204,22 @@ button {
   bottom: 0;
   left: 0;
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 4px;
-  margin-bottom: 4px;  /* Меньше расстояние между рядами */
-  padding-bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* по умолчанию 2 на 2 */
+  justify-items: center;
+  gap: 6px;
+  padding: 10px 0 14px;
   z-index: 10;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .bar-wrapper {
   position: relative;
-  width: 60%; /* ⬅️ Было 85% — уменьшили на ~30% */
-  max-width: 280px;
+  width: 100%;
+  max-width: 220px;
   margin: 0 auto;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* чуть мягче */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
 }
 
@@ -309,6 +310,11 @@ html, body {
   .floating-mavrodik {
     width: 90vw;
   }
+
+  .info-bars {
+    grid-template-columns: repeat(2, 1fr); /* 2x2 на мобилках */
+    max-width: 500px;
+  }
 }
 
 @media (min-width: 769px) {
@@ -331,5 +337,10 @@ html, body {
 
   .floating-mavrodik {
     width: 500px;
+  }
+
+  .info-bars {
+    grid-template-columns: repeat(4, 1fr); /* 1 ряд из 4 */
+    max-width: 1000px;
   }
 }
