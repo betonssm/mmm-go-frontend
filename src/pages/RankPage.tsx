@@ -22,8 +22,8 @@ export default function RankPage() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        paddingTop: "50px", // отступ сверху
-        paddingBottom: "50px", // отступ снизу (чтобы кнопка не выходила за экран)
+        paddingTop: "30px", // уменьшаем отступ сверху
+        paddingBottom: "30px", // добавляем отступ снизу
       }}
     >
       {/* Блок с общей суммой пула */}
