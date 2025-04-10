@@ -81,7 +81,9 @@ export default function MMMGo() {
   return (
     <>
       <div className="info-bars">
-  <Link to="/level">
+  <Link to="/level"onClick={() => {
+    navigator.vibrate?.(50); // вибрация на 50 мс
+  }}>
     <div className="bar-wrapper">
       <img src={barLevel} className="bar-img" />
       <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
@@ -96,21 +98,27 @@ export default function MMMGo() {
     onClick={handleRecharge}
   />
 
-  <Link to="/rank">
+  <Link to="/rank"onClick={() => {
+    navigator.vibrate?.(50); // вибрация на 50 мс
+  }}>
     <div className="bar-wrapper">
       <img src={barRank} className="bar-img" />
       <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
     </div>
   </Link>
 
-  <Link to="/investors">
+  <Link to="/investors"onClick={() => {
+    navigator.vibrate?.(50); // вибрация на 50 мс
+  }}>
     <div className="bar-wrapper">
       <img src={barInvestors} className="bar-img" />
       <div className="bar-text">🧍 Вкладчики: {investors}</div>
     </div>
   </Link>
 
-  <Link to="/rating">
+  <Link to="/rating"onClick={() => {
+    navigator.vibrate?.(50); // вибрация на 50 мс
+  }}>
     <div className="bar-wrapper">
       <img src={barRating} className="bar-img" />
       <div className="bar-text">📊 Рейтинг игрока: #{telegramId || 0}</div>

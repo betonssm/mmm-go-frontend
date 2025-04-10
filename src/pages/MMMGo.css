@@ -215,13 +215,17 @@ button {
 }
 .bar-wrapper {
   position: relative;
-  width: 93%; /* увеличено на 30% от предыдущего 48% */
-  max-width: 360px; /* увеличено от 180px */
+  width: 93%;
+  max-width: 360px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   margin: 0 auto;
+  transition: transform 0.15s ease, filter 0.15s ease;
 }
-
+.bar-wrapper:active {
+  transform: scale(0.95);
+  filter: brightness(1.1);
+}
 .bar-img {
   width: 100%;
   height: auto;
