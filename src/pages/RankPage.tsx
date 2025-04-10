@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../MMMGo.css"; // Импортируем стили
+import "../pages/MMMGo.css";
 import "../assets/bg-rank.png"; // Фон
 
 // Пример баланса и уровня
