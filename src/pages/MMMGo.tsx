@@ -8,7 +8,7 @@ import barRating from "../assets/bar-rating.png";
 import rechargeGold from "../assets/gold-recharge-button.png";
 import boostTapImage from "../assets/boost-tap-button.png";
 import rulesButton from "../assets/rules-button.png";
-import moneyBg from "../assets/money-bg.png"; // базовый фон
+import moneyBg from "../assets/money-bg.png";
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
@@ -18,12 +18,11 @@ export default function MMMGo() {
   const [telegramId, setTelegramId] = useState<number | null>(null);
   const [level, setLevel] = useState(0);
   const [investors, setInvestors] = useState(0);
-  const [nextLevel, setNextLevel] = useState(50000);
+  const [nextLevel, setNextLevel] = useState(100);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
 
-  // Карта фонов по уровням (из public)
   const levelBackgrounds: { [key: number]: string } = {
     1: "/assets/bg-level-1.png",
     2: "/assets/bg-level-2.png",
@@ -35,8 +34,7 @@ export default function MMMGo() {
     8: "/assets/bg-level-8.png",
   };
 
-  // Логика текущего уровня (по 50 000 мавродиков за уровень)
-  const calculatedLevel = Math.min(Math.floor(balance / 50000), 8);
+  const calculatedLevel = Math.min(Math.floor(balance / 100), 8);
   const backgroundImage =
     calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
@@ -61,9 +59,9 @@ export default function MMMGo() {
   }, []);
 
   useEffect(() => {
-    const lvl = Math.min(Math.floor(balance / 50000), 8);
+    const lvl = Math.min(Math.floor(balance / 100), 8);
     setLevel(lvl);
-    setNextLevel((lvl + 1) * 50000);
+    setNextLevel((lvl + 1) * 100);
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
@@ -116,7 +114,9 @@ export default function MMMGo() {
         <Link to="/level">
           <div className="bar-wrapper">
             <img src={barLevel} className="bar-img" alt="До уровня" />
-            <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
+            <div className="bar-text">
+              🔁 До уровня: {nextLevel - balance} мавродиков
+            </div>
           </div>
         </Link>
 
@@ -151,7 +151,9 @@ export default function MMMGo() {
         <Link to="/rating">
           <div className="bar-wrapper">
             <img src={barRating} className="bar-img" alt="SR рейтинг" />
-            <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
+            <div className="bar-text">
+              📊 SR рейтинг игрока: #{telegramId || 0}
+            </div>
           </div>
         </Link>
       </div>
@@ -161,7 +163,7 @@ export default function MMMGo() {
       <div
         className="container"
         style={{
-          backgroundImage,
+          backgroundImage: backgroundImage,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -171,6 +173,7 @@ export default function MMMGo() {
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
         <h1>Баланс:<br />{balance} мавродиков</h1>
+        <p className="level-text">🎖 Уровень: {level}</p>
         <button className="coin-button" onClick={handleClick}></button>
 
         {showMavrodik && (
