@@ -7,8 +7,9 @@ import barInvestors from "../assets/bar-investors.png";
 import barRating from "../assets/bar-rating.png";
 import rechargeGold from "../assets/gold-recharge-button.png";
 import boostTapImage from "../assets/boost-tap-button.png";
-import { Link } from "react-router-dom";
 import rulesButton from "../assets/rules-button.png";
+import moneyBg from "../assets/money-bg.png"; // базовый фон
+import { Link } from "react-router-dom";
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
@@ -17,11 +18,12 @@ export default function MMMGo() {
   const [telegramId, setTelegramId] = useState<number | null>(null);
   const [level, setLevel] = useState(0);
   const [investors, setInvestors] = useState(0);
-  const [nextLevel, setNextLevel] = useState(1000000);
+  const [nextLevel, setNextLevel] = useState(50000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
 
+  // Карта фонов по уровням (из public)
   const levelBackgrounds: { [key: number]: string } = {
     1: "/assets/bg-level-1.png",
     2: "/assets/bg-level-2.png",
@@ -31,24 +33,12 @@ export default function MMMGo() {
     6: "/assets/bg-level-6.png",
     7: "/assets/bg-level-7.png",
     8: "/assets/bg-level-8.png",
-    9: "/assets/bg-level-9.png"
   };
 
-  const calculateLevel = (balance: number) => {
-    if (balance < 50000) return 0;
-    if (balance < 150000) return 1;
-    if (balance < 300000) return 2;
-    if (balance < 600000) return 3;
-    if (balance < 1000000) return 4;
-    if (balance < 2000000) return 5;
-    if (balance < 5000000) return 6;
-    if (balance < 10000000) return 7;
-    return 8;
-  };
-
-  const backgroundImage = level === 0
-    ? "url(/assets/money-bg.png)"
-    : `url(${levelBackgrounds[level] || "/assets/money-bg.png"})`;
+  // Логика текущего уровня (по 50 000 мавродиков за уровень)
+  const calculatedLevel = Math.min(Math.floor(balance / 50000), 8);
+  const backgroundImage =
+    calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -71,9 +61,9 @@ export default function MMMGo() {
   }, []);
 
   useEffect(() => {
-    const newLevel = calculateLevel(balance);
-    setLevel(newLevel);
-    setNextLevel((newLevel + 1) * 1000000);
+    const lvl = Math.min(Math.floor(balance / 50000), 8);
+    setLevel(lvl);
+    setNextLevel((lvl + 1) * 50000);
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
@@ -81,14 +71,17 @@ export default function MMMGo() {
     const coinsToAdd = boostActive ? 3 : 1;
     const newBalance = balance + coinsToAdd;
     setBalance(newBalance);
+
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
+
     if (newBalance % 100 === 0) {
       setHighlightRecharge(true);
       setTimeout(() => setHighlightRecharge(false), 2000);
     }
+
     if (telegramId) {
       fetch("https://mmm-go-backend.onrender.com/balance", {
         method: "POST",
@@ -113,46 +106,49 @@ export default function MMMGo() {
       setBoostActive(false);
       setBoostCooldown(true);
       alert("Буст завершён. Повторно доступен через 1 час.");
-      setTimeout(() => {
-        setBoostCooldown(false);
-      }, 3600000);
+      setTimeout(() => setBoostCooldown(false), 3600000);
     }, 20000);
   };
 
   return (
     <>
       <div className="info-bars">
-        <Link to="/level" onClick={() => navigator.vibrate?.(50)}>
+        <Link to="/level">
           <div className="bar-wrapper">
             <img src={barLevel} className="bar-img" alt="До уровня" />
             <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
           </div>
         </Link>
+
         <img
           src={boostTapImage}
           className="boost-tap-button"
           alt="Буст Тапов"
           onClick={handleBoostTaps}
         />
+
         <img
           src={rechargeGold}
           className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
           alt="Пополнить баланс"
           onClick={handleRecharge}
         />
-        <Link to="/rank" onClick={() => navigator.vibrate?.(50)}>
+
+        <Link to="/rank">
           <div className="bar-wrapper">
             <img src={barRank} className="bar-img" alt="Инвесторский ранг" />
-            <div className="bar-text">🏅 Инвестор {level + 1}-го ранга</div>
+            <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
           </div>
         </Link>
-        <Link to="/investors" onClick={() => navigator.vibrate?.(50)}>
+
+        <Link to="/investors">
           <div className="bar-wrapper">
             <img src={barInvestors} className="bar-img" alt="Вкладчики" />
             <div className="bar-text">🧍 Вкладчики: {investors}</div>
           </div>
         </Link>
-        <Link to="/rating" onClick={() => navigator.vibrate?.(50)}>
+
+        <Link to="/rating">
           <div className="bar-wrapper">
             <img src={barRating} className="bar-img" alt="SR рейтинг" />
             <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
@@ -162,14 +158,29 @@ export default function MMMGo() {
 
       <div className="glow-overlay"></div>
 
-      <div className="container" style={{ backgroundImage, transition: "background-image 1s ease-in-out" }}>
+      <div
+        className="container"
+        style={{
+          backgroundImage,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          transition: "background-image 0.8s ease-in-out",
+        }}
+      >
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
         <h1>Баланс:<br />{balance} мавродиков</h1>
         <button className="coin-button" onClick={handleClick}></button>
+
         {showMavrodik && (
-          <img src={mavrodikFloating} alt="Мавродик" className="floating-mavrodik" />
+          <img
+            src={mavrodikFloating}
+            alt="Мавродик"
+            className="floating-mavrodik"
+          />
         )}
+
         <Link to="/rules">
           <img
             src={rulesButton}
@@ -180,7 +191,7 @@ export default function MMMGo() {
               marginTop: "20px",
               display: "block",
               marginLeft: "auto",
-              marginRight: "auto"
+              marginRight: "auto",
             }}
           />
         </Link>
