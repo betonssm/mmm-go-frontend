@@ -1,11 +1,21 @@
 
-/* Глобальные стили */
 body, html {
   margin: 0;
   padding: 0;
   touch-action: manipulation;
-  overflow: hidden;
+  overflow: hidden; /* Глобально скрываем прокрутку, если это требуется по замыслу */
 }
+.info-page {
+  min-height: 100vh;
+  overflow-y: auto;  /* Прокрутка для контейнера с контентом, если его будет много */
+  padding: 24px 24px 50px;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  background: linear-gradient(to bottom, #111, #222);
+  box-sizing: border-box;
+}
+
 
 h1 {
   font-family: 'Rubik', sans-serif;
@@ -298,7 +308,9 @@ button {
 }
 
 /* Адаптивность для экранов меньше 768px */
+
 @media (max-width: 768px) {
+  
   .container {
     padding: 24px;
   }
@@ -333,28 +345,23 @@ button {
     padding: 16px;
     font-size: 14px;
   }
-  
   .bar-wrapper {
     width: 100%;
     max-width: 100%;
     margin: 0 4px;
   }
-  
   .bar-text {
     font-size: 12px;
     padding: 0 4px;
   }
-  
   .coin-button {
     width: 50vw;
   }
-  
   .recharge-gold-button,
   .boost-tap-button {
     width: 90px;
     height: 90px;
   }
-  
   .info-bars {
     gap: 4px;
     padding: 8px 0;
