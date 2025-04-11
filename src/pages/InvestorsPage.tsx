@@ -25,6 +25,7 @@ export default function InvestorsPage() {
       className="investors-page"
       style={{ backgroundImage: `url(/assets/bg-investors.png)` }}
     >
+      <div className="investors-scroll-wrapper">
       <h2 className="section-title">📊 Вкладчики</h2>
 
       <div className="info-block">
@@ -51,6 +52,7 @@ export default function InvestorsPage() {
       <button onClick={() => navigate("/")} className="back-button">
         🔙 Назад
       </button>
+    </div>
     </div>
   );
 }
