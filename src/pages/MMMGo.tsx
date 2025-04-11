@@ -91,6 +91,50 @@ export default function MMMGo() {
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
+  
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (boostActive) {
+      interval = setInterval(() => {
+        setBalance(prev => {
+          const newBalance = prev + 3;
+
+          if (newBalance % 100000 === 0) {
+            setShowMavrodik(true);
+            setTimeout(() => setShowMavrodik(false), 3000);
+          }
+
+          if (newBalance % 100 === 0) {
+            setHighlightRecharge(true);
+            setTimeout(() => setHighlightRecharge(false), 2000);
+          }
+
+          if (telegramId) {
+            fetch("https://mmm-go-backend.onrender.com/balance", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ telegramId, balance: newBalance })
+            }).catch(err => console.error("Ошибка сохранения:", err));
+          }
+
+          return newBalance;
+        });
+      }, 500);
+
+      setTimeout(() => {
+        clearInterval(interval);
+        setBoostActive(false);
+        setBoostCooldown(true);
+        alert("Буст завершён. Повторно доступен через 1 час.");
+        setTimeout(() => setBoostCooldown(false), 3600000);
+      }, 20000);
+    }
+
+    return () => clearInterval(interval);
+  }, [boostActive]);
+
+
   const handleClick = () => {
     const coinsToAdd = boostActive ? 3 : 1;
     const newBalance = balance + coinsToAdd;
@@ -124,14 +168,18 @@ export default function MMMGo() {
       alert("Буст уже активен или на перезарядке!");
       return;
     }
+  
+    alert("Просмотр рекламы...");
+  
     setBoostActive(true);
-    alert("Буст тапов активирован на 20 секунд!");
+  
     setTimeout(() => {
       setBoostActive(false);
       setBoostCooldown(true);
       alert("Буст завершён. Повторно доступен через 1 час.");
       setTimeout(() => setBoostCooldown(false), 3600000);
     }, 20000);
+  
   };
 
   return (
