@@ -9,14 +9,17 @@ import rechargeGold from "../assets/gold-recharge-button.png";
 import boostTapImage from "../assets/boost-tap-button.png";
 import rulesButton from "../assets/rules-button.png";
 import moneyBg from "../assets/money-bg.png";
-import bgLevel1 from "../assets/bg-level-1.png";
-import bgLevel2 from "../assets/bg-level-2.png";
-import bgLevel3 from "../assets/bg-level-3.png";
-import bgLevel4 from "../assets/bg-level-4.png";
-import bgLevel5 from "../assets/bg-level-5.png";
-import bgLevel6 from "../assets/bg-level-6.png";
-import bgLevel7 from "../assets/bg-level-7.png";
-import bgLevel8 from "../assets/bg-level-8.png";
+
+// Импорт фонов уровней
+import bg1 from "../assets/bg-level-1.png";
+import bg2 from "../assets/bg-level-2.png";
+import bg3 from "../assets/bg-level-3.png";
+import bg4 from "../assets/bg-level-4.png";
+import bg5 from "../assets/bg-level-5.png";
+import bg6 from "../assets/bg-level-6.png";
+import bg7 from "../assets/bg-level-7.png";
+import bg8 from "../assets/bg-level-8.png";
+
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
@@ -45,17 +48,17 @@ export default function MMMGo() {
   ];
 
   const levelBackgrounds: { [key: number]: string } = {
-    1: bgLevel1,
-    2: bgLevel2,
-    3: bgLevel3,
-    4: bgLevel4,
-    5: bgLevel5,
-    6: bgLevel6,
-    7: bgLevel7,
-    8: bgLevel8,
+    1: bg1,
+    2: bg2,
+    3: bg3,
+    4: bg4,
+    5: bg5,
+    6: bg6,
+    7: bg7,
+    8: bg8,
   };
 
-  const calculatedLevel = Math.min(Math.floor(balance / 100), 8);
+  const calculatedLevel = Math.min(Math.floor(balance / 100), 8); // тестовая логика
   const backgroundImage = calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
   useEffect(() => {
@@ -226,7 +229,3 @@ export default function MMMGo() {
     </>
   );
 }
-
-
-
-
