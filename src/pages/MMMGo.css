@@ -253,7 +253,7 @@ button {
 
 .recharge-gold-button {
   position: absolute;
-  top: -62px;
+  top: -60px;
   right: 15px;
   width: 110px;
   height: auto;
@@ -270,7 +270,7 @@ button {
 }
 .boost-tap-button {
   position: absolute;
-  top: -58px;
+  top: -60px;
   left: 15px;  /* Кнопка размещается слева */
   width: 110px;
   height: auto;
