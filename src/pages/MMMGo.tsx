@@ -34,6 +34,7 @@ export default function MMMGo() {
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
   const [showLevelNotice, setShowLevelNotice] = useState(false);
+  const [showBoostEndedNotice, setShowBoostEndedNotice] = useState(false);
 
   const levelTitles: string[] = [
     "Новичок",
@@ -175,7 +176,8 @@ export default function MMMGo() {
     setTimeout(() => {
       setBoostActive(false);
       setBoostCooldown(true);
-      alert("Буст завершён. Повторно доступен через 1 час.");
+      setShowBoostEndedNotice(true);
+      setTimeout(() => setShowBoostEndedNotice(false), 3000);
       setTimeout(() => setBoostCooldown(false), 3600000);
     }, 20000);
   
@@ -276,6 +278,11 @@ export default function MMMGo() {
           />
         </Link>
       </div>
+      {showBoostEndedNotice && (
+  <div className="toast-notice">
+    ✨ Буст завершён. Повторно доступен через 1 час.
+  </div>
+)}
     </>
   );
 }
