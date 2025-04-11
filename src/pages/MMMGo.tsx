@@ -6,9 +6,9 @@ import barRank from "../assets/bar-rank.png";
 import barInvestors from "../assets/bar-investors.png";
 import barRating from "../assets/bar-rating.png";
 import rechargeGold from "../assets/gold-recharge-button.png";
-import boostTapImage from "../assets/boost-tap-button.png";  // Изображение кнопки буста
+import boostTapImage from "../assets/boost-tap-button.png"; // Картинка кнопки буста
 import { Link } from "react-router-dom";
-import rulesButton from "../assets/rules-button.png";  // Изображение кнопки "Правила"
+import rulesButton from "../assets/rules-button.png"; // Кнопка "Правила"
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
@@ -19,8 +19,7 @@ export default function MMMGo() {
   const [investors, setInvestors] = useState(0);
   const [nextLevel, setNextLevel] = useState(1000000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
-
-  // Новые состояния для буста
+  // Состояния для буста
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
 
@@ -32,7 +31,6 @@ export default function MMMGo() {
       if (user) {
         setPlayerName(user.first_name);
         setTelegramId(user.id);
-        // Загрузка баланса с backend
         fetch(`https://mmm-go-backend.onrender.com/balance/${user.id}`)
           .then((res) => res.json())
           .then((data) => {
@@ -52,25 +50,20 @@ export default function MMMGo() {
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
-  // Обработчик нажатия кнопки "Тап" (игровой кнопки монеты)
+  // Обработчик нажатия основной кнопки (монеты)
   const handleClick = () => {
-    // Если буст активен, прибавляем 3 монеты за тап, иначе 1 монету
-    const coinsToAdd = boostActive ? 3 : 1;
+    const coinsToAdd = boostActive ? 3 : 1; // Если буст активен, начисляется 3 монеты, иначе 1
     const newBalance = balance + coinsToAdd;
     setBalance(newBalance);
 
-    // Появление Мавродика через каждые 100000 монет
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
-    // Эффект нажатия (для автонастройки высоты info-bar)
     if (newBalance % 100 === 0) {
       setHighlightRecharge(true);
       setTimeout(() => setHighlightRecharge(false), 2000);
     }
-
-    // Сохраняем баланс на backend
     if (telegramId) {
       fetch("https://mmm-go-backend.onrender.com/balance", {
         method: "POST",
@@ -88,22 +81,19 @@ export default function MMMGo() {
   // Обработчик для кнопки буста
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
-      alert("Буст уже активен или на перезарядке!");
+      alert("Буст уже активен или находится на перезарядке!");
       return;
     }
-    // Активируем буст: за один тап начисляется 3 монеты
     setBoostActive(true);
     alert("Буст тапов активирован на 20 секунд!");
-    // Через 20 секунд выключаем буст и запускаем кулдаун
     setTimeout(() => {
       setBoostActive(false);
       setBoostCooldown(true);
       alert("Буст завершён. Повторно доступен через 1 час.");
-      // Через 1 час снимаем кулдаун
       setTimeout(() => {
         setBoostCooldown(false);
-      }, 3600000); // 1 час в миллисекундах
-    }, 20000); // 20 секунд в миллисекундах
+      }, 3600000);
+    }, 20000);
   };
 
   return (
@@ -116,15 +106,22 @@ export default function MMMGo() {
           </div>
         </Link>
 
-        {/* Кнопка буста тапов - размещена слева */}
-        <img
-          src={boostTapImage}
-          className="boost-tap-button"
-          alt="Буст Тапов"
-          onClick={handleBoostTaps}
-        />
+        {/* Кнопка буста тапов (слева) с информационным окном */}
+        <div style={{ position: "relative" }}>
+          <img
+            src={boostTapImage}
+            className="boost-tap-button"
+            alt="Буст Тапов"
+            onClick={handleBoostTaps}
+          />
+          {(boostActive || boostCooldown) && (
+            <div className="boost-info">
+              {boostActive ? "Буст активен!" : "Буст на перезарядке"}
+            </div>
+          )}
+        </div>
 
-        {/* Кнопка пополнения — остаётся справа */}
+        {/* Кнопка пополнения (справа) */}
         <img
           src={rechargeGold}
           className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
@@ -155,7 +152,7 @@ export default function MMMGo() {
       </div>
 
       <div className="glow-overlay"></div>
-
+      
       <div className="container">
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
@@ -176,7 +173,7 @@ export default function MMMGo() {
             alt="Правила"
             style={{
               width: "auto",
-              height: "50px",  // можно изменить размер по необходимости
+              height: "50px",
               marginTop: "20px",
               display: "block",
               marginLeft: "auto",

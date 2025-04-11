@@ -1,14 +1,10 @@
 
+/* Глобальные стили */
 body, html {
   margin: 0;
   padding: 0;
   touch-action: manipulation;
   overflow: hidden;
-}
-.rules-page-container {
-  min-height: 100vh;
-  overflow-y: auto;  /* Прокрутка только на странице с правилами */
-  padding: 0 20px;
 }
 
 h1 {
@@ -34,6 +30,7 @@ h2 {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+/* Контейнер для основной страницы */
 .container {
   text-align: center;
   padding: 40px;
@@ -56,6 +53,7 @@ h2 {
   line-height: 1.3;
 }
 
+/* Глобальные стили для кнопок */
 button {
   font-size: 14px;
   padding: 16px 24px;
@@ -65,6 +63,7 @@ button {
   cursor: pointer;
 }
 
+/* Стили для плавающего изображения Мавродика */
 .floating-mavrodik {
   position: fixed;
   bottom: -300px;
@@ -102,6 +101,7 @@ button {
   }
 }
 
+/* Эффект золотого мерцания */
 .glow-overlay {
   position: fixed;
   top: 0;
@@ -132,6 +132,7 @@ button {
   }
 }
 
+/* Стили для игровой кнопки монеты */
 .coin-button {
   width: 45vw;
   aspect-ratio: 1 / 1;
@@ -204,6 +205,7 @@ button {
   }
 }
 
+/* Стили для информационных панелей внизу экрана */
 .info-bars {
   position: fixed;
   bottom: 0;
@@ -218,6 +220,7 @@ button {
   z-index: 10;
   max-width: 100%;
 }
+
 .bar-wrapper {
   position: relative;
   width: 93%;
@@ -231,6 +234,7 @@ button {
   transform: scale(0.95);
   filter: brightness(1.1);
 }
+
 .bar-img {
   width: 100%;
   height: auto;
@@ -242,15 +246,16 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 14px; /* увеличено для лучшей читаемости */
+  font-size: 14px;
   font-weight: bold;
   color: #f8f2dc;
   text-align: center;
   padding: 0 8px;
-  line-height: 1.3; /* немного увеличено */
+  line-height: 1.3;
   word-break: break-word;
 }
 
+/* Стили для кнопки пополнения */
 .recharge-gold-button {
   position: absolute;
   top: -60px;
@@ -259,137 +264,101 @@ button {
   height: auto;
   z-index: 10;
 }
-
 .recharge-gold-button:active {
   transform: scale(0.96);
 }
-.info-page {
-  min-height: 100vh;  /* Убедитесь, что страница занимает всю высоту */
-  overflow-y: auto;   /* Вертикальная прокрутка */
-  padding-bottom: 50px;  /* Добавление отступа снизу для кнопки */
-}
+
+/* Стили для кнопки буста уже описаны выше */
 .boost-tap-button {
   position: absolute;
   top: -60px;
-  left: 10px;  /* Кнопка размещается слева */
+  left: 10px;
   width: 110px;
-  height: auto;
+  height: 110px;
   z-index: 10;
   cursor: pointer;
   transition: transform 0.15s ease;
 }
-
 .boost-tap-button:active {
   transform: scale(0.96);
 }
 
-@keyframes glowPulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 5px gold;
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px yellow;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 5px gold;
-  }
+/* Стили для информационного окна буста */
+.boost-info {
+  position: absolute;
+  top: 115px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffe082;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 11;
+  white-space: nowrap;
 }
 
-.recharge-gold-button.animate-glow {
-  animation: glowPulse 0.6s ease-in-out 3;
-}
-
-.info-page {
-  padding: 24px;
-  color: white;
-  text-align: center;
-  font-size: 16px;
-  background: linear-gradient(to bottom, #111, #222);
-  min-height: 100vh;
-}
-
+/* Адаптивность для экранов меньше 768px */
 @media (max-width: 768px) {
   .container {
     padding: 24px;
   }
-
+  
   .bar-wrapper {
     width: 93%;
     max-width: 360px;
   }
-
+  
   .bar-text {
     font-size: 13px;
     padding: 0 8px;
   }
-
+  
   .coin-button {
     width: 40vw;
   }
-
+  
   .floating-mavrodik {
     width: 90vw;
   }
-
+  
   .info-bars {
     grid-template-columns: repeat(2, 1fr);
     max-width: 500px;
   }
 }
 
-@media (min-width: 769px) {
-  .info-bars {
-    grid-template-columns: repeat(4, 1fr);
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-
-  .bar-wrapper {
-    width: 100%;
-    max-width: 260px; /* увеличено */
-  }
-
-  .bar-text {
-    font-size: 15px;
-    padding: 0 10px;
-  }
-} 
+/* Адаптивные стили для экранов меньше 375px (например, iPhone 10) */
 @media (max-width: 375px) {
   .container {
     padding: 16px;
-    font-size: 14px; /* может быть меньше */
+    font-size: 14px;
   }
-
+  
   .bar-wrapper {
     width: 100%;
     max-width: 100%;
     margin: 0 4px;
   }
-
+  
   .bar-text {
     font-size: 12px;
     padding: 0 4px;
   }
-
+  
   .coin-button {
-    width: 50vw; /* Например, для меньшего экрана */
+    width: 50vw;
   }
   
-  /* Если кнопки пополнения и буста фиксированные по размеру,
-     адаптируйте их размеры */
   .recharge-gold-button,
   .boost-tap-button {
     width: 90px;
     height: 90px;
   }
-
-  /* Другой пример: уменьшение отступов */
+  
   .info-bars {
     gap: 4px;
     padding: 8px 0;
   }
 }
+
 
