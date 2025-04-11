@@ -7,8 +7,8 @@ import barInvestors from "../assets/bar-investors.png";
 import barRating from "../assets/bar-rating.png";
 import rechargeGold from "../assets/gold-recharge-button.png";
 import boostTapImage from "../assets/boost-tap-button.png";
-import { Link } from "react-router-dom";
 import rulesButton from "../assets/rules-button.png";
+import { Link } from "react-router-dom";
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
@@ -22,7 +22,7 @@ export default function MMMGo() {
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
 
-  // Уровневые фоны
+  // Карта фонов по уровням
   const levelBackgrounds: { [key: number]: string } = {
     1: "/assets/bg-level-1.png",
     2: "/assets/bg-level-2.png",
@@ -35,7 +35,8 @@ export default function MMMGo() {
     9: "/assets/bg-level-9.png",
   };
 
-  const backgroundImage = levelBackgrounds[level] || levelBackgrounds[1];
+  const currentLevel = Math.floor(balance / 100) + 1; // для тестов
+  const backgroundImage = levelBackgrounds[currentLevel] || "/assets/money-bg.png";
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -58,9 +59,8 @@ export default function MMMGo() {
   }, []);
 
   useEffect(() => {
-    const calculatedLevel = Math.floor(balance / 100) + 1;
-    setLevel(calculatedLevel);
-    setNextLevel(calculatedLevel * 100);
+    setLevel(currentLevel);
+    setNextLevel(currentLevel * 100); // для тестов
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
@@ -133,7 +133,7 @@ export default function MMMGo() {
 
         <Link to="/rank">
           <div className="bar-wrapper">
-            <img src={barRank} className="bar-img" alt="Ранг" />
+            <img src={barRank} className="bar-img" alt="Инвесторский ранг" />
             <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
           </div>
         </Link>
@@ -147,8 +147,8 @@ export default function MMMGo() {
 
         <Link to="/rating">
           <div className="bar-wrapper">
-            <img src={barRating} className="bar-img" alt="Рейтинг" />
-            <div className="bar-text">📊 SR рейтинг: #{telegramId || 0}</div>
+            <img src={barRating} className="bar-img" alt="SR рейтинг" />
+            <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
           </div>
         </Link>
       </div>
@@ -157,7 +157,13 @@ export default function MMMGo() {
 
       <div
         className="container"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          transition: "background-image 0.8s ease-in-out",
+        }}
       >
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
