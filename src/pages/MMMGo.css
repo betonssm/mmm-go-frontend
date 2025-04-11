@@ -1,19 +1,14 @@
+
 body, html {
   margin: 0;
   padding: 0;
   touch-action: manipulation;
   overflow: hidden;
 }
-
-.info-page {
+.rules-page-container {
   min-height: 100vh;
-  overflow-y: auto;
-  padding: 24px 24px 50px;
-  color: white;
-  text-align: center;
-  font-size: 16px;
-  background: linear-gradient(to bottom, #111, #222);
-  box-sizing: border-box;
+  overflow-y: auto;  /* Прокрутка только на странице с правилами */
+  padding: 0 20px;
 }
 
 h1 {
@@ -70,6 +65,73 @@ button {
   cursor: pointer;
 }
 
+.floating-mavrodik {
+  position: fixed;
+  bottom: -300px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  max-width: 500px;
+  height: auto;
+  animation: floatFullWidth 3s ease-in-out forwards;
+  z-index: 1000;
+}
+
+@keyframes floatFullWidth {
+  0% {
+    bottom: -300px;
+    opacity: 0;
+    transform: translateX(-50%) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(-50%) rotate(2deg);
+  }
+  50% {
+    bottom: 30%;
+    transform: translateX(-50%) rotate(-2deg);
+  }
+  80% {
+    opacity: 1;
+    transform: translateX(-50%) rotate(1deg);
+  }
+  100% {
+    bottom: -300px;
+    opacity: 0;
+    transform: translateX(-50%) rotate(0deg);
+  }
+}
+
+.glow-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent),
+    linear-gradient(-135deg, rgba(255, 255, 255, 0.05), transparent);
+  background-size: 400% 400%;
+  animation: goldenShimmer 4s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes goldenShimmer {
+  0% {
+    background-position: 0% 50%;
+    opacity: 0.3;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.6;
+  }
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.3;
+  }
+}
+
 .coin-button {
   width: 45vw;
   aspect-ratio: 1 / 1;
@@ -90,14 +152,25 @@ button {
   display: block;
 }
 
+.coin-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px yellow;
+}
+
 .coin-button:active {
   animation: coinTap 0.2s ease;
 }
 
 @keyframes coinTap {
-  0% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(4px) scale(0.95); }
-  100% { transform: translateY(0) scale(1); }
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(4px) scale(0.95);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
 
 .coin-button::after {
@@ -118,9 +191,17 @@ button {
 }
 
 @keyframes shine {
-  0% { transform: rotate(25deg) translateX(-100%); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: rotate(25deg) translateX(100%); opacity: 0; }
+  0% {
+    transform: rotate(25deg) translateX(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(25deg) translateX(100%);
+    opacity: 0;
+  }
 }
 
 .info-bars {
@@ -129,7 +210,7 @@ button {
   left: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr); /* по умолчанию 2x2 */
   justify-items: center;
   gap: 6px;
   padding: 10px 0 16px;
@@ -137,7 +218,6 @@ button {
   z-index: 10;
   max-width: 100%;
 }
-
 .bar-wrapper {
   position: relative;
   width: 93%;
@@ -147,12 +227,10 @@ button {
   margin: 0 auto;
   transition: transform 0.15s ease, filter 0.15s ease;
 }
-
 .bar-wrapper:active {
   transform: scale(0.95);
   filter: brightness(1.1);
 }
-
 .bar-img {
   width: 100%;
   height: auto;
@@ -164,12 +242,12 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 14px;
+  font-size: 14px; /* увеличено для лучшей читаемости */
   font-weight: bold;
   color: #f8f2dc;
   text-align: center;
   padding: 0 8px;
-  line-height: 1.3;
+  line-height: 1.3; /* немного увеличено */
   word-break: break-word;
 }
 
@@ -180,20 +258,22 @@ button {
   width: 110px;
   height: auto;
   z-index: 10;
-  cursor: pointer;
-  transition: transform 0.15s ease;
 }
 
 .recharge-gold-button:active {
   transform: scale(0.96);
 }
-
+.info-page {
+  min-height: 100vh;  /* Убедитесь, что страница занимает всю высоту */
+  overflow-y: auto;   /* Вертикальная прокрутка */
+  padding-bottom: 50px;  /* Добавление отступа снизу для кнопки */
+}
 .boost-tap-button {
   position: absolute;
   top: -60px;
-  left: 10px;
+  left: 10px;  /* Кнопка размещается слева */
   width: 110px;
-  height: 110px;
+  height: auto;
   z-index: 10;
   cursor: pointer;
   transition: transform 0.15s ease;
@@ -203,100 +283,113 @@ button {
   transform: scale(0.96);
 }
 
-.boost-info {
-  position: absolute;
-  top: 115px;
-  left: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #ffe082;
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 14px;
-  z-index: 11;
-  white-space: nowrap;
+@keyframes glowPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 5px gold;
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px yellow;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 5px gold;
+  }
 }
 
-@media (max-width: 390px) {
-  .container {
-    padding: 12px;
-  }
+.recharge-gold-button.animate-glow {
+  animation: glowPulse 0.6s ease-in-out 3;
+}
 
-  .bar-wrapper {
-    max-width: 300px;
-  }
-
-  .bar-text {
-    font-size: 12px;
-  }
-
-  .coin-button {
-    width: 36vw;
-  }
-
-  .recharge-gold-button,
-  .boost-tap-button {
-    width: 80px;
-    height: 80px;
-  }
+.info-page {
+  padding: 24px;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  background: linear-gradient(to bottom, #111, #222);
+  min-height: 100vh;
 }
 
 @media (max-width: 768px) {
   .container {
     padding: 24px;
   }
+
+  .bar-wrapper {
+    width: 93%;
+    max-width: 360px;
+  }
+
+  .bar-text {
+    font-size: 13px;
+    padding: 0 8px;
+  }
+
+  .coin-button {
+    width: 40vw;
+  }
+
+  .floating-mavrodik {
+    width: 90vw;
+  }
+
   .info-bars {
     grid-template-columns: repeat(2, 1fr);
     max-width: 500px;
   }
-  .coin-button {
-    width: 40vw;
+}
+
+@media (min-width: 769px) {
+  .info-bars {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1000px;
+    margin: 0 auto;
   }
-}
-.main-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin: 20px auto 30px;
-  flex-wrap: wrap;
-}
 
-.main-buttons button,
-.main-buttons img,
-.main-buttons .rules-button-link {
-  width: 100px;
-  height: auto;
-  font-size: 14px;
-  padding: 12px 18px;
-  background: linear-gradient(to bottom, #ffe259, #ffa751);
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  color: #333;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: transform 0.2s ease;
-}
+  .bar-wrapper {
+    width: 100%;
+    max-width: 260px; /* увеличено */
+  }
 
-.main-buttons button:active,
-.main-buttons img:active,
-.main-buttons .rules-button-link:active {
-  transform: scale(0.95);
-}
+  .bar-text {
+    font-size: 15px;
+    padding: 0 10px;
+  }
+} 
+@media (max-width: 375px) {
+  .container {
+    padding: 16px;
+    font-size: 14px; /* может быть меньше */
+  }
 
-/* Адаптация для iPhone 10 и меньших экранов */
-@media (max-width: 400px) {
-  .main-buttons button,
-  .main-buttons img,
-  .main-buttons .rules-button-link {
-    width: 80px;
+  .bar-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 4px;
+  }
+
+  .bar-text {
     font-size: 12px;
-    padding: 10px 14px;
+    padding: 0 4px;
+  }
+
+  .coin-button {
+    width: 50vw; /* Например, для меньшего экрана */
+  }
+  
+  /* Если кнопки пополнения и буста фиксированные по размеру,
+     адаптируйте их размеры */
+  .recharge-gold-button,
+  .boost-tap-button {
+    width: 90px;
+    height: 90px;
+  }
+
+  /* Другой пример: уменьшение отступов */
+  .info-bars {
+    gap: 4px;
+    padding: 8px 0;
   }
 }
-
-
-
-
 
