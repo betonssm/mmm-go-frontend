@@ -254,21 +254,29 @@ button {
 }
 .main-buttons {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
-  margin-top: 12px;
+  margin: 16px auto;
+  max-width: 300px;
 }
 
 .main-buttons img {
-  width: 100px;
+  width: 90px;
   height: auto;
-  cursor: pointer;
   transition: transform 0.2s ease;
 }
 
 .main-buttons img:active {
   transform: scale(0.95);
+}
+
+/* Адаптация под узкие экраны (iPhone 10 и похожие) */
+@media (max-width: 390px) {
+  .main-buttons img {
+    width: 75px;
+  }
 }
 
 
