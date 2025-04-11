@@ -491,3 +491,38 @@ button {
     padding: 10px 20px;
   }
 }
+.levels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.level-block {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 16px;
+  border-radius: 12px;
+  color: #ffe082;
+  text-align: center;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+.level-block h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.level-block p {
+  margin: 0;
+  font-size: 16px;
+}
+
+@media (max-width: 390px) {
+  .level-block h3 {
+    font-size: 16px;
+  }
+  .level-block p {
+    font-size: 14px;
+  }
+}
