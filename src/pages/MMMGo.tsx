@@ -126,7 +126,6 @@ export default function MMMGo() {
         clearInterval(interval);
         setBoostActive(false);
         setBoostCooldown(true);
-        alert("Буст завершён. Повторно доступен через 1 час.");
         setTimeout(() => setBoostCooldown(false), 3600000);
       }, 20000);
     }
