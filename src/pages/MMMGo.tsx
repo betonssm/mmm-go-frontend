@@ -9,8 +9,6 @@ import rechargeGold from "../assets/gold-recharge-button.png";
 import boostTapImage from "../assets/boost-tap-button.png";
 import rulesButton from "../assets/rules-button.png";
 import moneyBg from "../assets/money-bg.png";
-
-// Импорт фонов уровней
 import bg1 from "../assets/bg-level-1.png";
 import bg2 from "../assets/bg-level-2.png";
 import bg3 from "../assets/bg-level-3.png";
@@ -19,7 +17,6 @@ import bg5 from "../assets/bg-level-5.png";
 import bg6 from "../assets/bg-level-6.png";
 import bg7 from "../assets/bg-level-7.png";
 import bg8 from "../assets/bg-level-8.png";
-
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
@@ -37,29 +34,16 @@ export default function MMMGo() {
   const [showBoostEndedNotice, setShowBoostEndedNotice] = useState(false);
 
   const levelTitles: string[] = [
-    "Новичок",
-    "Подающий надежды",
-    "Местный вкладчик",
-    "Серьёзный игрок",
-    "Опытный инвестор",
-    "Финансовый магнат",
-    "Серый кардинал",
-    "Тайный куратор",
-    "Легенда MMMGO"
+    "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
+    "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
   ];
 
   const levelBackgrounds: { [key: number]: string } = {
-    1: bg1,
-    2: bg2,
-    3: bg3,
-    4: bg4,
-    5: bg5,
-    6: bg6,
-    7: bg7,
-    8: bg8,
+    1: bg1, 2: bg2, 3: bg3, 4: bg4,
+    5: bg5, 6: bg6, 7: bg7, 8: bg8,
   };
 
-  const calculatedLevel = Math.min(Math.floor(balance / 100), 8); // тестовая логика
+  const calculatedLevel = Math.min(Math.floor(balance / 100), 8);
   const backgroundImage = calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
   useEffect(() => {
@@ -92,10 +76,8 @@ export default function MMMGo() {
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
-  
   useEffect(() => {
     let interval: NodeJS.Timeout;
-
     if (boostActive) {
       interval = setInterval(() => {
         setBalance(prev => {
@@ -127,13 +109,15 @@ export default function MMMGo() {
         clearInterval(interval);
         setBoostActive(false);
         setBoostCooldown(true);
+        setShowBoostEndedNotice(true);
+
+        setTimeout(() => setShowBoostEndedNotice(false), 5000);
         setTimeout(() => setBoostCooldown(false), 3600000);
       }, 20000);
     }
 
     return () => clearInterval(interval);
   }, [boostActive]);
-
 
   const handleClick = () => {
     const coinsToAdd = boostActive ? 3 : 1;
@@ -168,19 +152,8 @@ export default function MMMGo() {
       alert("Буст уже активен или на перезарядке!");
       return;
     }
-  
     alert("Просмотр рекламы...");
-  
     setBoostActive(true);
-  
-    setTimeout(() => {
-      setBoostActive(false);
-      setBoostCooldown(true);
-      setShowBoostEndedNotice(true);
-      setTimeout(() => setShowBoostEndedNotice(false), 5000);
-      setTimeout(() => setBoostCooldown(false), 3600000);
-    }, 20000);
-  
   };
 
   return (
@@ -250,10 +223,11 @@ export default function MMMGo() {
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
         <h1>Баланс:<br />{balance} мавродиков</h1>
+
         <button
-  className={`coin-button ${boostActive ? "boost-animation" : ""}`}
-  onClick={handleClick}
-></button>
+          className={`coin-button ${boostActive ? "boost-animation" : ""}`}
+          onClick={handleClick}
+        ></button>
 
         {showMavrodik && (
           <img
@@ -261,6 +235,12 @@ export default function MMMGo() {
             alt="Мавродик"
             className="floating-mavrodik"
           />
+        )}
+
+        {showBoostEndedNotice && (
+          <div className="toast-notice">
+            ✨ Буст завершён. Повторно доступен через 1 час.
+          </div>
         )}
 
         <Link to="/rules">
@@ -278,11 +258,6 @@ export default function MMMGo() {
           />
         </Link>
       </div>
-      {showBoostEndedNotice && (
-  <div className="toast-notice">
-    ✨ Буст завершён. Повторно доступен через 1 час.
-  </div>
-)}
     </>
   );
 }
