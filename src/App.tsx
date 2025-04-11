@@ -7,7 +7,7 @@ import RankPage from "./pages/RankPage";
 import InvestorsPage from "./pages/InvestorsPage";
 import RatingPage from "./pages/RatingPage";
 import StartScreen from "./pages/StartScreen";
-import RulesPage from "./pages/RulesPage"; // Импортируем RulesPage
+import RulesPage from "./pages/RulesPage";
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -17,13 +17,15 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<MMMGo />} />
-      <Route path="/level" element={<LevelPage />} />
-      <Route path="/rank" element={<RankPage />} />
-      <Route path="/investors" element={<InvestorsPage />} />
-      <Route path="/rating" element={<RatingPage />} />
-      <Route path="/rules" element={<RulesPage />} /> {/* Добавляем маршрут для страницы с правилами */}
-    </Routes>
+    <div style={{ height: "100vh", overflowY: "auto" }}>
+      <Routes>
+        <Route path="/" element={<MMMGo />} />
+        <Route path="/level" element={<LevelPage />} />
+        <Route path="/rank" element={<RankPage />} />
+        <Route path="/investors" element={<InvestorsPage />} />
+        <Route path="/rating" element={<RatingPage />} />
+        <Route path="/rules" element={<RulesPage />} />
+      </Routes>
+    </div>
   );
 }
