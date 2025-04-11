@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+mport React, { useState, useEffect } from "react";
 import "./MMMGo.css";
 import mavrodikFloating from "../assets/mavrodik_floating.png";
 import barLevel from "../assets/bar-level.png";
@@ -9,6 +9,17 @@ import rechargeGold from "../assets/gold-recharge-button.png";
 import boostTapImage from "../assets/boost-tap-button.png";
 import rulesButton from "../assets/rules-button.png";
 import moneyBg from "../assets/money-bg.png";
+
+// Импорт фонов уровней
+import bg1 from "../assets/bg-level-1.png";
+import bg2 from "../assets/bg-level-2.png";
+import bg3 from "../assets/bg-level-3.png";
+import bg4 from "../assets/bg-level-4.png";
+import bg5 from "../assets/bg-level-5.png";
+import bg6 from "../assets/bg-level-6.png";
+import bg7 from "../assets/bg-level-7.png";
+import bg8 from "../assets/bg-level-8.png";
+
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
@@ -37,17 +48,17 @@ export default function MMMGo() {
   ];
 
   const levelBackgrounds: { [key: number]: string } = {
-    1: require("../assets/bg-level-1.png"),
-    2: require("../assets/bg-level-2.png"),
-    3: require("../assets/bg-level-3.png"),
-    4: require("../assets/bg-level-4.png"),
-    5: require("../assets/bg-level-5.png"),
-    6: require("../assets/bg-level-6.png"),
-    7: require("../assets/bg-level-7.png"),
-    8: require("../assets/bg-level-8.png"),
+    1: bg1,
+    2: bg2,
+    3: bg3,
+    4: bg4,
+    5: bg5,
+    6: bg6,
+    7: bg7,
+    8: bg8,
   };
 
-  const calculatedLevel = Math.min(Math.floor(balance / 100), 8); // тестовая формула
+  const calculatedLevel = Math.min(Math.floor(balance / 100), 8); // тестовая логика
   const backgroundImage = calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
   useEffect(() => {
@@ -180,7 +191,7 @@ export default function MMMGo() {
       <div
         className="container"
         style={{
-          backgroundImage: backgroundImage,
+          backgroundImage,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
