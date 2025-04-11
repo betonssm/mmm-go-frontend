@@ -380,6 +380,12 @@ button {
   padding: 24px 16px 60px;
   box-sizing: border-box;
 }
+.container {
+  transition: background-image 0.8s ease-in-out, background-color 0.8s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 @media (max-width: 768px) {
   .container {

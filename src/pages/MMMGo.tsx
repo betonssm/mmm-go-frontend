@@ -6,9 +6,9 @@ import barRank from "../assets/bar-rank.png";
 import barInvestors from "../assets/bar-investors.png";
 import barRating from "../assets/bar-rating.png";
 import rechargeGold from "../assets/gold-recharge-button.png";
-import boostTapImage from "../assets/boost-tap-button.png";  // Изображение кнопки буста
+import boostTapImage from "../assets/boost-tap-button.png";
 import { Link } from "react-router-dom";
-import rulesButton from "../assets/rules-button.png";  // Изображение кнопки "Правила"
+import rulesButton from "../assets/rules-button.png";
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
@@ -19,10 +19,23 @@ export default function MMMGo() {
   const [investors, setInvestors] = useState(0);
   const [nextLevel, setNextLevel] = useState(1000000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
-
-  // Новые состояния для буста
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
+
+  // Уровневые фоны
+  const levelBackgrounds: { [key: number]: string } = {
+    1: "/assets/bg-level-1.png",
+    2: "/assets/bg-level-2.png",
+    3: "/assets/bg-level-3.png",
+    4: "/assets/bg-level-4.png",
+    5: "/assets/bg-level-5.png",
+    6: "/assets/bg-level-6.png",
+    7: "/assets/bg-level-7.png",
+    8: "/assets/bg-level-8.png",
+    9: "/assets/bg-level-9.png",
+  };
+
+  const backgroundImage = levelBackgrounds[level] || levelBackgrounds[1];
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -32,7 +45,6 @@ export default function MMMGo() {
       if (user) {
         setPlayerName(user.first_name);
         setTelegramId(user.id);
-        // Загрузка баланса с backend
         fetch(`https://mmm-go-backend.onrender.com/balance/${user.id}`)
           .then((res) => res.json())
           .then((data) => {
@@ -46,31 +58,27 @@ export default function MMMGo() {
   }, []);
 
   useEffect(() => {
-    const newLevel = Math.floor(balance / 1000000) + 1;
+    const newLevel = Math.floor(balance / 50000) + 1;
     setLevel(newLevel);
-    setNextLevel(newLevel * 1000000);
+    setNextLevel((newLevel) * 1000000); // этот nextLevel не критичен
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
-  // Обработчик нажатия кнопки "Тап" (игровой кнопки монеты)
   const handleClick = () => {
-    // Если буст активен, прибавляем 3 монеты за тап, иначе 1 монету
     const coinsToAdd = boostActive ? 3 : 1;
     const newBalance = balance + coinsToAdd;
     setBalance(newBalance);
 
-    // Появление Мавродика через каждые 100000 монет
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
-    // Эффект нажатия (для автонастройки высоты info-bar)
+
     if (newBalance % 100 === 0) {
       setHighlightRecharge(true);
       setTimeout(() => setHighlightRecharge(false), 2000);
     }
 
-    // Сохраняем баланс на backend
     if (telegramId) {
       fetch("https://mmm-go-backend.onrender.com/balance", {
         method: "POST",
@@ -80,43 +88,35 @@ export default function MMMGo() {
     }
   };
 
-  // Обработчик для кнопки пополнения
   const handleRecharge = () => {
     alert("Пополнение баланса скоро будет доступно! 💰");
   };
 
-  // Обработчик для кнопки буста
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
       alert("Буст уже активен или на перезарядке!");
       return;
     }
-    // Активируем буст: за один тап начисляется 3 монеты
     setBoostActive(true);
     alert("Буст тапов активирован на 20 секунд!");
-    // Через 20 секунд выключаем буст и запускаем кулдаун
     setTimeout(() => {
       setBoostActive(false);
       setBoostCooldown(true);
       alert("Буст завершён. Повторно доступен через 1 час.");
-      // Через 1 час снимаем кулдаун
-      setTimeout(() => {
-        setBoostCooldown(false);
-      }, 3600000); // 1 час в миллисекундах
-    }, 20000); // 20 секунд в миллисекундах
+      setTimeout(() => setBoostCooldown(false), 3600000);
+    }, 20000);
   };
 
   return (
     <>
       <div className="info-bars">
-        <Link to="/level" onClick={() => navigator.vibrate?.(50)}>
+        <Link to="/level">
           <div className="bar-wrapper">
             <img src={barLevel} className="bar-img" alt="До уровня" />
             <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
           </div>
         </Link>
 
-        {/* Кнопка буста тапов - размещена слева */}
         <img
           src={boostTapImage}
           className="boost-tap-button"
@@ -124,7 +124,6 @@ export default function MMMGo() {
           onClick={handleBoostTaps}
         />
 
-        {/* Кнопка пополнения — остаётся справа */}
         <img
           src={rechargeGold}
           className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
@@ -132,35 +131,39 @@ export default function MMMGo() {
           onClick={handleRecharge}
         />
 
-        <Link to="/rank" onClick={() => navigator.vibrate?.(50)}>
+        <Link to="/rank">
           <div className="bar-wrapper">
-            <img src={barRank} className="bar-img" alt="Инвесторский ранг" />
+            <img src={barRank} className="bar-img" alt="Ранг" />
             <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
           </div>
         </Link>
 
-        <Link to="/investors" onClick={() => navigator.vibrate?.(50)}>
+        <Link to="/investors">
           <div className="bar-wrapper">
             <img src={barInvestors} className="bar-img" alt="Вкладчики" />
             <div className="bar-text">🧍 Вкладчики: {investors}</div>
           </div>
         </Link>
 
-        <Link to="/rating" onClick={() => navigator.vibrate?.(50)}>
+        <Link to="/rating">
           <div className="bar-wrapper">
-            <img src={barRating} className="bar-img" alt="SR рейтинг" />
-            <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
+            <img src={barRating} className="bar-img" alt="Рейтинг" />
+            <div className="bar-text">📊 SR рейтинг: #{telegramId || 0}</div>
           </div>
         </Link>
       </div>
 
       <div className="glow-overlay"></div>
 
-      <div className="container">
+      <div
+        className="container"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
         <h1>Баланс:<br />{balance} мавродиков</h1>
         <button className="coin-button" onClick={handleClick}></button>
+
         {showMavrodik && (
           <img
             src={mavrodikFloating}
@@ -169,14 +172,13 @@ export default function MMMGo() {
           />
         )}
 
-        {/* Кнопка "Правила" */}
         <Link to="/rules">
           <img
             src={rulesButton}
             alt="Правила"
             style={{
               width: "auto",
-              height: "50px",  // можно изменить размер по необходимости
+              height: "50px",
               marginTop: "20px",
               display: "block",
               marginLeft: "auto",
