@@ -177,7 +177,7 @@ export default function MMMGo() {
       setBoostActive(false);
       setBoostCooldown(true);
       setShowBoostEndedNotice(true);
-      setTimeout(() => setShowBoostEndedNotice(false), 3000);
+      setTimeout(() => setShowBoostEndedNotice(false), 5000);
       setTimeout(() => setBoostCooldown(false), 3600000);
     }, 20000);
   
