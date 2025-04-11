@@ -53,6 +53,7 @@ export default function MMMGo() {
     const coinsToAdd = boostActive ? 3 : 1;
     const newBalance = balance + coinsToAdd;
     setBalance(newBalance);
+
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
@@ -61,11 +62,12 @@ export default function MMMGo() {
       setHighlightRecharge(true);
       setTimeout(() => setHighlightRecharge(false), 2000);
     }
+
     if (telegramId) {
       fetch("https://mmm-go-backend.onrender.com/balance", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ telegramId, balance: newBalance }),
+        body: JSON.stringify({ telegramId, balance: newBalance })
       }).catch((err) => console.error("Ошибка сохранения:", err));
     }
   };
@@ -94,27 +96,16 @@ export default function MMMGo() {
       <h2>Привет, {playerName || "вкладчик"}!</h2>
       <p className="player-id">ID: {telegramId || "неизвестен"}</p>
       <h1>Баланс:<br />{balance} мавродиков</h1>
-      <div className="main-buttons">
-  <img src={boostTapImage} alt="Буст" onClick={handleBoostTaps} />
-  <img src={rechargeGold} alt="Пополнить" onClick={handleRecharge} />
-  <Link to="/rules">
-    <img src={rulesButton} alt="Правила" />
-  </Link>
-</div>
 
-      <div className="boost-recharge-buttons">
-        <img
-          src={boostTapImage}
-          className="boost-tap-button"
-          alt="Буст"
-          onClick={handleBoostTaps}
-        />
+      <div className="main-buttons">
+        <button className="boost-tap-button" onClick={handleBoostTaps}>Буст</button>
         <img
           src={rechargeGold}
           className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
           alt="Пополнить"
           onClick={handleRecharge}
         />
+        <Link to="/rules" className="rules-button-link">Правила</Link>
       </div>
 
       <button className="coin-button" onClick={handleClick}></button>
@@ -127,14 +118,6 @@ export default function MMMGo() {
         />
       )}
 
-      <Link to="/rules">
-        <img
-          src={rulesButton}
-          alt="Правила"
-          className="rules-button"
-        />
-      </Link>
-
       <div className="info-bars">
         <Link to="/level">
           <div className="bar-wrapper">
@@ -142,21 +125,18 @@ export default function MMMGo() {
             <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
           </div>
         </Link>
-
         <Link to="/rank">
           <div className="bar-wrapper">
             <img src={barRank} className="bar-img" alt="Ранг" />
             <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
           </div>
         </Link>
-
         <Link to="/investors">
           <div className="bar-wrapper">
             <img src={barInvestors} className="bar-img" alt="Вкладчики" />
             <div className="bar-text">🧍 Вкладчики: {investors}</div>
           </div>
         </Link>
-
         <Link to="/rating">
           <div className="bar-wrapper">
             <img src={barRating} className="bar-img" alt="Рейтинг" />
