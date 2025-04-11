@@ -260,37 +260,39 @@ button {
   flex-wrap: wrap;
 }
 
-.main-buttons img {
+.main-buttons button,
+.main-buttons img,
+.main-buttons .rules-button-link {
   width: 100px;
   height: auto;
+  font-size: 14px;
+  padding: 12px 18px;
+  background: linear-gradient(to bottom, #ffe259, #ffa751);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  color: #333;
+  font-weight: bold;
   cursor: pointer;
+  text-align: center;
+  text-decoration: none;
   transition: transform 0.2s ease;
 }
 
-.main-buttons img:active {
-  transform: scale(0.96);
+.main-buttons button:active,
+.main-buttons img:active,
+.main-buttons .rules-button-link:active {
+  transform: scale(0.95);
 }
 
-/* Кастомно при необходимости */
-.boost-tap-button {
-  width: 100px;
-  height: auto;
-}
-
-.recharge-gold-button {
-  width: 100px;
-  height: auto;
-}
-
-.rules-button-link {
-  width: 100px;
-  height: auto;
-}
-
-/* Адаптация для малых экранов */
-@media (max-width: 375px) {
-  .main-buttons img {
-    width: 85px;
+/* Адаптация для iPhone 10 и меньших экранов */
+@media (max-width: 400px) {
+  .main-buttons button,
+  .main-buttons img,
+  .main-buttons .rules-button-link {
+    width: 80px;
+    font-size: 12px;
+    padding: 10px 14px;
   }
 }
 
