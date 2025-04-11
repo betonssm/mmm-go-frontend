@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./MMMGo.css";
 import mavrodikFloating from "../assets/mavrodik_floating.png";
 import barLevel from "../assets/bar-level.png";
@@ -9,16 +9,6 @@ import rechargeGold from "../assets/gold-recharge-button.png";
 import boostTapImage from "../assets/boost-tap-button.png";
 import rulesButton from "../assets/rules-button.png";
 import moneyBg from "../assets/money-bg.png";
-
-import bg1 from "../assets/bg-level-1.png";
-import bg2 from "../assets/bg-level-2.png";
-import bg3 from "../assets/bg-level-3.png";
-import bg4 from "../assets/bg-level-4.png";
-import bg5 from "../assets/bg-level-5.png";
-import bg6 from "../assets/bg-level-6.png";
-import bg7 from "../assets/bg-level-7.png";
-import bg8 from "../assets/bg-level-8.png";
-
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
@@ -33,36 +23,29 @@ export default function MMMGo() {
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
   const [showLevelNotice, setShowLevelNotice] = useState(false);
-  const autoTapIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [showAd, setShowAd] = useState(false);
 
   const levelTitles: string[] = [
-    "Новичок",
-    "Подающий надежды",
-    "Местный вкладчик",
-    "Серьёзный игрок",
-    "Опытный инвестор",
-    "Финансовый магнат",
-    "Серый кардинал",
-    "Тайный куратор",
-    "Легенда MMMGO",
+    "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
+    "Опытный инвестор", "Финансовый магнат", "Серый кардинал",
+    "Тайный куратор", "Легенда MMMGO"
   ];
 
   const levelBackgrounds: { [key: number]: string } = {
-    1: bg1,
-    2: bg2,
-    3: bg3,
-    4: bg4,
-    5: bg5,
-    6: bg6,
-    7: bg7,
-    8: bg8,
+    1: require("../assets/bg-level-1.png"),
+    2: require("../assets/bg-level-2.png"),
+    3: require("../assets/bg-level-3.png"),
+    4: require("../assets/bg-level-4.png"),
+    5: require("../assets/bg-level-5.png"),
+    6: require("../assets/bg-level-6.png"),
+    7: require("../assets/bg-level-7.png"),
+    8: require("../assets/bg-level-8.png"),
   };
 
   const calculatedLevel = Math.min(Math.floor(balance / 100), 8);
-  const backgroundImage =
-    calculatedLevel === 0
-      ? `url(${moneyBg})`
-      : `url(${levelBackgrounds[calculatedLevel]})`;
+  const backgroundImage = calculatedLevel === 0
+    ? `url(${moneyBg})`
+    : `url(${levelBackgrounds[calculatedLevel]})`;
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -73,13 +56,11 @@ export default function MMMGo() {
         setPlayerName(user.first_name);
         setTelegramId(user.id);
         fetch(`https://mmm-go-backend.onrender.com/balance/${user.id}`)
-          .then((res) => res.json())
-          .then((data) => {
-            if (typeof data.balance === "number") {
-              setBalance(data.balance);
-            }
+          .then(res => res.json())
+          .then(data => {
+            if (typeof data.balance === "number") setBalance(data.balance);
           })
-          .catch((err) => console.error("Ошибка загрузки баланса:", err));
+          .catch(err => console.error("Ошибка загрузки баланса:", err));
       }
     }
   }, []);
@@ -94,8 +75,9 @@ export default function MMMGo() {
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
-  const incrementBalance = (amount: number) => {
-    const newBalance = balance + amount;
+  const handleClick = () => {
+    const coinsToAdd = boostActive ? 3 : 1;
+    const newBalance = balance + coinsToAdd;
     setBalance(newBalance);
 
     if (newBalance % 100000 === 0) {
@@ -117,13 +99,21 @@ export default function MMMGo() {
     }
   };
 
-  const handleClick = () => {
-    const coinsToAdd = boostActive ? 3 : 1;
-    incrementBalance(coinsToAdd);
-  };
-
-  const handleRecharge = () => {
-    alert("Пополнение баланса скоро будет доступно! 💰");
+  const startAutoBoost = () => {
+    let taps = 0;
+    const interval = setInterval(() => {
+      setBalance(prev => {
+        const updated = prev + 3;
+        taps++;
+        return updated;
+      });
+      if (taps >= 20 * (1000 / 300)) {
+        clearInterval(interval);
+        setBoostActive(false);
+        setBoostCooldown(true);
+        setTimeout(() => setBoostCooldown(false), 3600000);
+      }
+    }, 300);
   };
 
   const handleBoostTaps = () => {
@@ -131,26 +121,13 @@ export default function MMMGo() {
       alert("Буст уже активен или на перезарядке!");
       return;
     }
+    setShowAd(true); // Показываем "рекламу"
+  };
 
-    alert("📺 Запуск рекламы..."); // Имитация рекламы
+  const closeAdAndStartBoost = () => {
+    setShowAd(false);
     setBoostActive(true);
-
-    // Автотап каждую 0.5 секунды по 3 мавродика
-    autoTapIntervalRef.current = setInterval(() => {
-      incrementBalance(3);
-    }, 500);
-
-    setTimeout(() => {
-      setBoostActive(false);
-      if (autoTapIntervalRef.current) {
-        clearInterval(autoTapIntervalRef.current);
-      }
-      setBoostCooldown(true);
-      alert("Буст завершён. Повторно доступен через 1 час.");
-      setTimeout(() => {
-        setBoostCooldown(false);
-      }, 3600000);
-    }, 20000);
+    startAutoBoost();
   };
 
   return (
@@ -161,13 +138,20 @@ export default function MMMGo() {
         </div>
       )}
 
+      {showAd && (
+        <div className="ad-overlay">
+          <div className="ad-content">
+            <p>📺 Реклама... (тестовая заглушка)</p>
+            <button onClick={closeAdAndStartBoost}>Закрыть рекламу</button>
+          </div>
+        </div>
+      )}
+
       <div className="info-bars">
         <Link to="/level">
           <div className="bar-wrapper">
             <img src={barLevel} className="bar-img" alt="До уровня" />
-            <div className="bar-text">
-              🔁 До уровня: {nextLevel - balance} мавродиков
-            </div>
+            <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
           </div>
         </Link>
 
@@ -180,11 +164,9 @@ export default function MMMGo() {
 
         <img
           src={rechargeGold}
-          className={`recharge-gold-button ${
-            highlightRecharge ? "animate-glow" : ""
-          }`}
+          className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
           alt="Пополнить баланс"
-          onClick={handleRecharge}
+          onClick={() => alert("Пополнение скоро будет доступно!")}
         />
 
         <Link to="/rank">
@@ -204,9 +186,7 @@ export default function MMMGo() {
         <Link to="/rating">
           <div className="bar-wrapper">
             <img src={barRating} className="bar-img" alt="SR рейтинг" />
-            <div className="bar-text">
-              📊 SR рейтинг игрока: #{telegramId || 0}
-            </div>
+            <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
           </div>
         </Link>
       </div>
@@ -225,11 +205,7 @@ export default function MMMGo() {
       >
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
-        <h1>
-          Баланс:
-          <br />
-          {balance} мавродиков
-        </h1>
+        <h1>Баланс:<br />{balance} мавродиков</h1>
         <button className="coin-button" onClick={handleClick}></button>
 
         {showMavrodik && (
@@ -258,5 +234,6 @@ export default function MMMGo() {
     </>
   );
 }
+
 
 
