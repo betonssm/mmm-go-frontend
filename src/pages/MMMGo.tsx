@@ -9,17 +9,6 @@ import rechargeGold from "../assets/gold-recharge-button.png";
 import boostTapImage from "../assets/boost-tap-button.png";
 import rulesButton from "../assets/rules-button.png";
 import moneyBg from "../assets/money-bg.png";
-
-// Импорт фонов уровней
-import bg1 from "../assets/bg-level-1.png";
-import bg2 from "../assets/bg-level-2.png";
-import bg3 from "../assets/bg-level-3.png";
-import bg4 from "../assets/bg-level-4.png";
-import bg5 from "../assets/bg-level-5.png";
-import bg6 from "../assets/bg-level-6.png";
-import bg7 from "../assets/bg-level-7.png";
-import bg8 from "../assets/bg-level-8.png";
-
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
@@ -34,6 +23,8 @@ export default function MMMGo() {
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
   const [showLevelNotice, setShowLevelNotice] = useState(false);
+  const [isAutoBoostActive, setIsAutoBoostActive] = useState(false);
+  const [autoBoostTimer, setAutoBoostTimer] = useState(0);
 
   const levelTitles: string[] = [
     "Новичок",
@@ -48,17 +39,17 @@ export default function MMMGo() {
   ];
 
   const levelBackgrounds: { [key: number]: string } = {
-    1: bg1,
-    2: bg2,
-    3: bg3,
-    4: bg4,
-    5: bg5,
-    6: bg6,
-    7: bg7,
-    8: bg8,
+    1: require("../assets/bg-level-1.png"),
+    2: require("../assets/bg-level-2.png"),
+    3: require("../assets/bg-level-3.png"),
+    4: require("../assets/bg-level-4.png"),
+    5: require("../assets/bg-level-5.png"),
+    6: require("../assets/bg-level-6.png"),
+    7: require("../assets/bg-level-7.png"),
+    8: require("../assets/bg-level-8.png"),
   };
 
-  const calculatedLevel = Math.min(Math.floor(balance / 100), 8); // тестовая логика
+  const calculatedLevel = Math.min(Math.floor(balance / 100), 8);
   const backgroundImage = calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
   useEffect(() => {
@@ -91,6 +82,22 @@ export default function MMMGo() {
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isAutoBoostActive && autoBoostTimer > 0) {
+      interval = setInterval(() => {
+        setBalance(prev => prev + 3);
+        setAutoBoostTimer(prev => prev - 1);
+      }, 1000);
+    }
+
+    if (autoBoostTimer === 0 && isAutoBoostActive) {
+      setIsAutoBoostActive(false);
+    }
+
+    return () => clearInterval(interval);
+  }, [isAutoBoostActive, autoBoostTimer]);
+
   const handleClick = () => {
     const coinsToAdd = boostActive ? 3 : 1;
     const newBalance = balance + coinsToAdd;
@@ -119,19 +126,10 @@ export default function MMMGo() {
     alert("Пополнение баланса скоро будет доступно! 💰");
   };
 
-  const handleBoostTaps = () => {
-    if (boostActive || boostCooldown) {
-      alert("Буст уже активен или на перезарядке!");
-      return;
-    }
-    setBoostActive(true);
-    alert("Буст тапов активирован на 20 секунд!");
-    setTimeout(() => {
-      setBoostActive(false);
-      setBoostCooldown(true);
-      alert("Буст завершён. Повторно доступен через 1 час.");
-      setTimeout(() => setBoostCooldown(false), 3600000);
-    }, 20000);
+  const handleAutoBoost = () => {
+    if (isAutoBoostActive) return alert("АвтоБуст уже активен!");
+    setIsAutoBoostActive(true);
+    setAutoBoostTimer(20);
   };
 
   return (
@@ -139,6 +137,12 @@ export default function MMMGo() {
       {showLevelNotice && (
         <div className="level-up-notice">
           🎉 Новый уровень: {levelTitles[calculatedLevel]}!
+        </div>
+      )}
+
+      {isAutoBoostActive && (
+        <div className="auto-boost-ui">
+          🚀 АвтоБуст: <strong>{autoBoostTimer}s</strong> ×3 монеты в секунду!
         </div>
       )}
 
@@ -154,7 +158,7 @@ export default function MMMGo() {
           src={boostTapImage}
           className="boost-tap-button"
           alt="Буст Тапов"
-          onClick={handleBoostTaps}
+          onClick={handleAutoBoost}
         />
 
         <img
@@ -191,7 +195,7 @@ export default function MMMGo() {
       <div
         className="container"
         style={{
-          backgroundImage,
+          backgroundImage: backgroundImage,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
