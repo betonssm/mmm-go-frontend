@@ -523,6 +523,39 @@ button {
   margin: 0;
   font-size: 16px;
 }
+.level-up-notice {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, #ffd700, #ffa500);
+  color: #000;
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  z-index: 999;
+  box-shadow: 0 0 10px gold;
+  animation: fadeUp 3s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 30px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -30px);
+  }
+}
 
 @media (max-width: 390px) {
   .level-block h3 {

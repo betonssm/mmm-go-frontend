@@ -18,25 +18,37 @@ export default function MMMGo() {
   const [telegramId, setTelegramId] = useState<number | null>(null);
   const [level, setLevel] = useState(0);
   const [investors, setInvestors] = useState(0);
-  const [nextLevel, setNextLevel] = useState(100);
+  const [nextLevel, setNextLevel] = useState(50000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
+  const [showLevelNotice, setShowLevelNotice] = useState(false);
+
+  const levelTitles: string[] = [
+    "Новичок",
+    "Подающий надежды",
+    "Местный вкладчик",
+    "Серьёзный игрок",
+    "Опытный инвестор",
+    "Финансовый магнат",
+    "Серый кардинал",
+    "Тайный куратор",
+    "Легенда MMMGO"
+  ];
 
   const levelBackgrounds: { [key: number]: string } = {
-    1: "/assets/bg-level-1.png",
-    2: "/assets/bg-level-2.png",
-    3: "/assets/bg-level-3.png",
-    4: "/assets/bg-level-4.png",
-    5: "/assets/bg-level-5.png",
-    6: "/assets/bg-level-6.png",
-    7: "/assets/bg-level-7.png",
-    8: "/assets/bg-level-8.png",
+    1: require("../assets/bg-level-1.png"),
+    2: require("../assets/bg-level-2.png"),
+    3: require("../assets/bg-level-3.png"),
+    4: require("../assets/bg-level-4.png"),
+    5: require("../assets/bg-level-5.png"),
+    6: require("../assets/bg-level-6.png"),
+    7: require("../assets/bg-level-7.png"),
+    8: require("../assets/bg-level-8.png"),
   };
 
-  const calculatedLevel = Math.min(Math.floor(balance / 100), 8);
-  const backgroundImage =
-    calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
+  const calculatedLevel = Math.min(Math.floor(balance / 100), 8); // тестовая формула
+  const backgroundImage = calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -59,9 +71,12 @@ export default function MMMGo() {
   }, []);
 
   useEffect(() => {
-    const lvl = Math.min(Math.floor(balance / 100), 8);
-    setLevel(lvl);
-    setNextLevel((lvl + 1) * 100);
+    if (calculatedLevel !== level) {
+      setLevel(calculatedLevel);
+      setShowLevelNotice(true);
+      setTimeout(() => setShowLevelNotice(false), 3000);
+    }
+    setNextLevel((calculatedLevel + 1) * 100);
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
@@ -110,13 +125,17 @@ export default function MMMGo() {
 
   return (
     <>
+      {showLevelNotice && (
+        <div className="level-up-notice">
+          🎉 Новый уровень: {levelTitles[calculatedLevel]}!
+        </div>
+      )}
+
       <div className="info-bars">
         <Link to="/level">
           <div className="bar-wrapper">
             <img src={barLevel} className="bar-img" alt="До уровня" />
-            <div className="bar-text">
-              🔁 До уровня: {nextLevel - balance} мавродиков
-            </div>
+            <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
           </div>
         </Link>
 
@@ -151,9 +170,7 @@ export default function MMMGo() {
         <Link to="/rating">
           <div className="bar-wrapper">
             <img src={barRating} className="bar-img" alt="SR рейтинг" />
-            <div className="bar-text">
-              📊 SR рейтинг игрока: #{telegramId || 0}
-            </div>
+            <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
           </div>
         </Link>
       </div>
@@ -173,7 +190,6 @@ export default function MMMGo() {
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
         <h1>Баланс:<br />{balance} мавродиков</h1>
-        <p className="level-text">🎖 Уровень: {level}</p>
         <button className="coin-button" onClick={handleClick}></button>
 
         {showMavrodik && (
