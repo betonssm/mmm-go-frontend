@@ -249,7 +249,10 @@ export default function MMMGo() {
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
         <h1>Баланс:<br />{balance} мавродиков</h1>
-        <button className="coin-button" onClick={handleClick}></button>
+        <button
+  className={`coin-button ${boostActive ? "boost-animation" : ""}`}
+  onClick={handleClick}
+></button>
 
         {showMavrodik && (
           <img
