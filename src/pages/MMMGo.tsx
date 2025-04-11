@@ -35,7 +35,7 @@ export default function MMMGo() {
     9: "/assets/bg-level-9.png",
   };
 
-  const backgroundImage = levelBackgrounds[newLevel] || levelBackgrounds[1];
+  const backgroundImage = levelBackgrounds[level] || levelBackgrounds[1];
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
