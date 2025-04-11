@@ -23,10 +23,9 @@ export default function MMMGo() {
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
   const [showLevelNotice, setShowLevelNotice] = useState(false);
-  const [isAutoBoostActive, setIsAutoBoostActive] = useState(false);
-  const [autoBoostTimer, setAutoBoostTimer] = useState(0);
+  const [boostSecondsLeft, setBoostSecondsLeft] = useState(0);
 
-  const levelTitles: string[] = [
+  const levelTitles = [
     "Новичок",
     "Подающий надежды",
     "Местный вкладчик",
@@ -35,7 +34,7 @@ export default function MMMGo() {
     "Финансовый магнат",
     "Серый кардинал",
     "Тайный куратор",
-    "Легенда MMMGO"
+    "Легенда MMMGO",
   ];
 
   const levelBackgrounds: { [key: number]: string } = {
@@ -49,9 +48,11 @@ export default function MMMGo() {
     8: require("../assets/bg-level-8.png"),
   };
 
-  const calculatedLevel = Math.min(Math.floor(balance / 100), 8);
-  const backgroundImage = calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
+  const calculatedLevel = Math.min(Math.floor(balance / 100), 8); // тестовая формула
+  const backgroundImage =
+    calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
+  // Загрузка данных
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     if (tg) {
@@ -72,6 +73,7 @@ export default function MMMGo() {
     }
   }, []);
 
+  // Уровень, вкладчики, nextLevel
   useEffect(() => {
     if (calculatedLevel !== level) {
       setLevel(calculatedLevel);
@@ -82,25 +84,9 @@ export default function MMMGo() {
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isAutoBoostActive && autoBoostTimer > 0) {
-      interval = setInterval(() => {
-        setBalance(prev => prev + 3);
-        setAutoBoostTimer(prev => prev - 1);
-      }, 1000);
-    }
-
-    if (autoBoostTimer === 0 && isAutoBoostActive) {
-      setIsAutoBoostActive(false);
-    }
-
-    return () => clearInterval(interval);
-  }, [isAutoBoostActive, autoBoostTimer]);
-
-  const handleClick = () => {
-    const coinsToAdd = boostActive ? 3 : 1;
-    const newBalance = balance + coinsToAdd;
+  // Обработка нажатий
+  const addCoins = (amount: number) => {
+    const newBalance = balance + amount;
     setBalance(newBalance);
 
     if (newBalance % 100000 === 0) {
@@ -122,14 +108,36 @@ export default function MMMGo() {
     }
   };
 
+  const handleClick = () => {
+    addCoins(boostActive ? 3 : 1);
+  };
+
   const handleRecharge = () => {
     alert("Пополнение баланса скоро будет доступно! 💰");
   };
 
-  const handleAutoBoost = () => {
-    if (isAutoBoostActive) return alert("АвтоБуст уже активен!");
-    setIsAutoBoostActive(true);
-    setAutoBoostTimer(20);
+  const handleBoostTaps = () => {
+    if (boostActive || boostCooldown) {
+      alert("Буст уже активен или на перезарядке!");
+      return;
+    }
+
+    setBoostActive(true);
+    setBoostSecondsLeft(20);
+
+    const interval = setInterval(() => {
+      setBoostSecondsLeft((sec) => {
+        if (sec <= 1) {
+          clearInterval(interval);
+          setBoostActive(false);
+          setBoostCooldown(true);
+          setTimeout(() => setBoostCooldown(false), 3600000);
+          return 0;
+        }
+        addCoins(3); // авто-тап
+        return sec - 1;
+      });
+    }, 1000);
   };
 
   return (
@@ -139,10 +147,9 @@ export default function MMMGo() {
           🎉 Новый уровень: {levelTitles[calculatedLevel]}!
         </div>
       )}
-
-      {isAutoBoostActive && (
-        <div className="auto-boost-ui">
-          🚀 АвтоБуст: <strong>{autoBoostTimer}s</strong> ×3 монеты в секунду!
+      {boostActive && (
+        <div className="boost-timer">
+          🔥 Буст активен: {boostSecondsLeft} сек.
         </div>
       )}
 
@@ -158,7 +165,7 @@ export default function MMMGo() {
           src={boostTapImage}
           className="boost-tap-button"
           alt="Буст Тапов"
-          onClick={handleAutoBoost}
+          onClick={handleBoostTaps}
         />
 
         <img
@@ -195,7 +202,7 @@ export default function MMMGo() {
       <div
         className="container"
         style={{
-          backgroundImage: backgroundImage,
+          backgroundImage,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
