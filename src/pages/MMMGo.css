@@ -357,39 +357,53 @@ button {
     padding: 0 10px;
   }
 } 
-@media (max-width: 375px) {
+@media screen and (max-width: 390px) {
   .container {
-    padding: 16px;
-    font-size: 14px; /* может быть меньше */
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 16px;
   }
 
   .bar-wrapper {
-    width: 100%;
-    max-width: 100%;
-    margin: 0 4px;
+    max-width: 90%;
   }
 
   .bar-text {
-    font-size: 12px;
-    padding: 0 4px;
+    font-size: 11px;
+    padding: 0 2px;
   }
 
   .coin-button {
-    width: 50vw; /* Например, для меньшего экрана */
-  }
-  
-  /* Если кнопки пополнения и буста фиксированные по размеру,
-     адаптируйте их размеры */
-  .recharge-gold-button,
-  .boost-tap-button {
-    width: 90px;
-    height: 90px;
+    width: 38vw;
   }
 
-  /* Другой пример: уменьшение отступов */
+  .boost-tap-button,
+  .recharge-gold-button {
+    width: 80px;
+    height: 80px;
+    top: -50px;
+  }
+
+  .rules-button-link {
+    font-size: 12px;
+    padding: 10px 16px;
+    margin-top: 10px;
+  }
+
+  .floating-mavrodik {
+    width: 80vw;
+  }
+
   .info-bars {
     gap: 4px;
-    padding: 8px 0;
+    padding: 6px 0;
   }
 }
 
