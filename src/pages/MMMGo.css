@@ -617,3 +617,22 @@ button {
     transform: rotate(0deg);
   }
 }
+/* Эффект переливания при активном бусте */
+.coin-button.boost-animation::after {
+  animation: boostShine 2s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes boostShine {
+  0% {
+    transform: rotate(25deg) translateX(-150%);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(25deg) translateX(150%);
+    opacity: 0.3;
+  }
+}
