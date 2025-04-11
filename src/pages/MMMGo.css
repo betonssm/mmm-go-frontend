@@ -357,4 +357,39 @@ button {
     padding: 0 10px;
   }
 } 
+@media (max-width: 375px) {
+  .container {
+    padding: 16px;
+    font-size: 14px; /* может быть меньше */
+  }
+
+  .bar-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 4px;
+  }
+
+  .bar-text {
+    font-size: 12px;
+    padding: 0 4px;
+  }
+
+  .coin-button {
+    width: 50vw; /* Например, для меньшего экрана */
+  }
+  
+  /* Если кнопки пополнения и буста фиксированные по размеру,
+     адаптируйте их размеры */
+  .recharge-gold-button,
+  .boost-tap-button {
+    width: 90px;
+    height: 90px;
+  }
+
+  /* Другой пример: уменьшение отступов */
+  .info-bars {
+    gap: 4px;
+    padding: 8px 0;
+  }
+}
 
