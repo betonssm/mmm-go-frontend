@@ -35,7 +35,7 @@ export default function MMMGo() {
     9: "/assets/bg-level-9.png",
   };
 
-  const backgroundImage = levelBackgrounds[level] || levelBackgrounds[1];
+  const backgroundImage = levelBackgrounds[newLevel] || levelBackgrounds[1];
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -58,9 +58,9 @@ export default function MMMGo() {
   }, []);
 
   useEffect(() => {
-    const newLevel = Math.floor(balance / 50000) + 1;
-    setLevel(newLevel);
-    setNextLevel((newLevel) * 1000000); // этот nextLevel не критичен
+    const calculatedLevel = Math.floor(balance / 100) + 1;
+    setLevel(calculatedLevel);
+    setNextLevel(calculatedLevel * 100);
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
