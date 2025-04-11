@@ -6,9 +6,9 @@ import barRank from "../assets/bar-rank.png";
 import barInvestors from "../assets/bar-investors.png";
 import barRating from "../assets/bar-rating.png";
 import rechargeGold from "../assets/gold-recharge-button.png";
-import boostTapImage from "../assets/boost-tap-button.png"; // Картинка кнопки буста
+import boostTapImage from "../assets/boost-tap-button.png";
+import rulesButton from "../assets/rules-button.png";
 import { Link } from "react-router-dom";
-import rulesButton from "../assets/rules-button.png"; // Кнопка "Правила"
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(0);
@@ -19,7 +19,6 @@ export default function MMMGo() {
   const [investors, setInvestors] = useState(0);
   const [nextLevel, setNextLevel] = useState(1000000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
-  // Состояния для буста
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
 
@@ -50,12 +49,10 @@ export default function MMMGo() {
     setInvestors(Math.floor(balance / 5000));
   }, [balance]);
 
-  // Обработчик нажатия основной кнопки (монеты)
   const handleClick = () => {
-    const coinsToAdd = boostActive ? 3 : 1; // Если буст активен, начисляется 3 монеты, иначе 1
+    const coinsToAdd = boostActive ? 3 : 1;
     const newBalance = balance + coinsToAdd;
     setBalance(newBalance);
-
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
@@ -73,15 +70,13 @@ export default function MMMGo() {
     }
   };
 
-  // Обработчик для кнопки пополнения
   const handleRecharge = () => {
     alert("Пополнение баланса скоро будет доступно! 💰");
   };
 
-  // Обработчик для кнопки буста
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
-      alert("Буст уже активен или находится на перезарядке!");
+      alert("Буст уже активен или на перезарядке!");
       return;
     }
     setBoostActive(true);
@@ -90,74 +85,19 @@ export default function MMMGo() {
       setBoostActive(false);
       setBoostCooldown(true);
       alert("Буст завершён. Повторно доступен через 1 час.");
-      setTimeout(() => {
-        setBoostCooldown(false);
-      }, 3600000);
+      setTimeout(() => setBoostCooldown(false), 3600000);
     }, 20000);
   };
 
   return (
     <>
-      <div className="info-bars">
-        <Link to="/level" onClick={() => navigator.vibrate?.(50)}>
-          <div className="bar-wrapper">
-            <img src={barLevel} className="bar-img" alt="До уровня" />
-            <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
-          </div>
-        </Link>
-
-        {/* Кнопка буста тапов (слева) с информационным окном */}
-        <div style={{ position: "relative" }}>
-          <img
-            src={boostTapImage}
-            className="boost-tap-button"
-            alt="Буст Тапов"
-            onClick={handleBoostTaps}
-          />
-          {(boostActive || boostCooldown) && (
-            <div className="boost-info">
-              {boostActive ? "Буст активен!" : "Буст на перезарядке"}
-            </div>
-          )}
-        </div>
-
-        {/* Кнопка пополнения (справа) */}
-        <img
-          src={rechargeGold}
-          className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
-          alt="Пополнить баланс"
-          onClick={handleRecharge}
-        />
-
-        <Link to="/rank" onClick={() => navigator.vibrate?.(50)}>
-          <div className="bar-wrapper">
-            <img src={barRank} className="bar-img" alt="Инвесторский ранг" />
-            <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
-          </div>
-        </Link>
-
-        <Link to="/investors" onClick={() => navigator.vibrate?.(50)}>
-          <div className="bar-wrapper">
-            <img src={barInvestors} className="bar-img" alt="Вкладчики" />
-            <div className="bar-text">🧍 Вкладчики: {investors}</div>
-          </div>
-        </Link>
-
-        <Link to="/rating" onClick={() => navigator.vibrate?.(50)}>
-          <div className="bar-wrapper">
-            <img src={barRating} className="bar-img" alt="SR рейтинг" />
-            <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
-          </div>
-        </Link>
-      </div>
-
       <div className="glow-overlay"></div>
-      
       <div className="container">
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
         <h1>Баланс:<br />{balance} мавродиков</h1>
         <button className="coin-button" onClick={handleClick}></button>
+
         {showMavrodik && (
           <img
             src={mavrodikFloating}
@@ -166,7 +106,52 @@ export default function MMMGo() {
           />
         )}
 
-        {/* Кнопка "Правила" */}
+        <div className="boost-recharge-wrapper">
+          <img
+            src={boostTapImage}
+            className="boost-tap-button"
+            alt="Буст Тапов"
+            onClick={handleBoostTaps}
+          />
+
+          <img
+            src={rechargeGold}
+            className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
+            alt="Пополнить баланс"
+            onClick={handleRecharge}
+          />
+        </div>
+
+        <div className="info-bars">
+          <Link to="/level" onClick={() => navigator.vibrate?.(50)}>
+            <div className="bar-wrapper">
+              <img src={barLevel} className="bar-img" alt="До уровня" />
+              <div className="bar-text">🔁 До уровня: {nextLevel - balance} мавродиков</div>
+            </div>
+          </Link>
+
+          <Link to="/rank" onClick={() => navigator.vibrate?.(50)}>
+            <div className="bar-wrapper">
+              <img src={barRank} className="bar-img" alt="Инвесторский ранг" />
+              <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
+            </div>
+          </Link>
+
+          <Link to="/investors" onClick={() => navigator.vibrate?.(50)}>
+            <div className="bar-wrapper">
+              <img src={barInvestors} className="bar-img" alt="Вкладчики" />
+              <div className="bar-text">🧍 Вкладчики: {investors}</div>
+            </div>
+          </Link>
+
+          <Link to="/rating" onClick={() => navigator.vibrate?.(50)}>
+            <div className="bar-wrapper">
+              <img src={barRating} className="bar-img" alt="SR рейтинг" />
+              <div className="bar-text">📊 SR рейтинг игрока: #{telegramId || 0}</div>
+            </div>
+          </Link>
+        </div>
+
         <Link to="/rules">
           <img
             src={rulesButton}
@@ -185,3 +170,4 @@ export default function MMMGo() {
     </>
   );
 }
+
