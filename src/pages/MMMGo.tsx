@@ -1,4 +1,4 @@
-mport React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./MMMGo.css";
 import mavrodikFloating from "../assets/mavrodik_floating.png";
 import barLevel from "../assets/bar-level.png";
