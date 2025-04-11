@@ -255,27 +255,42 @@ button {
 .main-buttons {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
   gap: 12px;
-  margin: 16px auto;
-  max-width: 300px;
+  margin: 20px auto 30px;
+  flex-wrap: wrap;
 }
 
 .main-buttons img {
-  width: 90px;
+  width: 100px;
   height: auto;
+  cursor: pointer;
   transition: transform 0.2s ease;
 }
 
 .main-buttons img:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
-/* Адаптация под узкие экраны (iPhone 10 и похожие) */
-@media (max-width: 390px) {
+/* Кастомно при необходимости */
+.boost-tap-button {
+  width: 100px;
+  height: auto;
+}
+
+.recharge-gold-button {
+  width: 100px;
+  height: auto;
+}
+
+.rules-button-link {
+  width: 100px;
+  height: auto;
+}
+
+/* Адаптация для малых экранов */
+@media (max-width: 375px) {
   .main-buttons img {
-    width: 75px;
+    width: 85px;
   }
 }
 
