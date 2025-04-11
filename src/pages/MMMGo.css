@@ -252,6 +252,24 @@ button {
     width: 40vw;
   }
 }
+.main-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.main-buttons img {
+  width: 100px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.main-buttons img:active {
+  transform: scale(0.95);
+}
 
 
 

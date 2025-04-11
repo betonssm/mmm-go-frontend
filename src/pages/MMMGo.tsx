@@ -94,6 +94,13 @@ export default function MMMGo() {
       <h2>Привет, {playerName || "вкладчик"}!</h2>
       <p className="player-id">ID: {telegramId || "неизвестен"}</p>
       <h1>Баланс:<br />{balance} мавродиков</h1>
+      <div className="main-buttons">
+  <img src={boostTapImage} alt="Буст" className="boost-tap-button" onClick={handleBoostTaps} />
+  <img src={rechargeGold} alt="Пополнить" className="recharge-gold-button" onClick={handleRecharge} />
+  <Link to="/rules">
+    <img src={rulesButton} alt="Правила" className="rules-button" />
+  </Link>
+</div>
 
       <div className="boost-recharge-buttons">
         <img
