@@ -3,21 +3,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   height: 100vh;
-  background: linear-gradient(to bottom, #fff6cc, #ffe5a4);
+  padding: 0; /* убираем отступы */
+  background: black; /* или другой фон, если хочешь */
 }
 
 .start-image-container {
   position: relative;
-  display: inline-block;
   width: 100%;
-  max-width: 400px;
+  height: 100%;
+  max-width: none; /* убираем ограничение */
 }
 
 .start-image {
   width: 100%;
-  border-radius: 20px;
+  height: 100%;
+  object-fit: cover; /* это главное: красиво масштабирует */
+  border-radius: 0; /* убираем скругление */
 }
 
 .start-button {
