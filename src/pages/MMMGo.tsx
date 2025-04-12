@@ -20,11 +20,12 @@ import bg8 from "../assets/bg-level-8.png";
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
-  const [balance, setBalance] = useState<number | null>(null); // начальное значение null
+  const [balance, setBalance] = useState<number | null>(null);
+  const [level, setLevel] = useState<number | null>(null);
+  const [initialLoad, setInitialLoad] = useState(true);
   const [showMavrodik, setShowMavrodik] = useState(false);
   const [playerName, setPlayerName] = useState<string | null>(null);
   const [telegramId, setTelegramId] = useState<number | null>(null);
-  const [level, setLevel] = useState(0);
   const [investors, setInvestors] = useState(0);
   const [nextLevel, setNextLevel] = useState(50000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
@@ -46,59 +47,56 @@ export default function MMMGo() {
     5: bg5, 6: bg6, 7: bg7, 8: bg8,
   };
 
-  const [balance, setBalance] = useState<number | null>(null); // <-- изначально null
-const [level, setLevel] = useState<number | null>(null); // <-- тоже null
-const [initialLoad, setInitialLoad] = useState(true); // флаг для первого рендера
+  const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
+  const backgroundImage =
+    calculatedLevel === 0
+      ? `url(${moneyBg})`
+      : `url(${levelBackgrounds[calculatedLevel]})`;
 
-const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
-const backgroundImage =
-  calculatedLevel === 0
-    ? `url(${moneyBg})`
-    : `url(${levelBackgrounds[calculatedLevel]})`;
-
-useEffect(() => {
-  const tg = (window as any).Telegram?.WebApp;
-  if (tg) {
-    tg.expand();
-    const user = tg.initDataUnsafe?.user;
-    if (user) {
-      setPlayerName(user.first_name);
-      setTelegramId(user.id);
-      fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (typeof data.balance === "number") {
-            setBalance(data.balance);
-            setLevel(Math.min(Math.floor(data.balance / 100), 8)); // <-- сразу выставляем начальный уровень
-            setIsInvestor(data.isInvestor || false);
-            setSrRating(data.srRating || 0);
-            setReferrals(data.referrals || 0);
-            setInitialLoad(false); // <-- загрузка завершена
-          }
-        })
-        .catch((err) => {
-          console.error("Ошибка загрузки игрока:", err);
-          setInitialLoad(false); // даже если ошибка
-        });
+  useEffect(() => {
+    const tg = (window as any).Telegram?.WebApp;
+    if (tg) {
+      tg.expand();
+      const user = tg.initDataUnsafe?.user;
+      if (user) {
+        setPlayerName(user.first_name);
+        setTelegramId(user.id);
+        fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (typeof data.balance === "number") {
+              setBalance(data.balance);
+              setLevel(Math.min(Math.floor(data.balance / 100), 8));
+              setIsInvestor(data.isInvestor || false);
+              setSrRating(data.srRating || 0);
+              setReferrals(data.referrals || 0);
+              setInitialLoad(false);
+            }
+          })
+          .catch((err) => {
+            console.error("Ошибка загрузки игрока:", err);
+            setInitialLoad(false);
+          });
+      }
     }
-  }
-}, []);
+  }, []);
 
-useEffect(() => {
-  if (balance === null || initialLoad) return;
+  useEffect(() => {
+    if (balance === null || initialLoad) return;
 
-  const newLevel = Math.min(Math.floor(balance / 100), 8);
-  if (level !== null && newLevel !== level) {
-    setLevel(newLevel);
-    setShowLevelNotice(true);
-    setTimeout(() => setShowLevelNotice(false), 3000);
-  } else {
-    setLevel(newLevel);
-  }
+    const newLevel = Math.min(Math.floor(balance / 100), 8);
+    if (level !== null && newLevel !== level) {
+      setLevel(newLevel);
+      setShowLevelNotice(true);
+      setTimeout(() => setShowLevelNotice(false), 3000);
+    } else {
+      setLevel(newLevel);
+    }
 
-  setNextLevel((newLevel + 1) * 100);
-  setInvestors(Math.floor(balance / 5000));
-}, [balance]);
+    setNextLevel((newLevel + 1) * 100);
+    setInvestors(Math.floor(balance / 5000));
+  }, [balance]);
+
   const handleClick = () => {
     if (balance === null || telegramId === null) return;
 
@@ -219,7 +217,7 @@ useEffect(() => {
         <Link to="/rank">
           <div className="bar-wrapper">
             <img src={barRank} className="bar-img" alt="Ранг" />
-            <div className="bar-text">🏅 Инвестор {level}-го ранга</div>
+            <div className="bar-text">🏅 Инвестор {level ?? 0}-го ранга</div>
           </div>
         </Link>
 
@@ -252,7 +250,7 @@ useEffect(() => {
       >
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
-        <h1>Баланс:<br />{balance ?? "Загрузка..."} мавродиков</h1>
+        <h1>Баланс:<br />{initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}</h1>
 
         <button
           className={`coin-button ${boostActive ? "boost-animation" : ""}`}
