@@ -8,18 +8,16 @@ import coinSound from "../assets/coin.mp3";
 export default function StartScreen({ onStart }: { onStart: () => void }) {
   const playSoundAndStart = () => {
     const audio = new Audio(coinSound);
-    audio.play().catch(e => console.log("Audio play error:", e));
+    audio.play().catch((e) => console.log("Audio play error:", e));
     onStart();
   };
 
   return (
     <div className="start-wrapper">
-      <div className="start-image-container">
-        <img src={mavrodikImg} alt="Мавродик" className="start-image" />
-        <button className="start-button glow" onClick={playSoundAndStart}>
-          <img src={buttonImg} alt="Начать" />
-        </button>
-      </div>
+      <img src={mavrodikImg} alt="Мавродик" className="start-bg" />
+      <button className="start-button glow" onClick={playSoundAndStart}>
+        <img src={buttonImg} alt="Начать" />
+      </button>
     </div>
   );
 }

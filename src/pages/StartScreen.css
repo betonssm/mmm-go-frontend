@@ -1,38 +1,37 @@
 
 .start-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #fff6cc;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 0; /* убираем отступы */
-  background: black; /* или другой фон, если хочешь */
 }
 
-.start-image-container {
-  position: relative;
+.start-bg {
+  position: absolute;
   width: 100%;
   height: 100%;
-  max-width: none; /* убираем ограничение */
-}
-
-.start-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* это главное: красиво масштабирует */
-  border-radius: 0; /* убираем скругление */
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
 .start-button {
   position: absolute;
-  bottom: 6%;
+  bottom: 8%;
   left: 50%;
   transform: translateX(-50%);
   width: 45%;
-  max-width: 180px;
+  max-width: 200px;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
+  z-index: 2;
 }
 
 .start-button img {
