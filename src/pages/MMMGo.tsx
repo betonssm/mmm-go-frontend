@@ -49,10 +49,11 @@ export default function MMMGo() {
 
   const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
   const backgroundImage =
-    calculatedLevel === 0
+  initialLoad
+    ? "none"
+    : calculatedLevel === 0
       ? `url(${moneyBg})`
       : `url(${levelBackgrounds[calculatedLevel]})`;
-
       useEffect(() => {
         const tg = (window as any).Telegram?.WebApp;
       
