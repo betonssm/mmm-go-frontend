@@ -58,7 +58,7 @@ const [referrals, setReferrals] = useState(0);
       if (user) {
         setPlayerName(user.first_name);
         setTelegramId(user.id);
-        fetch(`https://mmm-go-backend.onrender.com/balance/${user.id}`)
+        fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
           .then((res) => res.json())
           .then((data) => {
             if (typeof data.balance === "number") {
