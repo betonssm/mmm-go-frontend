@@ -32,6 +32,9 @@ export default function MMMGo() {
   const [boostCooldown, setBoostCooldown] = useState(false);
   const [showLevelNotice, setShowLevelNotice] = useState(false);
   const [showBoostEndedNotice, setShowBoostEndedNotice] = useState(false);
+  const [isInvestor, setIsInvestor] = useState(false);
+const [srRating, setSrRating] = useState(0);
+const [referrals, setReferrals] = useState(0);
 
   const levelTitles: string[] = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
@@ -45,6 +48,7 @@ export default function MMMGo() {
 
   const calculatedLevel = Math.min(Math.floor(balance / 100), 8);
   const backgroundImage = calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
+  
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -82,76 +86,94 @@ export default function MMMGo() {
       interval = setInterval(() => {
         setBalance(prev => {
           const newBalance = prev + 3;
-
+  
           if (newBalance % 100000 === 0) {
             setShowMavrodik(true);
             setTimeout(() => setShowMavrodik(false), 3000);
           }
-
+  
           if (newBalance % 100 === 0) {
             setHighlightRecharge(true);
             setTimeout(() => setHighlightRecharge(false), 2000);
           }
-
+  
           if (telegramId) {
-            fetch("https://mmm-go-backend.onrender.com/balance", {
+            fetch("https://mmm-go-backend.onrender.com/player", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ telegramId, balance: newBalance })
-            }).catch(err => console.error("Ошибка сохранения:", err));
+              body: JSON.stringify({
+                telegramId,
+                playerName,
+                balance: newBalance,
+                level: calculatedLevel,
+                isBoostActive: true,
+                isInvestor,
+                srRating,
+                referrals,
+              }),
+            }).catch((err) => console.error("Ошибка сохранения данных:", err));
           }
-
+  
           return newBalance;
         });
       }, 500);
-
+  
       setTimeout(() => {
         clearInterval(interval);
         setBoostActive(false);
         setBoostCooldown(true);
         setShowBoostEndedNotice(true);
-
         setTimeout(() => setShowBoostEndedNotice(false), 5000);
         setTimeout(() => setBoostCooldown(false), 3600000);
       }, 20000);
     }
-
+  
     return () => clearInterval(interval);
   }, [boostActive]);
-
+  
   const handleClick = () => {
     const coinsToAdd = boostActive ? 3 : 1;
     const newBalance = balance + coinsToAdd;
     setBalance(newBalance);
-
+  
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
       setTimeout(() => setShowMavrodik(false), 3000);
     }
-
+  
     if (newBalance % 100 === 0) {
       setHighlightRecharge(true);
       setTimeout(() => setHighlightRecharge(false), 2000);
     }
-
+  
     if (telegramId) {
-      fetch("https://mmm-go-backend.onrender.com/balance", {
+      fetch("https://mmm-go-backend.onrender.com/player", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ telegramId, balance: newBalance }),
-      }).catch((err) => console.error("Ошибка сохранения:", err));
+        body: JSON.stringify({
+          telegramId,
+          playerName,
+          balance: newBalance,
+          level: calculatedLevel,
+          isBoostActive: boostActive,
+          isInvestor,
+          srRating,
+          referrals,
+        }),
+      }).catch((err) => console.error("Ошибка сохранения данных:", err));
     }
   };
-
+  
   const handleRecharge = () => {
     alert("Пополнение баланса скоро будет доступно! 💰");
   };
-
+  
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
       alert("Буст уже активен или на перезарядке!");
       return;
     }
+  
     alert("Просмотр рекламы...");
     setBoostActive(true);
   };
