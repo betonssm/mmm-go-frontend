@@ -98,7 +98,7 @@ const [referrals, setReferrals] = useState(0);
           }
   
           if (telegramId) {
-            fetch("https://mmm-go-backend.onrender.com/player", {
+            fetch("https://mmmgo-backend.onrender.com/player", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -147,7 +147,7 @@ const [referrals, setReferrals] = useState(0);
     }
   
     if (telegramId) {
-      fetch("https://mmm-go-backend.onrender.com/player", {
+      fetch("https://mmmgo-backend.onrender.com/player", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
