@@ -243,20 +243,11 @@ export default function MMMGo() {
           </div>
         )}
 
-        <Link to="/rules">
-          <img
-            src={rulesButton}
-            alt="Правила"
-            style={{
-              width: "auto",
-              height: "50px",
-              marginTop: "20px",
-              display: "block",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          />
-        </Link>
+<div className="rules-container">
+  <Link to="/rules">
+    <img src={rulesButton} alt="Правила" className="rules-button-top" />
+  </Link>
+</div>
       </div>
     </>
   );

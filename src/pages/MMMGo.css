@@ -685,3 +685,19 @@ button {
     transform: translate(-50%, -20px);
   }
 }
+.rules-container {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+}
+
+.rules-button-top {
+  width: 48px;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+.rules-button-top:hover {
+  transform: scale(1.1);
+}
