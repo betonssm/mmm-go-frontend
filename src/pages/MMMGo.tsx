@@ -53,33 +53,44 @@ export default function MMMGo() {
       ? `url(${moneyBg})`
       : `url(${levelBackgrounds[calculatedLevel]})`;
 
-  useEffect(() => {
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg) {
-      tg.expand();
-      const user = tg.initDataUnsafe?.user;
-      if (user) {
-        setPlayerName(user.first_name);
-        setTelegramId(user.id);
-        fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
-          .then((res) => res.json())
-          .then((data) => {
-            if (typeof data.balance === "number") {
-              setBalance(data.balance);
-              setLevel(Math.min(Math.floor(data.balance / 100), 8));
-              setIsInvestor(data.isInvestor || false);
-              setSrRating(data.srRating || 0);
-              setReferrals(data.referrals || 0);
-              setInitialLoad(false);
-            }
-          })
-          .catch((err) => {
-            console.error("Ошибка загрузки игрока:", err);
-            setInitialLoad(false);
-          });
-      }
-    }
-  }, []);
+      useEffect(() => {
+        const tg = (window as any).Telegram?.WebApp;
+      
+        if (!tg) return;
+      
+        tg.ready?.();
+        tg.expand?.();
+      
+        const loadUser = () => {
+          const user = tg.initDataUnsafe?.user;
+          if (user) {
+            setPlayerName(user.first_name);
+            setTelegramId(user.id);
+            fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
+              .then((res) => res.json())
+              .then((data) => {
+                if (typeof data.balance === "number") {
+                  setBalance(data.balance);
+                  setLevel(Math.min(Math.floor(data.balance / 100), 8));
+                  setIsInvestor(data.isInvestor || false);
+                  setSrRating(data.srRating || 0);
+                  setReferrals(data.referrals || 0);
+                }
+                setInitialLoad(false);
+              })
+              .catch((err) => {
+                console.error("Ошибка загрузки игрока:", err);
+                setInitialLoad(false);
+              });
+          } else {
+            console.warn("Нет данных пользователя в initDataUnsafe. Повтор через 300мс...");
+            setTimeout(loadUser, 300); // ⏱ Повторить попытку
+          }
+        };
+      
+        loadUser();
+      }, []);
+      
 
   useEffect(() => {
     if (balance === null || initialLoad) return;
@@ -250,7 +261,10 @@ export default function MMMGo() {
       >
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
-        <h1>Баланс:<br />{initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}</h1>
+        <h1>
+  Баланс:<br />
+  {initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}
+</h1>
 
         <button
           className={`coin-button ${boostActive ? "boost-animation" : ""}`}
