@@ -46,46 +46,59 @@ export default function MMMGo() {
     5: bg5, 6: bg6, 7: bg7, 8: bg8,
   };
 
-  const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
-  const backgroundImage = calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
+  const [balance, setBalance] = useState<number | null>(null); // <-- изначально null
+const [level, setLevel] = useState<number | null>(null); // <-- тоже null
+const [initialLoad, setInitialLoad] = useState(true); // флаг для первого рендера
 
-  useEffect(() => {
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg) {
-      tg.expand();
-      const user = tg.initDataUnsafe?.user;
-      if (user) {
-        setPlayerName(user.first_name);
-        setTelegramId(user.id);
-        fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
-          .then((res) => res.json())
-          .then((data) => {
-            if (typeof data.balance === "number") {
-              setBalance(data.balance);
-              setIsInvestor(data.isInvestor || false);
-              setSrRating(data.srRating || 0);
-              setReferrals(data.referrals || 0);
-            }
-          })
-          .catch((err) => console.error("Ошибка загрузки игрока:", err));
-      }
+const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
+const backgroundImage =
+  calculatedLevel === 0
+    ? `url(${moneyBg})`
+    : `url(${levelBackgrounds[calculatedLevel]})`;
+
+useEffect(() => {
+  const tg = (window as any).Telegram?.WebApp;
+  if (tg) {
+    tg.expand();
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+      setPlayerName(user.first_name);
+      setTelegramId(user.id);
+      fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (typeof data.balance === "number") {
+            setBalance(data.balance);
+            setLevel(Math.min(Math.floor(data.balance / 100), 8)); // <-- сразу выставляем начальный уровень
+            setIsInvestor(data.isInvestor || false);
+            setSrRating(data.srRating || 0);
+            setReferrals(data.referrals || 0);
+            setInitialLoad(false); // <-- загрузка завершена
+          }
+        })
+        .catch((err) => {
+          console.error("Ошибка загрузки игрока:", err);
+          setInitialLoad(false); // даже если ошибка
+        });
     }
-  }, []);
+  }
+}, []);
 
-  useEffect(() => {
-    if (balance === null) return;
+useEffect(() => {
+  if (balance === null || initialLoad) return;
 
-    const newLevel = Math.min(Math.floor(balance / 100), 8);
-    if (newLevel !== level) {
-      setLevel(newLevel);
-      setShowLevelNotice(true);
-      setTimeout(() => setShowLevelNotice(false), 3000);
-    }
+  const newLevel = Math.min(Math.floor(balance / 100), 8);
+  if (level !== null && newLevel !== level) {
+    setLevel(newLevel);
+    setShowLevelNotice(true);
+    setTimeout(() => setShowLevelNotice(false), 3000);
+  } else {
+    setLevel(newLevel);
+  }
 
-    setNextLevel((newLevel + 1) * 100);
-    setInvestors(Math.floor(balance / 5000));
-  }, [balance]);
-
+  setNextLevel((newLevel + 1) * 100);
+  setInvestors(Math.floor(balance / 5000));
+}, [balance]);
   const handleClick = () => {
     if (balance === null || telegramId === null) return;
 
