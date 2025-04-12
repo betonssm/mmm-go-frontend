@@ -14,10 +14,12 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
 
   return (
     <div className="start-wrapper">
-      <img src={mavrodikImg} alt="Мавродик" className="start-bg" />
-      <button className="start-button glow" onClick={playSoundAndStart}>
-        <img src={buttonImg} alt="Начать" />
-      </button>
+      <div className="start-box">
+        <img src={mavrodikImg} alt="Мавродик" className="start-image" />
+        <button className="start-button glow" onClick={playSoundAndStart}>
+          <img src={buttonImg} alt="Начать" />
+        </button>
+      </div>
     </div>
   );
 }
