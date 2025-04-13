@@ -66,15 +66,16 @@ const [showNoRefNotice, setShowNoRefNotice] = useState(false);
         tg.ready?.();
         tg.expand?.();
       
+        const ref = new URLSearchParams(window.location.search).get("ref");
+        setRefSource(ref ?? null);
+      
         const loadUser = () => {
           const user = tg.initDataUnsafe?.user;
-          const refId = new URLSearchParams(window.location.search).get("ref");
-      
           if (user) {
             setPlayerName(user.first_name);
             setTelegramId(user.id);
       
-            fetch(`https://mmmgo-backend.onrender.com/player/${user.id}${refId ? `?ref=${refId}` : ""}`)
+            fetch(`https://mmmgo-backend.onrender.com/player/${user.id}?ref=${ref ?? ""}`)
               .then((res) => res.json())
               .then((data) => {
                 if (typeof data.balance === "number") {
@@ -83,7 +84,13 @@ const [showNoRefNotice, setShowNoRefNotice] = useState(false);
                   setIsInvestor(data.isInvestor || false);
                   setSrRating(data.srRating || 0);
                   setReferrals(data.referrals || 0);
+      
+                  // Уведомление о незасчитанном реферале
+                  if (ref && data.refSource === null && data.referrals === 0) {
+                    setShowNoRefNotice(true);
+                  }
                 }
+      
                 setInitialLoad(false);
               })
               .catch((err) => {
@@ -97,6 +104,7 @@ const [showNoRefNotice, setShowNoRefNotice] = useState(false);
         };
       
         loadUser();
+      }, []);
         const ref = new URLSearchParams(window.location.search).get("ref");
 
 if (ref) {
