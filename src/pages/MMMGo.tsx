@@ -85,14 +85,7 @@ export default function MMMGo() {
                 }, remaining);
               }
             }
-            if (data.boostCooldownUntil) {
-              const cooldownEnd = new Date(data.boostCooldownUntil);
-              setBoostCooldownUntil(cooldownEnd);
             
-              if (cooldownEnd > new Date()) {
-                setBoostCooldown(true);
-              }
-            }
             if (typeof data.balance === "number") {
               setBalance(data.balance);
               setLevel(Math.min(Math.floor(data.balance / 100), 8));
