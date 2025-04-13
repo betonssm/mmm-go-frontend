@@ -289,12 +289,12 @@ useEffect(() => {
           </div>
         </Link>
 
-        <Link to="/investors">
-          <div className="bar-wrapper">
-            <img src={barInvestors} className="bar-img" alt="Вкладчики" />
-            <div className="bar-text">🧍 Вкладчики: {investors}</div>
-          </div>
-        </Link>
+        <Link to="/referrals">
+  <div className="bar-wrapper">
+    <img src={barInvestors} className="bar-img" alt="Рефералы" />
+    <div className="bar-text">👥 Рефералы: {referrals}</div>
+  </div>
+</Link>
 
         <Link to="/rating">
           <div className="bar-wrapper">
