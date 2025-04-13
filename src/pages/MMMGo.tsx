@@ -66,10 +66,13 @@ const [adsWatched, setAdsWatched] = useState(0);
       
         const loadUser = () => {
           const user = tg.initDataUnsafe?.user;
+          const refId = new URLSearchParams(window.location.search).get("ref");
+      
           if (user) {
             setPlayerName(user.first_name);
             setTelegramId(user.id);
-            fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
+      
+            fetch(`https://mmmgo-backend.onrender.com/player/${user.id}${refId ? `?ref=${refId}` : ""}`)
               .then((res) => res.json())
               .then((data) => {
                 if (typeof data.balance === "number") {
@@ -87,7 +90,7 @@ const [adsWatched, setAdsWatched] = useState(0);
               });
           } else {
             console.warn("Нет данных пользователя в initDataUnsafe. Повтор через 300мс...");
-            setTimeout(loadUser, 300); // ⏱ Повторить попытку
+            setTimeout(loadUser, 300);
           }
         };
       
