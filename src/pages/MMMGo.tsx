@@ -40,6 +40,7 @@ export default function MMMGo() {
 const [adsWatched, setAdsWatched] = useState(0);
 const [refSource, setRefSource] = useState<string | null>(null);
 const [showNoRefNotice, setShowNoRefNotice] = useState(false);
+const [showAdNotice, setShowAdNotice] = useState(false);
 
   const levelTitles: string[] = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
@@ -210,11 +211,14 @@ const [showNoRefNotice, setShowNoRefNotice] = useState(false);
       alert("Буст уже активен или на перезарядке!");
       return;
     }
-
-    alert("Просмотр рекламы...");
-    setBoostActive(true);
-    setAdsWatched((prev) => prev + 1); // 👈 Увеличиваем adsWatched
-};
+  
+    setShowAdNotice(true);
+    setTimeout(() => {
+      setShowAdNotice(false);
+      setBoostActive(true);
+      setAdsWatched((prev) => prev + 1);
+    }, 1500);
+  };
 
 useEffect(() => {
   let interval: NodeJS.Timeout;
@@ -365,6 +369,11 @@ useEffect(() => {
             ✨ Буст завершён. Повторно доступен через 1 час.
           </div>
         )}
+        {showAdNotice && (
+  <div className="toast-notice">
+    🎥 Реклама просмотрена! Буст активирован на 20 секунд.
+  </div>
+)}
 
         <div className="rules-container">
           <Link to="/rules">
