@@ -170,6 +170,10 @@ const [adsWatched, setAdsWatched] = useState(0);
               }),
             }).catch((err) => console.error("Ошибка сохранения:", err));
           }
+          useEffect(() => {
+            const ref = new URLSearchParams(window.location.search).get("ref");
+            console.log("Реферал:", ref);
+          }, []);
 
           return newBalance;
         });
