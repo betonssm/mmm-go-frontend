@@ -83,6 +83,8 @@ export default function MMMGo() {
                 setTimeout(() => {
                   setBoostCooldown(false);
                 }, remaining);
+              } else {
+                setBoostCooldown(false);
               }
             }
             
