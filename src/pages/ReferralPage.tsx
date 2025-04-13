@@ -23,7 +23,7 @@ export default function ReferralPage() {
           setReferrals(data.referrals || 0);
         });
 
-      fetch("https://mmmgo-backend.onrender.com/player")
+        fetch("https://mmmgo-backend.onrender.com/player/count")
         .then(res => res.json())
         .then(data => {
           setTotalPlayers(data.totalPlayers || 0);
