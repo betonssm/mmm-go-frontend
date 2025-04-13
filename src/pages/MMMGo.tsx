@@ -138,6 +138,42 @@ export default function MMMGo() {
 
   }, [balance, totalTaps, adsWatched, referrals, isInvestor, calculatedLevel]);
   
+  const handleClick = () => {
+    if (balance === null || telegramId === null) return;
+  
+    const coinsToAdd = boostActive ? 3 : 1;
+    const newBalance = balance + coinsToAdd;
+    setBalance(newBalance);
+    setTotalTaps((prev) => prev + 1);
+  
+    if (newBalance % 100000 === 0) {
+      setShowMavrodik(true);
+      setTimeout(() => setShowMavrodik(false), 3000);
+    }
+  
+    if (newBalance % 100 === 0) {
+      setHighlightRecharge(true);
+      setTimeout(() => setHighlightRecharge(false), 2000);
+    }
+  
+    fetch("https://mmmgo-backend.onrender.com/player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        telegramId,
+        playerName,
+        balance: newBalance,
+        level: calculatedLevel,
+        isBoostActive: boostActive,
+        isInvestor,
+        referrals,
+        totalTaps: totalTaps + 1,
+        adsWatched,
+        boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null
+      }),
+    }).catch((err) => console.error("❌ Ошибка сохранения баланса:", err));
+  };
+  
 
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
