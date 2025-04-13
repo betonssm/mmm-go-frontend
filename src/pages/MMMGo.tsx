@@ -105,15 +105,7 @@ const [showNoRefNotice, setShowNoRefNotice] = useState(false);
       
         loadUser();
       }, []);
-        const ref = new URLSearchParams(window.location.search).get("ref");
-
-if (ref) {
-  setRefSource(ref);
-} else {
-  // Если не первый вход или Telegram не передал ref
-  setShowNoRefNotice(true);
-}
-      }, []);
+        
       
 
       useEffect(() => {
