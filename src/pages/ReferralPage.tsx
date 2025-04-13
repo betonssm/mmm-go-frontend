@@ -61,6 +61,9 @@ export default function ReferralPage() {
       <p style={{ color: "#fff" }}>
         Всего игроков в системе: <strong>{totalPlayers}</strong>
       </p>
+      <p style={{ color: "#fff", marginTop: "20px", fontStyle: "italic" }}>
+        Скопируй свою уникальную ссылку и отправь другу. Когда он впервые зайдёт в игру — ты получишь +1 к рефералам.
+      </p>
 
       <button
         onClick={copyReferralLink}
