@@ -20,12 +20,12 @@ import bg8 from "../assets/bg-level-8.png";
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
-  const [balance, setBalance] = useState<number | null>(null);
-  const [level, setLevel] = useState<number | null>(null);
+  const [balance, setBalance] = useState(null);
+  const [level, setLevel] = useState(null);
   const [initialLoad, setInitialLoad] = useState(true);
   const [showMavrodik, setShowMavrodik] = useState(false);
-  const [playerName, setPlayerName] = useState<string | null>(null);
-  const [telegramId, setTelegramId] = useState<number | null>(null);
+  const [playerName, setPlayerName] = useState(null);
+  const [telegramId, setTelegramId] = useState(null);
   const [investors, setInvestors] = useState(0);
   const [nextLevel, setNextLevel] = useState(50000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
@@ -37,220 +37,126 @@ export default function MMMGo() {
   const [srRating, setSrRating] = useState(0);
   const [referrals, setReferrals] = useState(0);
   const [totalTaps, setTotalTaps] = useState(0);
-const [adsWatched, setAdsWatched] = useState(0);
-const [refSource, setRefSource] = useState<string | null>(null);
-const [showNoRefNotice, setShowNoRefNotice] = useState(false);
-const [showAdNotice, setShowAdNotice] = useState(false);
+  const [adsWatched, setAdsWatched] = useState(0);
+  const [refSource, setRefSource] = useState(null);
+  const [showNoRefNotice, setShowNoRefNotice] = useState(false);
+  const [showAdNotice, setShowAdNotice] = useState(false);
 
-  const levelTitles: string[] = [
+  const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
     "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
   ];
 
-  const levelBackgrounds: { [key: number]: string } = {
-    1: bg1, 2: bg2, 3: bg3, 4: bg4,
-    5: bg5, 6: bg6, 7: bg7, 8: bg8,
-  };
+  const levelBackgrounds = { 1: bg1, 2: bg2, 3: bg3, 4: bg4, 5: bg5, 6: bg6, 7: bg7, 8: bg8 };
 
   const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
-  const backgroundImage =
-  initialLoad
-    ? "none"
-    : calculatedLevel === 0
-      ? `url(${moneyBg})`
-      : `url(${levelBackgrounds[calculatedLevel]})`;
-      useEffect(() => {
-        const tg = (window as any).Telegram?.WebApp;
-      
-        if (!tg) return;
-      
-        tg.ready?.();
-        tg.expand?.();
-      
-        const ref = new URLSearchParams(window.location.search).get("ref");
-        setRefSource(ref ?? null);
-      
-        const loadUser = () => {
-          const user = tg.initDataUnsafe?.user;
-          if (user) {
-            setPlayerName(user.first_name);
-            setTelegramId(user.id);
-      
-            fetch(`https://mmmgo-backend.onrender.com/player/${user.id}?ref=${ref ?? ""}`)
-              .then((res) => res.json())
-              .then((data) => {
-                if (typeof data.balance === "number") {
-                  setBalance(data.balance);
-                  setLevel(Math.min(Math.floor(data.balance / 100), 8));
-                  setIsInvestor(data.isInvestor || false);
-                  setSrRating(data.srRating || 0);
-                  setReferrals(data.referrals || 0);
-      
-                  // Уведомление о незасчитанном реферале
-                  if (ref && data.refSource === null && data.referrals === 0) {
-                    setShowNoRefNotice(true);
-                  }
-                }
-      
-                setInitialLoad(false);
-              })
-              .catch((err) => {
-                console.error("Ошибка загрузки игрока:", err);
-                setInitialLoad(false);
-              });
-          } else {
-            console.warn("Нет данных пользователя в initDataUnsafe. Повтор через 300мс...");
-            setTimeout(loadUser, 300);
-          }
-        };
-      
-        loadUser();
-      }, []);
-        
-      
+  const backgroundImage = initialLoad ? "none" : calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
-      useEffect(() => {
-        if (balance === null || initialLoad) return;
-    
-        const newLevel = Math.min(Math.floor(balance / 100), 8);
-        if (level !== null && newLevel !== level) {
-          setLevel(newLevel);
-          setShowLevelNotice(true);
-          setTimeout(() => setShowLevelNotice(false), 3000);
-        } else {
-          setLevel(newLevel);
-        }
-    
-        setNextLevel((newLevel + 1) * 100);
-        setInvestors(Math.floor(balance / 5000));
-      }, [balance]);
-    
-      const handleClick = () => {
-        if (balance === null || telegramId === null) return;
-    
-        const coinsToAdd = boostActive ? 3 : 1;
-        const newBalance = balance + coinsToAdd;
-        setBalance(newBalance);
-        setTotalTaps((prev) => prev + 1); // 👈 Увеличиваем totalTaps
-    
-        if (newBalance % 100000 === 0) {
-          setShowMavrodik(true);
-          setTimeout(() => setShowMavrodik(false), 3000);
-        }
-    
-        if (newBalance % 100 === 0) {
-          setHighlightRecharge(true);
-          setTimeout(() => setHighlightRecharge(false), 2000);
-        }
-    
-        fetch("https://mmmgo-backend.onrender.com/player", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            telegramId,
-            playerName,
-            balance: newBalance,
-            level: calculatedLevel,
-            isBoostActive: boostActive,
-            isInvestor,
-            referrals,
-            totalTaps,
-            adsWatched
-          }),
-        }).catch((err) => console.error("Ошибка сохранения:", err));
-      };
-    
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    const tg = window.Telegram?.WebApp;
+    if (!tg) return;
+    tg.ready?.();
+    tg.expand?.();
 
-    if (boostActive && balance !== null) {
-      interval = setInterval(() => {
-        setBalance(prev => {
-          const newBalance = (prev ?? 0) + 3;
+    const ref = new URLSearchParams(window.location.search).get("ref");
+    setRefSource(ref ?? null);
 
-          if (telegramId) {
-            fetch("https://mmmgo-backend.onrender.com/player", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                telegramId,
-                playerName,
-                balance: newBalance,
-                level: calculatedLevel,
-                isBoostActive: true,
-                isInvestor,
-                srRating,
-                referrals
-              }),
-            }).catch((err) => console.error("Ошибка сохранения:", err));
-          }
-          useEffect(() => {
-            const ref = new URLSearchParams(window.location.search).get("ref");
-            console.log("Реферал:", ref);
-          }, []);
+    const loadUser = () => {
+      const user = tg.initDataUnsafe?.user;
+      if (user) {
+        setPlayerName(user.first_name);
+        setTelegramId(user.id);
 
-          return newBalance;
-        });
-      }, 500);
+        fetch(`https://mmmgo-backend.onrender.com/player/${user.id}?ref=${ref ?? ""}`)
+          .then(res => res.json())
+          .then(data => {
+            if (typeof data.balance === "number") {
+              setBalance(data.balance);
+              setLevel(Math.min(Math.floor(data.balance / 100), 8));
+              setIsInvestor(data.isInvestor || false);
+              setSrRating(data.srRating || 0);
+              setReferrals(data.referrals || 0);
 
-      setTimeout(() => {
-        clearInterval(interval);
-        setBoostActive(false);
-        setBoostCooldown(true);
-        setShowBoostEndedNotice(true);
-        setTimeout(() => setShowBoostEndedNotice(false), 5000);
-        setTimeout(() => setBoostCooldown(false), 3600000);
-      }, 20000);
+              if (ref && data.refSource === null && data.referrals === 0) {
+                setShowNoRefNotice(true);
+              }
+            }
+            setInitialLoad(false);
+          })
+          .catch(err => {
+            console.error("Ошибка загрузки игрока:", err);
+            setInitialLoad(false);
+          });
+      } else {
+        setTimeout(loadUser, 300);
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  useEffect(() => {
+    if (balance === null || initialLoad) return;
+    const newLevel = Math.min(Math.floor(balance / 100), 8);
+    setLevel(newLevel);
+    setNextLevel((newLevel + 1) * 100);
+    setInvestors(Math.floor(balance / 5000));
+  }, [balance]);
+
+  const handleClick = () => {
+    if (balance === null || telegramId === null) return;
+    const coinsToAdd = boostActive ? 3 : 1;
+    const newBalance = balance + coinsToAdd;
+    setBalance(newBalance);
+    setTotalTaps(prev => prev + 1);
+
+    if (newBalance % 100000 === 0) {
+      setShowMavrodik(true);
+      setTimeout(() => setShowMavrodik(false), 3000);
     }
 
-    return () => clearInterval(interval);
-  }, [boostActive]);
+    if (newBalance % 100 === 0) {
+      setHighlightRecharge(true);
+      setTimeout(() => setHighlightRecharge(false), 2000);
+    }
+
+    fetch("https://mmmgo-backend.onrender.com/player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegramId, playerName, balance: newBalance, level: calculatedLevel, isBoostActive: boostActive, isInvestor, referrals, totalTaps, adsWatched })
+    }).catch(err => console.error("Ошибка сохранения:", err));
+  };
 
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
       alert("Буст уже активен или на перезарядке!");
       return;
     }
-  
     setShowAdNotice(true);
     setTimeout(() => {
       setShowAdNotice(false);
       setBoostActive(true);
-      setAdsWatched((prev) => prev + 1);
+      setAdsWatched(prev => prev + 1);
     }, 1500);
   };
 
-useEffect(() => {
-  let interval: NodeJS.Timeout;
-
-  if (boostActive && balance !== null) {
-    interval = setInterval(() => {
+  useEffect(() => {
+    if (!boostActive || balance === null) return;
+    const interval = setInterval(() => {
       setBalance(prev => {
         const newBalance = (prev ?? 0) + 3;
-
         if (telegramId) {
           fetch("https://mmmgo-backend.onrender.com/player", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              telegramId,
-              playerName,
-              balance: newBalance,
-              level: calculatedLevel,
-              isBoostActive: true,
-              isInvestor,
-              referrals,
-              totalTaps,
-              adsWatched
-            }),
-          }).catch((err) => console.error("Ошибка сохранения:", err));
+            body: JSON.stringify({ telegramId, playerName, balance: newBalance, level: calculatedLevel, isBoostActive: true, isInvestor, referrals, totalTaps, adsWatched })
+          }).catch(err => console.error("Ошибка сохранения:", err));
         }
-
         return newBalance;
       });
     }, 500);
 
-    setTimeout(() => {
+    const stopBoost = setTimeout(() => {
       clearInterval(interval);
       setBoostActive(false);
       setBoostCooldown(true);
@@ -258,11 +164,12 @@ useEffect(() => {
       setTimeout(() => setShowBoostEndedNotice(false), 5000);
       setTimeout(() => setBoostCooldown(false), 3600000);
     }, 20000);
-  }
 
-  return () => clearInterval(interval);
-}, [boostActive]);
-
+    return () => {
+      clearInterval(interval);
+      clearTimeout(stopBoost);
+    };
+  }, [boostActive]);
 
   return (
     <>
@@ -271,7 +178,6 @@ useEffect(() => {
           🎉 Новый уровень: {levelTitles[calculatedLevel]}!
         </div>
       )}
-
       <div className="info-bars">
         <Link to="/level">
           <div className="bar-wrapper">
@@ -281,35 +187,20 @@ useEffect(() => {
             </div>
           </div>
         </Link>
-
-        <img
-          src={boostTapImage}
-          className="boost-tap-button"
-          alt="Буст Тапов"
-          onClick={handleBoostTaps}
-        />
-
-        <img
-          src={rechargeGold}
-          className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
-          alt="Пополнить баланс"
-          onClick={() => alert("Пополнение скоро!")}
-        />
-
+        <img src={boostTapImage} className="boost-tap-button" alt="Буст Тапов" onClick={handleBoostTaps} />
+        <img src={rechargeGold} className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`} alt="Пополнить баланс" onClick={() => alert("Пополнение скоро!")} />
         <Link to="/rank">
           <div className="bar-wrapper">
             <img src={barRank} className="bar-img" alt="Ранг" />
             <div className="bar-text">🏅 Инвестор {level ?? 0}-го ранга</div>
           </div>
         </Link>
-
         <Link to="/referrals">
-  <div className="bar-wrapper">
-    <img src={barInvestors} className="bar-img" alt="Рефералы" />
-    <div className="bar-text">👥 Рефералы: {referrals}</div>
-  </div>
-</Link>
-
+          <div className="bar-wrapper">
+            <img src={barInvestors} className="bar-img" alt="Рефералы" />
+            <div className="bar-text">👥 Рефералы: {referrals}</div>
+          </div>
+        </Link>
         <Link to="/rating">
           <div className="bar-wrapper">
             <img src={barRating} className="bar-img" alt="SR рейтинг" />
@@ -317,64 +208,20 @@ useEffect(() => {
           </div>
         </Link>
       </div>
-
       <div className="glow-overlay"></div>
-
-      <div
-        className="container"
-        style={{
-          backgroundImage,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          transition: "background-image 0.8s ease-in-out",
-        }}
-      >
+      <div className="container" style={{ backgroundImage, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", transition: "background-image 0.8s ease-in-out" }}>
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
-        <h1>
         {showNoRefNotice && (
-  <div
-    style={{
-      background: "rgba(255,0,0,0.2)",
-      color: "#fff",
-      padding: "10px 20px",
-      borderRadius: "10px",
-      margin: "10px auto",
-      maxWidth: "90%",
-      fontWeight: "bold",
-      boxShadow: "0 0 10px red",
-    }}
-  >
-    ⚠️ Реферал не засчитан.<br />
-    Убедитесь, что вы открыли ссылку от друга <u>впервые</u> или <u>удалите бота и начните заново</u> по ссылке.
-  </div>
-)}
-  Баланс:<br />
-  {initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}
-</h1>
-
-        <button
-          className={`coin-button ${boostActive ? "boost-animation" : ""}`}
-          onClick={handleClick}
-          disabled={balance === null}
-        ></button>
-
-        {showMavrodik && (
-          <img src={mavrodikFloating} alt="Мавродик" className="floating-mavrodik" />
-        )}
-
-        {showBoostEndedNotice && (
-          <div className="toast-notice">
-            ✨ Буст завершён. Повторно доступен через 1 час.
+          <div style={{ background: "rgba(255,0,0,0.2)", color: "#fff", padding: "10px 20px", borderRadius: "10px", margin: "10px auto", maxWidth: "90%", fontWeight: "bold", boxShadow: "0 0 10px red" }}>
+            ⚠️ Реферал не засчитан.<br />Убедитесь, что вы открыли ссылку от друга <u>впервые</u> или <u>удалите бота и начните заново</u> по ссылке.
           </div>
         )}
-        {showAdNotice && (
-  <div className="toast-notice">
-    🎥 Реклама просмотрена! Буст активирован на 20 секунд.
-  </div>
-)}
-
+        <h1>Баланс:<br />{initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}</h1>
+        <button className={`coin-button ${boostActive ? "boost-animation" : ""}`} onClick={handleClick} disabled={balance === null}></button>
+        {showMavrodik && (<img src={mavrodikFloating} alt="Мавродик" className="floating-mavrodik" />)}
+        {showBoostEndedNotice && (<div className="toast-notice">✨ Буст завершён. Повторно доступен через 1 час.</div>)}
+        {showAdNotice && (<div className="toast-notice">🎥 Реклама просмотрена! Буст активирован на 20 секунд.</div>)}
         <div className="rules-container">
           <Link to="/rules">
             <img src={rulesButton} alt="Правила" className="rules-button-top" />
