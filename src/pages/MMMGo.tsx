@@ -38,6 +38,8 @@ export default function MMMGo() {
   const [referrals, setReferrals] = useState(0);
   const [totalTaps, setTotalTaps] = useState(0);
 const [adsWatched, setAdsWatched] = useState(0);
+const [refSource, setRefSource] = useState<string | null>(null);
+const [showNoRefNotice, setShowNoRefNotice] = useState(false);
 
   const levelTitles: string[] = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
@@ -95,6 +97,14 @@ const [adsWatched, setAdsWatched] = useState(0);
         };
       
         loadUser();
+        const ref = new URLSearchParams(window.location.search).get("ref");
+
+if (ref) {
+  setRefSource(ref);
+} else {
+  // Если не первый вход или Telegram не передал ref
+  setShowNoRefNotice(true);
+}
       }, []);
       
 
@@ -319,6 +329,23 @@ useEffect(() => {
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
         <h1>
+        {showNoRefNotice && (
+  <div
+    style={{
+      background: "rgba(255,0,0,0.2)",
+      color: "#fff",
+      padding: "10px 20px",
+      borderRadius: "10px",
+      margin: "10px auto",
+      maxWidth: "90%",
+      fontWeight: "bold",
+      boxShadow: "0 0 10px red",
+    }}
+  >
+    ⚠️ Реферал не засчитан.<br />
+    Убедитесь, что вы открыли ссылку от друга <u>впервые</u> или <u>удалите бота и начните заново</u> по ссылке.
+  </div>
+)}
   Баланс:<br />
   {initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}
 </h1>
