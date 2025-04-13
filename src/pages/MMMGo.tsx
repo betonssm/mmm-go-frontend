@@ -1,4 +1,3 @@
-// Полный и исправленный MMMGo.tsx с работающим кулдауном буста
 import React, { useState, useEffect } from "react";
 import "./MMMGo.css";
 import mavrodikFloating from "../assets/mavrodik_floating.png";
@@ -21,18 +20,17 @@ import bg8 from "../assets/bg-level-8.png";
 import { Link } from "react-router-dom";
 
 export default function MMMGo() {
-  const [balance, setBalance] = useState<number | null>(null);
-  const [level, setLevel] = useState<number | null>(null);
+  const [balance, setBalance] = useState(null);
+  const [level, setLevel] = useState(null);
   const [initialLoad, setInitialLoad] = useState(true);
   const [showMavrodik, setShowMavrodik] = useState(false);
-  const [playerName, setPlayerName] = useState<string | null>(null);
-  const [telegramId, setTelegramId] = useState<number | null>(null);
+  const [playerName, setPlayerName] = useState(null);
+  const [telegramId, setTelegramId] = useState(null);
   const [investors, setInvestors] = useState(0);
   const [nextLevel, setNextLevel] = useState(50000);
   const [highlightRecharge, setHighlightRecharge] = useState(false);
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
-  const [boostCooldownUntil, setBoostCooldownUntil] = useState<Date | null>(null);
   const [showLevelNotice, setShowLevelNotice] = useState(false);
   const [showBoostEndedNotice, setShowBoostEndedNotice] = useState(false);
   const [isInvestor, setIsInvestor] = useState(false);
@@ -40,15 +38,18 @@ export default function MMMGo() {
   const [referrals, setReferrals] = useState(0);
   const [totalTaps, setTotalTaps] = useState(0);
   const [adsWatched, setAdsWatched] = useState(0);
-  const [refSource, setRefSource] = useState<string | null>(null);
+  const [refSource, setRefSource] = useState(null);
   const [showNoRefNotice, setShowNoRefNotice] = useState(false);
   const [showAdNotice, setShowAdNotice] = useState(false);
+  const [boostCooldownUntil, setBoostCooldownUntil] = useState<Date | null>(null);
 
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
     "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
   ];
-  const levelBackgrounds: { [key: number]: string } = { 1: bg1, 2: bg2, 3: bg3, 4: bg4, 5: bg5, 6: bg6, 7: bg7, 8: bg8 };
+
+  const levelBackgrounds = { 1: bg1, 2: bg2, 3: bg3, 4: bg4, 5: bg5, 6: bg6, 7: bg7, 8: bg8 };
+
   const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
   const backgroundImage = initialLoad ? "none" : calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
@@ -57,6 +58,7 @@ export default function MMMGo() {
     if (!tg) return;
     tg.ready?.();
     tg.expand?.();
+
     const ref = new URLSearchParams(window.location.search).get("ref");
     setRefSource(ref ?? null);
 
@@ -72,15 +74,20 @@ export default function MMMGo() {
             if (data.boostCooldownUntil) {
               const cooldownEnd = new Date(data.boostCooldownUntil);
               setBoostCooldownUntil(cooldownEnd);
+            
               const now = new Date();
               if (cooldownEnd > now) {
                 setBoostCooldown(true);
-                setTimeout(() => setBoostCooldown(false), cooldownEnd.getTime() - now.getTime());
+            
+                const remaining = cooldownEnd.getTime() - now.getTime();
+                setTimeout(() => {
+                  setBoostCooldown(false);
+                }, remaining);
               } else {
                 setBoostCooldown(false);
               }
             }
-
+            
             if (typeof data.balance === "number") {
               setBalance(data.balance);
               setLevel(Math.min(Math.floor(data.balance / 100), 8));
@@ -102,25 +109,57 @@ export default function MMMGo() {
         setTimeout(loadUser, 300);
       }
     };
+
     loadUser();
   }, []);
+
+  useEffect(() => {
+    if (balance === null || initialLoad) return;
+    const newLevel = Math.min(Math.floor(balance / 100), 8);
+    setLevel(newLevel);
+    setNextLevel((newLevel + 1) * 100);
+    setInvestors(Math.floor(balance / 5000));
+  }, [balance]);
+
+  const handleClick = () => {
+    if (balance === null || telegramId === null) return;
+    const coinsToAdd = boostActive ? 3 : 1;
+    const newBalance = balance + coinsToAdd;
+    setBalance(newBalance);
+    setTotalTaps(prev => prev + 1);
+
+    if (newBalance % 100000 === 0) {
+      setShowMavrodik(true);
+      setTimeout(() => setShowMavrodik(false), 3000);
+    }
+
+    if (newBalance % 100 === 0) {
+      setHighlightRecharge(true);
+      setTimeout(() => setHighlightRecharge(false), 2000);
+    }
+
+    fetch("https://mmmgo-backend.onrender.com/player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegramId, playerName, balance: newBalance, level: calculatedLevel, isBoostActive: boostActive, isInvestor, referrals, totalTaps, adsWatched })
+    }).catch(err => console.error("Ошибка сохранения:", err));
+  };
 
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
       alert("Буст уже активен или на перезарядке!");
       return;
     }
-
+  
     setShowAdNotice(true);
-
+  
     setTimeout(() => {
       setShowAdNotice(false);
       setBoostActive(true);
-
+  
       const cooldownEndTime = new Date(Date.now() + 3600 * 1000);
-      setBoostCooldown(true);
       setBoostCooldownUntil(cooldownEndTime);
-
+  
       if (telegramId) {
         fetch("https://mmmgo-backend.onrender.com/player", {
           method: "POST",
@@ -134,23 +173,13 @@ export default function MMMGo() {
             isInvestor,
             referrals,
             totalTaps,
-            adsWatched: adsWatched + 1,
-            boostCooldownUntil: cooldownEndTime.toISOString()
-          })
+            adsWatched,
+            boostCooldownUntil: cooldownEndTime.toISOString(),
+          }),
         });
       }
-
-      setAdsWatched(prev => prev + 1);
-
-      setTimeout(() => {
-        setBoostActive(false);
-        setShowBoostEndedNotice(true);
-        setTimeout(() => setShowBoostEndedNotice(false), 5000);
-      }, 20000);
-
-      setTimeout(() => {
-        setBoostCooldown(false);
-      }, 3600000);
+  
+      setAdsWatched((prev) => prev + 1); // ⬅️ ВНЕ if
     }, 1500);
   };
 
@@ -163,25 +192,28 @@ export default function MMMGo() {
           fetch("https://mmmgo-backend.onrender.com/player", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              telegramId,
-              playerName,
-              balance: newBalance,
-              level: calculatedLevel,
-              isBoostActive: true,
-              isInvestor,
-              referrals,
-              totalTaps,
-              adsWatched
-            })
-          });
+            body: JSON.stringify({ telegramId, playerName, balance: newBalance, level: calculatedLevel, isBoostActive: true, isInvestor, referrals, totalTaps, adsWatched })
+          }).catch(err => console.error("Ошибка сохранения:", err));
         }
         return newBalance;
       });
     }, 500);
 
-    return () => clearInterval(interval);
+    const stopBoost = setTimeout(() => {
+      clearInterval(interval);
+      setBoostActive(false);
+      setBoostCooldown(true);
+      setShowBoostEndedNotice(true);
+      setTimeout(() => setShowBoostEndedNotice(false), 5000);
+      setTimeout(() => setBoostCooldown(false), 3600000);
+    }, 20000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(stopBoost);
+    };
   }, [boostActive]);
+
   return (
     <>
       {showLevelNotice && (
