@@ -100,10 +100,11 @@ export default function MMMGo() {
               }
             }
             setInitialLoad(false);
-          .catch(err => {
-            console.error("Ошибка загрузки игрока:", err);
-            setInitialLoad(false);
-          });
+  })
+  .catch(err => {
+    console.error("Ошибка загрузки игрока:", err);
+    setInitialLoad(false);
+  });
       } else {
         setTimeout(loadUser, 300);
       }
