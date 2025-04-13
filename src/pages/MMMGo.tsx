@@ -315,7 +315,6 @@ useEffect(() => {
       >
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
-        <p className="ref-id">Реф: {new URLSearchParams(window.location.search).get("ref")}</p>
         <h1>
   Баланс:<br />
   {initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}
