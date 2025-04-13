@@ -73,10 +73,10 @@ export default function MMMGo() {
           .then(data => {
             if (data.boostCooldownUntil) {
               const cooldownEnd = new Date(data.boostCooldownUntil);
-              setBoostCooldownUntil(cooldownEnd);
-            
               const now = new Date();
+            
               if (cooldownEnd > now) {
+                setBoostCooldownUntil(cooldownEnd);
                 setBoostCooldown(true);
             
                 const remaining = cooldownEnd.getTime() - now.getTime();
@@ -94,13 +94,12 @@ export default function MMMGo() {
               setIsInvestor(data.isInvestor || false);
               setSrRating(data.srRating || 0);
               setReferrals(data.referrals || 0);
-
+            
               if (ref && data.refSource === null && data.referrals === 0) {
                 setShowNoRefNotice(true);
               }
             }
             setInitialLoad(false);
-          })
           .catch(err => {
             console.error("Ошибка загрузки игрока:", err);
             setInitialLoad(false);
@@ -159,6 +158,7 @@ export default function MMMGo() {
   
       const cooldownEndTime = new Date(Date.now() + 3600 * 1000);
       setBoostCooldownUntil(cooldownEndTime);
+      
   
       if (telegramId) {
         fetch("https://mmmgo-backend.onrender.com/player", {
