@@ -36,6 +36,8 @@ export default function MMMGo() {
   const [isInvestor, setIsInvestor] = useState(false);
   const [srRating, setSrRating] = useState(0);
   const [referrals, setReferrals] = useState(0);
+  const [totalTaps, setTotalTaps] = useState(0);
+const [adsWatched, setAdsWatched] = useState(0);
 
   const levelTitles: string[] = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
@@ -93,55 +95,57 @@ export default function MMMGo() {
       }, []);
       
 
-  useEffect(() => {
-    if (balance === null || initialLoad) return;
-
-    const newLevel = Math.min(Math.floor(balance / 100), 8);
-    if (level !== null && newLevel !== level) {
-      setLevel(newLevel);
-      setShowLevelNotice(true);
-      setTimeout(() => setShowLevelNotice(false), 3000);
-    } else {
-      setLevel(newLevel);
-    }
-
-    setNextLevel((newLevel + 1) * 100);
-    setInvestors(Math.floor(balance / 5000));
-  }, [balance]);
-
-  const handleClick = () => {
-    if (balance === null || telegramId === null) return;
-
-    const coinsToAdd = boostActive ? 3 : 1;
-    const newBalance = balance + coinsToAdd;
-    setBalance(newBalance);
-
-    if (newBalance % 100000 === 0) {
-      setShowMavrodik(true);
-      setTimeout(() => setShowMavrodik(false), 3000);
-    }
-
-    if (newBalance % 100 === 0) {
-      setHighlightRecharge(true);
-      setTimeout(() => setHighlightRecharge(false), 2000);
-    }
-
-    fetch("https://mmmgo-backend.onrender.com/player", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        telegramId,
-        playerName,
-        balance: newBalance,
-        level: calculatedLevel,
-        isBoostActive: boostActive,
-        isInvestor,
-        srRating,
-        referrals,
-      }),
-    }).catch((err) => console.error("Ошибка сохранения:", err));
-  };
-
+      useEffect(() => {
+        if (balance === null || initialLoad) return;
+    
+        const newLevel = Math.min(Math.floor(balance / 100), 8);
+        if (level !== null && newLevel !== level) {
+          setLevel(newLevel);
+          setShowLevelNotice(true);
+          setTimeout(() => setShowLevelNotice(false), 3000);
+        } else {
+          setLevel(newLevel);
+        }
+    
+        setNextLevel((newLevel + 1) * 100);
+        setInvestors(Math.floor(balance / 5000));
+      }, [balance]);
+    
+      const handleClick = () => {
+        if (balance === null || telegramId === null) return;
+    
+        const coinsToAdd = boostActive ? 3 : 1;
+        const newBalance = balance + coinsToAdd;
+        setBalance(newBalance);
+        setTotalTaps((prev) => prev + 1); // 👈 Увеличиваем totalTaps
+    
+        if (newBalance % 100000 === 0) {
+          setShowMavrodik(true);
+          setTimeout(() => setShowMavrodik(false), 3000);
+        }
+    
+        if (newBalance % 100 === 0) {
+          setHighlightRecharge(true);
+          setTimeout(() => setHighlightRecharge(false), 2000);
+        }
+    
+        fetch("https://mmmgo-backend.onrender.com/player", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            telegramId,
+            playerName,
+            balance: newBalance,
+            level: calculatedLevel,
+            isBoostActive: boostActive,
+            isInvestor,
+            referrals,
+            totalTaps,
+            adsWatched
+          }),
+        }).catch((err) => console.error("Ошибка сохранения:", err));
+      };
+    
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -192,7 +196,52 @@ export default function MMMGo() {
 
     alert("Просмотр рекламы...");
     setBoostActive(true);
-  };
+    setAdsWatched((prev) => prev + 1); // 👈 Увеличиваем adsWatched
+};
+
+useEffect(() => {
+  let interval: NodeJS.Timeout;
+
+  if (boostActive && balance !== null) {
+    interval = setInterval(() => {
+      setBalance(prev => {
+        const newBalance = (prev ?? 0) + 3;
+
+        if (telegramId) {
+          fetch("https://mmmgo-backend.onrender.com/player", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              telegramId,
+              playerName,
+              balance: newBalance,
+              level: calculatedLevel,
+              isBoostActive: true,
+              isInvestor,
+              referrals,
+              totalTaps,
+              adsWatched
+            }),
+          }).catch((err) => console.error("Ошибка сохранения:", err));
+        }
+
+        return newBalance;
+      });
+    }, 500);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      setBoostActive(false);
+      setBoostCooldown(true);
+      setShowBoostEndedNotice(true);
+      setTimeout(() => setShowBoostEndedNotice(false), 5000);
+      setTimeout(() => setBoostCooldown(false), 3600000);
+    }, 20000);
+  }
+
+  return () => clearInterval(interval);
+}, [boostActive]);
+
 
   return (
     <>
@@ -243,7 +292,7 @@ export default function MMMGo() {
         <Link to="/rating">
           <div className="bar-wrapper">
             <img src={barRating} className="bar-img" alt="SR рейтинг" />
-            <div className="bar-text">📊 SR рейтинг: #{telegramId || 0}</div>
+            <div className="bar-text">📊 SR рейтинг: {srRating}</div>
           </div>
         </Link>
       </div>
