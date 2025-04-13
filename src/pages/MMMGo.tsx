@@ -41,7 +41,7 @@ export default function MMMGo() {
   const [refSource, setRefSource] = useState(null);
   const [showNoRefNotice, setShowNoRefNotice] = useState(false);
   const [showAdNotice, setShowAdNotice] = useState(false);
-  const [boostCooldownUntil, setBoostCooldownUntil] = useState<Date | null>(null);
+  const [boostCooldownUntil, setBoostCooldownUntil] = useState(null);
 
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
@@ -49,7 +49,6 @@ export default function MMMGo() {
   ];
 
   const levelBackgrounds = { 1: bg1, 2: bg2, 3: bg3, 4: bg4, 5: bg5, 6: bg6, 7: bg7, 8: bg8 };
-
   const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
   const backgroundImage = initialLoad ? "none" : calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
 
@@ -73,38 +72,35 @@ export default function MMMGo() {
           .then(data => {
             if (data.boostCooldownUntil) {
               const cooldownEnd = new Date(data.boostCooldownUntil);
+              setBoostCooldownUntil(cooldownEnd);
               const now = new Date();
-            
               if (cooldownEnd > now) {
-                setBoostCooldownUntil(cooldownEnd);
                 setBoostCooldown(true);
-            
-                const remaining = cooldownEnd.getTime() - now.getTime();
-                setTimeout(() => {
-                  setBoostCooldown(false);
-                }, remaining);
+                setTimeout(() => setBoostCooldown(false), cooldownEnd.getTime() - now.getTime());
               } else {
                 setBoostCooldown(false);
               }
             }
-            
+
             if (typeof data.balance === "number") {
               setBalance(data.balance);
               setLevel(Math.min(Math.floor(data.balance / 100), 8));
               setIsInvestor(data.isInvestor || false);
               setSrRating(data.srRating || 0);
               setReferrals(data.referrals || 0);
-            
+              setAdsWatched(data.adsWatched || 0);
+              setTotalTaps(data.totalTaps || 0);
+
               if (ref && data.refSource === null && data.referrals === 0) {
                 setShowNoRefNotice(true);
               }
             }
             setInitialLoad(false);
-  })
-  .catch(err => {
-    console.error("Ошибка загрузки игрока:", err);
-    setInitialLoad(false);
-  });
+          })
+          .catch(err => {
+            console.error("Ошибка загрузки игрока:", err);
+            setInitialLoad(false);
+          });
       } else {
         setTimeout(loadUser, 300);
       }
@@ -114,36 +110,34 @@ export default function MMMGo() {
   }, []);
 
   useEffect(() => {
-    if (balance === null || initialLoad) return;
-    const newLevel = Math.min(Math.floor(balance / 100), 8);
-    setLevel(newLevel);
-    setNextLevel((newLevel + 1) * 100);
-    setInvestors(Math.floor(balance / 5000));
-  }, [balance]);
+    if (!telegramId || balance === null || initialLoad) return;
 
-  const handleClick = () => {
-    if (balance === null || telegramId === null) return;
-    const coinsToAdd = boostActive ? 3 : 1;
-    const newBalance = balance + coinsToAdd;
-    setBalance(newBalance);
-    setTotalTaps(prev => prev + 1);
-
-    if (newBalance % 100000 === 0) {
-      setShowMavrodik(true);
-      setTimeout(() => setShowMavrodik(false), 3000);
-    }
-
-    if (newBalance % 100 === 0) {
-      setHighlightRecharge(true);
-      setTimeout(() => setHighlightRecharge(false), 2000);
-    }
+    const srRatingCalculated = Math.floor(
+      Math.log2((referrals || 0) + 1) * 40 +
+      Math.log2((totalTaps || 0) + 1) * 25 +
+      Math.log2((adsWatched || 0) + 1) * 35
+    );
 
     fetch("https://mmmgo-backend.onrender.com/player", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ telegramId, playerName, balance: newBalance, level: calculatedLevel, isBoostActive: boostActive, isInvestor, referrals, totalTaps, adsWatched })
-    }).catch(err => console.error("Ошибка сохранения:", err));
-  };
+      body: JSON.stringify({
+        telegramId,
+        playerName,
+        balance,
+        level: calculatedLevel,
+        isBoostActive: boostActive,
+        isInvestor,
+        referrals,
+        totalTaps,
+        adsWatched,
+        srRating: srRatingCalculated,
+        boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null
+      }),
+    }).catch((err) => console.error("❌ Ошибка автосохранения:", err));
+
+  }, [balance, totalTaps, adsWatched, referrals, isInvestor, calculatedLevel]);
+  
 
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
