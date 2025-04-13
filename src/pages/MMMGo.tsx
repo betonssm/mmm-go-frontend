@@ -141,30 +141,36 @@ export default function MMMGo() {
       alert("Буст уже активен или на перезарядке!");
       return;
     }
+  
     setShowAdNotice(true);
+  
     setTimeout(() => {
       setShowAdNotice(false);
       setBoostActive(true);
+  
       const cooldownEndTime = new Date(Date.now() + 3600 * 1000);
-setBoostCooldownUntil(cooldownEndTime);
-
-fetch("https://mmmgo-backend.onrender.com/player", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    telegramId,
-    playerName,
-    balance,
-    level: calculatedLevel,
-    isBoostActive: true,
-    isInvestor,
-    referrals,
-    totalTaps,
-    adsWatched,
-    boostCooldownUntil: cooldownEndTime.toISOString()
-  }),
-});
-      setAdsWatched(prev => prev + 1);
+      setBoostCooldownUntil(cooldownEndTime);
+  
+      if (telegramId) {
+        fetch("https://mmmgo-backend.onrender.com/player", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            telegramId,
+            playerName,
+            balance,
+            level: calculatedLevel,
+            isBoostActive: true,
+            isInvestor,
+            referrals,
+            totalTaps,
+            adsWatched,
+            boostCooldownUntil: cooldownEndTime.toISOString(),
+          }),
+        });
+      }
+  
+      setAdsWatched((prev) => prev + 1); // ⬅️ ВНЕ if
     }, 1500);
   };
 
