@@ -75,6 +75,20 @@ export default function MMMGo() {
               const cooldownEnd = new Date(data.boostCooldownUntil);
               setBoostCooldownUntil(cooldownEnd);
             
+              const now = new Date();
+              if (cooldownEnd > now) {
+                setBoostCooldown(true);
+            
+                const remaining = cooldownEnd.getTime() - now.getTime();
+                setTimeout(() => {
+                  setBoostCooldown(false);
+                }, remaining);
+              }
+            }
+            if (data.boostCooldownUntil) {
+              const cooldownEnd = new Date(data.boostCooldownUntil);
+              setBoostCooldownUntil(cooldownEnd);
+            
               if (cooldownEnd > new Date()) {
                 setBoostCooldown(true);
               }
