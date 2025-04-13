@@ -41,6 +41,7 @@ export default function MMMGo() {
   const [refSource, setRefSource] = useState(null);
   const [showNoRefNotice, setShowNoRefNotice] = useState(false);
   const [showAdNotice, setShowAdNotice] = useState(false);
+  const [boostCooldownUntil, setBoostCooldownUntil] = useState<Date | null>(null);
 
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
@@ -70,6 +71,14 @@ export default function MMMGo() {
         fetch(`https://mmmgo-backend.onrender.com/player/${user.id}?ref=${ref ?? ""}`)
           .then(res => res.json())
           .then(data => {
+            if (data.boostCooldownUntil) {
+              const cooldownEnd = new Date(data.boostCooldownUntil);
+              setBoostCooldownUntil(cooldownEnd);
+            
+              if (cooldownEnd > new Date()) {
+                setBoostCooldown(true);
+              }
+            }
             if (typeof data.balance === "number") {
               setBalance(data.balance);
               setLevel(Math.min(Math.floor(data.balance / 100), 8));
@@ -136,6 +145,25 @@ export default function MMMGo() {
     setTimeout(() => {
       setShowAdNotice(false);
       setBoostActive(true);
+      const cooldownEndTime = new Date(Date.now() + 3600 * 1000);
+setBoostCooldownUntil(cooldownEndTime);
+
+fetch("https://mmmgo-backend.onrender.com/player", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    telegramId,
+    playerName,
+    balance,
+    level: calculatedLevel,
+    isBoostActive: true,
+    isInvestor,
+    referrals,
+    totalTaps,
+    adsWatched,
+    boostCooldownUntil: cooldownEndTime.toISOString()
+  }),
+});
       setAdsWatched(prev => prev + 1);
     }, 1500);
   };
