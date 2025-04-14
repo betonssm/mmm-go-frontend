@@ -301,6 +301,7 @@ export default function MMMGo() {
           </div>
         </Link>
       </div>
+      </div>
         {showMavrodik && (<img src={mavrodikFloating} alt="Мавродик" className="floating-mavrodik" />)}
         {showBoostEndedNotice && (<div className="toast-notice">✨ Буст завершён. Повторно доступен через 1 час.</div>)}
         {showAdNotice && (<div className="toast-notice">🎥 Реклама просмотрена! Буст активирован на 20 секунд.</div>)}
