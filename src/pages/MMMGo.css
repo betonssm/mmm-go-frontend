@@ -205,27 +205,15 @@ button {
 }
 
 .info-bars {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* по умолчанию 2x2 */
-  justify-items: center;
-  gap: 6px;
-  padding: 10px 0 16px;
-  background: transparent;
-  z-index: 10;
-  max-width: 100%;
+  display: none;
 }
 .bar-wrapper {
+  width: 100%;
+  max-width: 160px;
   position: relative;
-  width: 93%;
-  max-width: 360px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  margin: 0 auto;
-  transition: transform 0.15s ease, filter 0.15s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
 }
 .bar-wrapper:active {
   transform: scale(0.95);
@@ -729,11 +717,13 @@ button {
   }
 }
 .info-bars-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 20px;
+  justify-items: center;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 90%;
 }
 
 .info-bars-grid .bar-wrapper {

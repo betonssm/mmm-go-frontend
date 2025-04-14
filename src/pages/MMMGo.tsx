@@ -252,56 +252,53 @@ export default function MMMGo() {
           🎉 Новый уровень: {levelTitles[calculatedLevel]}!
         </div>
       )}
+  
       <div className="top-buttons">
-  <img src={boostTapImage} className="boost-tap-button" alt="Буст Тапов" onClick={handleBoostTaps} />
-  <Link to="/topup">
-    <img src={rechargeGold} className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`} alt="Пополнить баланс"/>
-  </Link>
-</div>
-      <div className="info-bars">
-        <img src={boostTapImage} className="boost-tap-button" alt="Буст Тапов" onClick={handleBoostTaps} />
-        <div style={{ position: "relative" }}><Link to="/topup"><img src={rechargeGold} className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`} alt="Пополнить баланс"/></Link></div>
-        <div className="info-bars">
-  <img src={boostTapImage} className="boost-tap-button" alt="Буст Тапов" onClick={handleBoostTaps} />
-  <Link to="/topup">
-    <img
-      src={rechargeGold}
-      className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
-      alt="Пополнить баланс"
-    />
-  </Link>
-
-  <div className="info-bars-grid">
-    <Link to="/level">
-      <div className="bar-wrapper">
-        <img src={barLevel} className="bar-img" alt="До уровня" />
-        <div className="bar-text">
-          🔁 До уровня: {nextLevel - (balance ?? 0)} мавродиков
-        </div>
+        <img
+          src={boostTapImage}
+          className="boost-tap-button"
+          alt="Буст Тапов"
+          onClick={handleBoostTaps}
+        />
+        <Link to="/topup">
+          <img
+            src={rechargeGold}
+            className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
+            alt="Пополнить баланс"
+          />
+        </Link>
       </div>
-    </Link>
-    <Link to="/rank">
-      <div className="bar-wrapper">
-        <img src={barRank} className="bar-img" alt="Ранг" />
-        <div className="bar-text">🏅 Инвестор {level ?? 0}-го ранга</div>
+  
+      <div className="info-bars-grid">
+        <Link to="/level">
+          <div className="bar-wrapper">
+            <img src={barLevel} className="bar-img" alt="До уровня" />
+            <div className="bar-text">🔁 До уровня: {nextLevel - (balance ?? 0)} мавродиков</div>
+          </div>
+        </Link>
+  
+        <Link to="/rank">
+          <div className="bar-wrapper">
+            <img src={barRank} className="bar-img" alt="Ранг" />
+            <div className="bar-text">🏅 Инвестор {level ?? 0}-го ранга</div>
+          </div>
+        </Link>
+  
+        <Link to="/referrals">
+          <div className="bar-wrapper">
+            <img src={barInvestors} className="bar-img" alt="Рефералы" />
+            <div className="bar-text">👥 Рефералы: {referrals}</div>
+          </div>
+        </Link>
+  
+        <Link to="/rating">
+          <div className="bar-wrapper">
+            <img src={barRating} className="bar-img" alt="SR рейтинг" />
+            <div className="bar-text">📊 SR рейтинг: {srRating}</div>
+          </div>
+        </Link>
       </div>
-    </Link>
-    <Link to="/referrals">
-      <div className="bar-wrapper">
-        <img src={barInvestors} className="bar-img" alt="Рефералы" />
-        <div className="bar-text">👥 Рефералы: {referrals}</div>
-      </div>
-    </Link>
-    <Link to="/rating">
-      <div className="bar-wrapper">
-        <img src={barRating} className="bar-img" alt="SR рейтинг" />
-        <div className="bar-text">📊 SR рейтинг: {srRating}</div>
-      </div>
-    </Link>
-  </div>
-</div>
-      </div>
-      <div className="glow-overlay"></div>
+ <div className="glow-overlay"></div>
       <div className="container" style={{ backgroundImage, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", transition: "background-image 0.8s ease-in-out" }}>
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
