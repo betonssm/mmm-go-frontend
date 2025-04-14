@@ -262,13 +262,7 @@ export default function MMMGo() {
           </div>
         </Link>
         <img src={boostTapImage} className="boost-tap-button" alt="Буст Тапов" onClick={handleBoostTaps} />
-        <Link to="/topup">
-  <img
-    src={rechargeGold}
-    className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
-    alt="Пополнить баланс"
-  />
-</Link>
+        <img src={rechargeGold} className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`} alt="Пополнить баланс" onClick={() => alert("Пополнение скоро!")} />
         <Link to="/rank">
           <div className="bar-wrapper">
             <img src={barRank} className="bar-img" alt="Ранг" />
