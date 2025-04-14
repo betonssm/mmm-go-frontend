@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "./StartScreen.css";
 import mavrodikClean from "../assets/mavrodik_clean.png";
-import startButtonImg from "../assets/start-button.png";
+import startButtonImg from "../assets/start_button.png";
 import { useNavigate } from "react-router-dom";
 
 export default function StartScreen() {
