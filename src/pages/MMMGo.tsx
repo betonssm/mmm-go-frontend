@@ -252,6 +252,12 @@ export default function MMMGo() {
           🎉 Новый уровень: {levelTitles[calculatedLevel]}!
         </div>
       )}
+      <div className="top-buttons">
+  <img src={boostTapImage} className="boost-tap-button" alt="Буст Тапов" onClick={handleBoostTaps} />
+  <Link to="/topup">
+    <img src={rechargeGold} className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`} alt="Пополнить баланс"/>
+  </Link>
+</div>
       <div className="info-bars">
         <Link to="/level">
           <div className="bar-wrapper">

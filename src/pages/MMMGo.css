@@ -252,9 +252,9 @@ button {
 }
 
 .recharge-gold-button {
-  position: absolute;
+  /*position: absolute;
   top: -60px;
-  right: 15px;
+  right: 15px;*/
   width: 110px;
   height: auto;
   z-index: 10;
@@ -269,7 +269,7 @@ button {
   padding-bottom: 50px;  /* Добавление отступа снизу для кнопки */
 }
 .boost-tap-button {
-  position: absolute;
+  /*position: absolute;
   top: -60px;
   left: 15px;  /* Кнопка размещается слева */
   width: 110px;
@@ -700,4 +700,31 @@ button {
 
 .rules-button-top:hover {
   transform: scale(1.1);
+}
+.top-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  margin-top: -20px;
+  position: relative;
+  z-index: 3;
+}
+
+.boost-tap-button,
+.recharge-gold-button {
+  width: 110px;
+  height: auto;
+}
+
+@media screen and (max-width: 420px) {
+  .top-buttons {
+    max-width: 240px;
+  }
+  .boost-tap-button,
+  .recharge-gold-button {
+    width: 90px;
+  }
 }
