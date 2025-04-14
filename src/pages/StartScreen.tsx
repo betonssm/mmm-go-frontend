@@ -1,24 +1,43 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./StartScreen.css";
-import mavrodikImg from "../assets/mavrodik_clean.png";
-import buttonImg from "../assets/start_button.png";
-import coinSound from "../assets/coin.mp3";
+import mavrodikClean from "../assets/mavrodik_clean.png";
+import startButtonImg from "../assets/start-button.png";
+import { useNavigate } from "react-router-dom";
 
-export default function StartScreen({ onStart }: { onStart: () => void }) {
-  const playSoundAndStart = () => {
-    const audio = new Audio(coinSound);
-    audio.play().catch((e) => console.log("Audio play error:", e));
-    onStart();
+export default function StartScreen() {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = mavrodikClean;
+    img.onload = () => setImageLoaded(true);
+  }, []);
+
+  const handleStart = () => {
+    navigate("/game");
   };
 
   return (
     <div className="start-wrapper">
       <div className="start-box">
-        <img src={mavrodikImg} alt="Мавродик" className="start-image" />
-        <button className="start-button glow" onClick={playSoundAndStart}>
-          <img src={buttonImg} alt="Начать" />
-        </button>
+        {!imageLoaded ? (
+          <div className="loading-screen">Загрузка...</div>
+        ) : (
+          <>
+            <img
+              src={mavrodikClean}
+              alt="Мавродик"
+              className="start-image"
+              loading="eager"
+              onClick={handleStart}
+            />
+            <button className="start-button glow" onClick={handleStart}>
+              <img src={startButtonImg} alt="Начать" />
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
