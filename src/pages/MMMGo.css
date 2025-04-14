@@ -719,11 +719,12 @@ button {
 .info-bars-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px 20px;
+  gap: 10px 16px;
   justify-items: center;
   align-items: center;
-  margin: 20px auto;
-  max-width: 90%;
+  margin-top: auto;
+  margin-bottom: 30px; /* отступ от низа */
+  padding: 0 16px;
 }
 
 .info-bars-grid .bar-wrapper {

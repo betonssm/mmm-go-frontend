@@ -269,7 +269,18 @@ export default function MMMGo() {
         </Link>
       </div>
   
-      <div className="info-bars-grid">
+ <div className="glow-overlay"></div>
+      <div className="container" style={{ backgroundImage, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", transition: "background-image 0.8s ease-in-out" }}>
+        <h2>Привет, {playerName || "вкладчик"}!</h2>
+        <p className="player-id">ID: {telegramId || "неизвестен"}</p>
+        {showNoRefNotice && (
+          <div style={{ background: "rgba(255,0,0,0.2)", color: "#fff", padding: "10px 20px", borderRadius: "10px", margin: "10px auto", maxWidth: "90%", fontWeight: "bold", boxShadow: "0 0 10px red" }}>
+            ⚠️ Реферал не засчитан.<br />Убедитесь, что вы открыли ссылку от друга <u>впервые</u> или <u>удалите бота и начните заново</u> по ссылке.
+          </div>
+        )}
+        <h1>Баланс:<br />{initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}</h1>
+        <button className={`coin-button ${boostActive ? "boost-animation" : ""}`} onClick={handleClick} disabled={balance === null}></button>
+        <div className="info-bars-grid">
         <Link to="/level">
           <div className="bar-wrapper">
             <img src={barLevel} className="bar-img" alt="До уровня" />
@@ -298,17 +309,6 @@ export default function MMMGo() {
           </div>
         </Link>
       </div>
- <div className="glow-overlay"></div>
-      <div className="container" style={{ backgroundImage, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", transition: "background-image 0.8s ease-in-out" }}>
-        <h2>Привет, {playerName || "вкладчик"}!</h2>
-        <p className="player-id">ID: {telegramId || "неизвестен"}</p>
-        {showNoRefNotice && (
-          <div style={{ background: "rgba(255,0,0,0.2)", color: "#fff", padding: "10px 20px", borderRadius: "10px", margin: "10px auto", maxWidth: "90%", fontWeight: "bold", boxShadow: "0 0 10px red" }}>
-            ⚠️ Реферал не засчитан.<br />Убедитесь, что вы открыли ссылку от друга <u>впервые</u> или <u>удалите бота и начните заново</u> по ссылке.
-          </div>
-        )}
-        <h1>Баланс:<br />{initialLoad || balance === null ? "Загрузка мавродиков..." : `${balance} мавродиков`}</h1>
-        <button className={`coin-button ${boostActive ? "boost-animation" : ""}`} onClick={handleClick} disabled={balance === null}></button>
         {showMavrodik && (<img src={mavrodikFloating} alt="Мавродик" className="floating-mavrodik" />)}
         {showBoostEndedNotice && (<div className="toast-notice">✨ Буст завершён. Повторно доступен через 1 час.</div>)}
         {showAdNotice && (<div className="toast-notice">🎥 Реклама просмотрена! Буст активирован на 20 секунд.</div>)}
