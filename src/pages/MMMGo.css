@@ -251,12 +251,11 @@ button {
 }
 
 .recharge-gold-button {
-  position: absolute;
-  top: -60px;
-  right: 15px;
-  width: 110px;
+  width: 45%;
+  max-width: 160px;
   height: auto;
-  z-index: 10;
+  cursor: pointer;
+  transition: transform 0.15s ease;
 }
 
 .recharge-gold-button:active {
@@ -268,12 +267,9 @@ button {
   padding-bottom: 50px;  /* Добавление отступа снизу для кнопки */
 }
 .boost-tap-button {
-  position: absolute;
-  top: -60px;
-  left: 15px;  /* Кнопка размещается слева */
-  width: 110px;
+  width: 45%;
+  max-width: 160px;
   height: auto;
-  z-index: 10;
   cursor: pointer;
   transition: transform 0.15s ease;
 }
@@ -702,12 +698,13 @@ button {
 }
 .bottom-buttons {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 24px;
-  margin-bottom: 8px;
-  margin-top: 12px;
-  z-index: 10;
+  margin: 10px auto;
+  width: 90%;
+  max-width: 500px;
+  position: relative; /* теперь позиционирование вложенных работает */
+  z-index: 2;
 }
 
 .info-bars {
