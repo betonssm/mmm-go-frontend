@@ -9,6 +9,7 @@ import RatingPage from "./pages/RatingPage";
 import StartScreen from "./pages/StartScreen";
 import RulesPage from "./pages/RulesPage";
 import ReferralPage from "./pages/ReferralPage"; // ✅ добавили рефералы
+import TopUpPage from "./pages/TopUpPage";
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -20,6 +21,7 @@ export default function App() {
   return (
     <div style={{ height: "100vh", overflowY: "auto" }}>
       <Routes>
+      <Route path="/topup" element={<TopUpPage />} />
         <Route path="/" element={<MMMGo />} />
         <Route path="/level" element={<LevelPage />} />
         <Route path="/rank" element={<RankPage />} />
