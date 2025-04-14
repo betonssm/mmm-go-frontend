@@ -5,9 +5,8 @@ import mavrodikClean from "../assets/mavrodik_clean.png";
 import startButtonImg from "../assets/start_button.png";
 import { useNavigate } from "react-router-dom";
 
-export default function StartScreen() {
+export default function StartScreen({ onStart }: { onStart: () => void }) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const img = new Image();
@@ -16,7 +15,7 @@ export default function StartScreen() {
   }, []);
 
   const handleStart = () => {
-    navigate("/game");
+    onStart();
   };
 
   return (
