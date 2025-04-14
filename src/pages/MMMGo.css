@@ -700,10 +700,10 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px auto;
+  margin: 30px auto 10px auto; /* ⬅️ это опускает кнопки вниз */
   width: 90%;
   max-width: 500px;
-  position: relative; /* теперь позиционирование вложенных работает */
+  position: relative;
   z-index: 2;
 }
 
