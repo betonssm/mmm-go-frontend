@@ -728,3 +728,16 @@ button {
     width: 90px;
   }
 }
+.info-bars-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.info-bars-grid .bar-wrapper {
+  width: calc(50% - 12px);
+  max-width: 170px;
+  min-width: 130px;
+}
