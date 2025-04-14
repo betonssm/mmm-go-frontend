@@ -253,21 +253,21 @@ export default function MMMGo() {
         </div>
       )}
   
-      <div className="top-buttons">
-        <img
-          src={boostTapImage}
-          className="boost-tap-button"
-          alt="Буст Тапов"
-          onClick={handleBoostTaps}
-        />
-        <Link to="/topup">
-          <img
-            src={rechargeGold}
-            className={`recharge-gold-button ${highlightRecharge ? "animate-glow" : ""}`}
-            alt="Пополнить баланс"
-          />
-        </Link>
-      </div>
+  <div className="bottom-buttons">
+  <img
+    src={boostTapImage}
+    className="boost-tap-button"
+    alt="Буст Тапов"
+    onClick={handleBoostTaps}
+  />
+  <Link to="/topup">
+    <img
+      src={rechargeGold}
+      className="recharge-gold-button"
+      alt="Пополнить баланс"
+    />
+  </Link>
+</div>
   
  <div className="glow-overlay"></div>
       <div className="container" style={{ backgroundImage, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", transition: "background-image 0.8s ease-in-out" }}>

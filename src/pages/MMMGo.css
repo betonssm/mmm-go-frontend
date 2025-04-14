@@ -208,12 +208,16 @@ button {
   display: none;
 }
 .bar-wrapper {
-  width: 100%;
-  max-width: 160px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #d1972c;
+  padding: 12px;
   border-radius: 12px;
-  overflow: hidden;
-  transition: transform 0.2s ease;
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
 }
 .bar-wrapper:active {
   transform: scale(0.95);
@@ -222,9 +226,8 @@ button {
 .bar-img {
   width: 100%;
   height: auto;
-  display: block;
+  margin-bottom: 5px;
 }
-
 .bar-text {
   position: absolute;
   top: 50%;
@@ -689,24 +692,32 @@ button {
 .rules-button-top:hover {
   transform: scale(1.1);
 }
-.top-buttons {
+.bottom-buttons {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  position: absolute;
+  bottom: 160px;
   width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  margin-top: -20px;
-  position: relative;
-  z-index: 3;
+}
+.info-bars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 20px;
+  max-width: 100%;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .boost-tap-button,
 .recharge-gold-button {
-  width: 110px;
+  width: 120px;
   height: auto;
 }
-
 @media screen and (max-width: 420px) {
   .top-buttons {
     max-width: 240px;
@@ -719,12 +730,13 @@ button {
 .info-bars-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px 16px;
-  justify-items: center;
-  align-items: center;
-  margin-top: auto;
-  margin-bottom: 30px; /* отступ от низа */
-  padding: 0 16px;
+  gap: 12px;
+  padding: 20px;
+  max-width: 100%;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .info-bars-grid .bar-wrapper {
