@@ -2,7 +2,7 @@ body, html {
   margin: 0;
   padding: 0;
   touch-action: manipulation;
-  overflow: hidden;
+  overflow: auto;
 }
 .rules-page-container {
   min-height: 100vh;
@@ -377,7 +377,6 @@ button {
 }
 .container {
   height: 100vh;
-  overflow: hidden;
   position: relative;
 
   background-size: cover;
