@@ -741,3 +741,7 @@ button {
   font-weight: bold;
   z-index: 9999;
 }
+.no-scroll {
+  height: 100vh;
+  overflow: hidden;
+}
