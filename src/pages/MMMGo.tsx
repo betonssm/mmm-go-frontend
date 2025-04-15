@@ -18,6 +18,7 @@ import bg6 from "../assets/bg-level-6.png";
 import bg7 from "../assets/bg-level-7.png";
 import bg8 from "../assets/bg-level-8.png";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(null);
