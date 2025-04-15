@@ -744,12 +744,3 @@ button {
   font-weight: bold;
   z-index: 9999;
 }
-.telegram-frame-gradient {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 50px;
-  background: linear-gradient(to bottom, #fce76b, transparent);
-  z-index: 0;
-}
