@@ -32,7 +32,7 @@ export default function ReferralPage() {
     }
 
     const img = new Image();
-    img.src = "/assets/bg-rating.png";
+    img.src = "/assets/bg-investors.png";
     img.onload = () => setBgLoaded(true);
   }, []);
 
@@ -54,7 +54,7 @@ export default function ReferralPage() {
     <div
       className="info-page"
       style={{
-        backgroundImage: `url(/assets/bg-rating.png)`,
+        backgroundImage: `url(/assets/bg-investors.png)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
