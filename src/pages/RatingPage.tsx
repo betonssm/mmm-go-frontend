@@ -6,6 +6,7 @@ import "../pages/MMMGo.css"; // правильный путь к стилям
 export default function PlayerRatingPage() {
   const navigate = useNavigate();
   const [srRating, setSrRating] = useState(0);
+  const [bgLoaded, setBgLoaded] = useState(false);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -19,18 +20,29 @@ export default function PlayerRatingPage() {
         })
         .catch((err) => console.error("Ошибка загрузки SR рейтинга:", err));
     }
+
+    // Подгрузка фона
+    const img = new Image();
+    img.src = "/assets/bg-rating.png";
+    img.onload = () => setBgLoaded(true);
   }, []);
+
+  if (!bgLoaded) {
+    return <div className="loading-screen">Загрузка...</div>;
+  }
 
   return (
     <div
       className="info-page"
       style={{
-        backgroundImage: `url(assets/bg-rating.png)`,
+        backgroundImage: `url(/assets/bg-rating.png)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         paddingTop: "30px",
         paddingBottom: "30px",
+        minHeight: "100vh",
+        boxSizing: "border-box",
       }}
     >
       <div

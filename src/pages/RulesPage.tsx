@@ -1,25 +1,37 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css"; // Убедитесь, что стили подключены правильно
 
 export default function RulesPage() {
   const navigate = useNavigate();
+  const [bgLoaded, setBgLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/assets/bg-rules.png";
+    img.onload = () => setBgLoaded(true);
+  }, []);
+
+  if (!bgLoaded) {
+    return <div className="loading-screen">Загрузка...</div>;
+  }
 
   return (
     <div
-      className="rules-page-container"  // Этот класс локально определяет стили для этой страницы
+      className="rules-page-container"
       style={{
-        backgroundImage: `url(/assets/bg-rules.png)`,  // Проверьте, что bg-rules.png лежит в папке public/assets/
+        backgroundImage: `url(/assets/bg-rules.png)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        minHeight: "100vh", // Страница занимает всю высоту экрана
-        display: "flex", // Flexbox для вертикального расположения
+        minHeight: "100vh",
+        display: "flex",
         flexDirection: "column",
         paddingTop: "30px",
         paddingBottom: "30px",
         padding: "0 20px",
+        boxSizing: "border-box",
       }}
     >
       <h2
@@ -32,7 +44,6 @@ export default function RulesPage() {
         📜 Правила игры MMM Go
       </h2>
 
-      {/* Сжатое изложение основных правил */}
       <div
         style={{
           marginBottom: "20px",
@@ -74,7 +85,6 @@ export default function RulesPage() {
         </a>
       </p>
 
-      {/* Кнопка "Принять" */}
       <button
         onClick={() => navigate("/")}
         style={{
