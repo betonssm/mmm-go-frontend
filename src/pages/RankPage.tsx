@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css"; // общий стиль
-import bgRank from "../assets/bg-rank.png"; // путь к фону
+import bgRank from "../public/assets/bg-rank.png"; // путь к фону
 
 export default function RankPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
