@@ -756,3 +756,13 @@ button {
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
   animation: fadeInOut 4s ease-in-out;
 }
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: #ffe082;
+  background-color: #000; /* Тёмный фон, чтобы текст был читаем */
+  text-align: center;
+}
