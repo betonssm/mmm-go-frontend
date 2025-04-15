@@ -114,6 +114,12 @@ export default function MMMGo() {
 
     loadUser();
   }, []);
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
 
   useEffect(() => {
     if (!telegramId || balance === null || initialLoad) return;
