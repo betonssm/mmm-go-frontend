@@ -12,9 +12,19 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
     const img = new Image();
     img.src = mavrodikClean;
     img.onload = () => setImageLoaded(true);
+
+    // Попытка развернуть WebApp при загрузке
+    if (window.Telegram?.WebApp?.expand) {
+      window.Telegram.WebApp.expand();
+    }
   }, []);
 
   const handleStart = () => {
+    // Повторно разворачиваем WebApp, если не развернулся автоматически
+    if (window.Telegram?.WebApp?.expand) {
+      window.Telegram.WebApp.expand();
+    }
+
     onStart();
   };
 
