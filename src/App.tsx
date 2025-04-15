@@ -15,7 +15,7 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const location = useLocation();
 
-  // Блокируем скролл только на главной
+  // 🔒 Блокируем скролл только на главной странице
   useEffect(() => {
     if (location.pathname === "/") {
       document.body.style.overflow = "hidden";
@@ -24,7 +24,7 @@ export default function App() {
     }
 
     return () => {
-      document.body.style.overflow = "auto"; // восстановим при размонтировании
+      document.body.style.overflow = "auto";
     };
   }, [location.pathname]);
 
@@ -33,13 +33,13 @@ export default function App() {
   }
 
   return (
-    <div style={{ height: "100vh", overflow: "hidden" }}>
+    <div>
       <Routes>
         <Route path="/topup" element={<TopUpPage />} />
         <Route path="/" element={<MMMGo />} />
         <Route path="/level" element={<LevelPage />} />
         <Route path="/rank" element={<RankPage />} />
-        <Route path="/referrals" element={<ReferralPage />} /> {/* ✅ заменили investors */}
+        <Route path="/referrals" element={<ReferralPage />} />
         <Route path="/rating" element={<RatingPage />} />
         <Route path="/rules" element={<RulesPage />} />
       </Routes>
