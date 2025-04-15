@@ -260,6 +260,7 @@ export default function MMMGo() {
 
   return (
     <>
+    <div className="telegram-frame-gradient"></div>
       {showLevelNotice && (
         <div className="level-up-notice">
           🎉 Новый уровень: {levelTitles[calculatedLevel]}!
