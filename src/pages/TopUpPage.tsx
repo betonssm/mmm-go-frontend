@@ -1,11 +1,34 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./TopUpPage.css"; // добавим позже стили
+import "./TopUpPage.css"; // Подключаем стили
 
 export default function TopUpPage() {
+  const [bgLoaded, setBgLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/assets/bg-topup.png"; // Убедись, что файл есть в public/assets
+    img.onload = () => setBgLoaded(true);
+  }, []);
+
+  if (!bgLoaded) {
+    return <div className="loading-screen">Загрузка...</div>;
+  }
+
   return (
-    <div className="topup-container">
+    <div
+      className="topup-container"
+      style={{
+        backgroundImage: `url(/assets/bg-topup.png)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        padding: "30px 16px 60px",
+        boxSizing: "border-box",
+      }}
+    >
       <h1>Пополнение баланса</h1>
       <p>Выберите удобный способ оплаты:</p>
 
