@@ -1,10 +1,11 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css"; // Подключаем общий стиль
 
 export default function LevelPage() {
   const navigate = useNavigate();
+  const [bgLoaded, setBgLoaded] = useState(false);
 
   const levels = [
     { id: 1, name: "Новичок", required: "0" },
@@ -18,11 +19,21 @@ export default function LevelPage() {
     { id: 9, name: "Легенда MMMGO", required: "10 000 000" },
   ];
 
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/assets/bg-levels.png";
+    img.onload = () => setBgLoaded(true);
+  }, []);
+
+  if (!bgLoaded) {
+    return <div className="loading-screen">Загрузка...</div>;
+  }
+
   return (
     <div
       className="level-page"
       style={{
-        backgroundImage: `url(/assets/bg-levels.png)`, // Файл нужно поместить в public/assets
+        backgroundImage: `url(/assets/bg-levels.png)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

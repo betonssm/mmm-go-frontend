@@ -8,6 +8,7 @@ export default function ReferralPage() {
   const [telegramId, setTelegramId] = useState<number | null>(null);
   const [totalPlayers, setTotalPlayers] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [bgLoaded, setBgLoaded] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +24,16 @@ export default function ReferralPage() {
           setReferrals(data.referrals || 0);
         });
 
-        fetch("https://mmmgo-backend.onrender.com/player/count")
+      fetch("https://mmmgo-backend.onrender.com/player/count")
         .then(res => res.json())
         .then(data => {
           setTotalPlayers(data.totalPlayers || 0);
         });
     }
+
+    const img = new Image();
+    img.src = "/assets/bg-rating.png";
+    img.onload = () => setBgLoaded(true);
   }, []);
 
   const copyReferralLink = () => {
@@ -41,15 +46,21 @@ export default function ReferralPage() {
     });
   };
 
+  if (!bgLoaded) {
+    return <div className="loading-screen">Загрузка...</div>;
+  }
+
   return (
     <div
       className="info-page"
       style={{
-        backgroundImage: `url(assets/bg-rating.png)`,
+        backgroundImage: `url(/assets/bg-rating.png)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         padding: "30px",
+        minHeight: "100vh",
+        boxSizing: "border-box",
       }}
     >
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000" }}>👥 Твоя партнёрская программа</h2>
