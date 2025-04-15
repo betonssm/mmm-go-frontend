@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css"; // общий стиль
-import bgRank from "../public/assets/bg-rank.png"; // путь к фону
+
 
 export default function RankPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
@@ -16,25 +16,26 @@ export default function RankPage() {
 
   useEffect(() => {
     const img = new Image();
-    img.src = bgRank;
+    img.src = "/assets/bg-rank.png";
     img.onload = () => setBgLoaded(true);
   }, []);
-
+  
   if (!bgLoaded) {
     return <div className="loading-screen">Загрузка...</div>;
   }
 
   return (
     <div
-      className="info-page"
-      style={{
-        backgroundImage: `url(${bgRank})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        paddingTop: "30px",
-        paddingBottom: "30px",
-      }}
+  className="info-page"
+  style={{
+    backgroundImage: `url(/assets/bg-rank.png)`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    paddingTop: "30px",
+    paddingBottom: "30px",
+  }}
+
     >
       <div
         style={{
