@@ -33,7 +33,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ height: "100vh", overflowY: "auto" }}>
+    <div style={{ height: "100vh", overflow: "hidden" }}>
       <Routes>
         <Route path="/topup" element={<TopUpPage />} />
         <Route path="/" element={<MMMGo />} />
