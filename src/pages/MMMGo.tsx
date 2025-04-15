@@ -44,7 +44,7 @@ export default function MMMGo() {
   const [showAdNotice, setShowAdNotice] = useState(false);
   const [boostCooldownUntil, setBoostCooldownUntil] = useState(null);
   const [bgLoaded, setBgLoaded] = useState(false);
-
+  const [showBoostCooldownNotice, setShowBoostCooldownNotice] = useState(false);
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
     "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
@@ -190,7 +190,9 @@ export default function MMMGo() {
 
   const handleBoostTaps = () => {
     if (boostActive || boostCooldown) {
-      alert("Буст уже активен или на перезарядке!");
+      // Показываем уведомление
+      setShowBoostCooldownNotice(true);
+      setTimeout(() => setShowBoostCooldownNotice(false), 4000);
       return;
     }
   
@@ -199,10 +201,8 @@ export default function MMMGo() {
     setTimeout(() => {
       setShowAdNotice(false);
       setBoostActive(true);
-  
       const cooldownEndTime = new Date(Date.now() + 3600 * 1000);
       setBoostCooldownUntil(cooldownEndTime);
-      
   
       if (telegramId) {
         fetch("https://mmmgo-backend.onrender.com/player", {
@@ -223,10 +223,11 @@ export default function MMMGo() {
         });
       }
   
-      setAdsWatched((prev) => prev + 1); // ⬅️ ВНЕ if
+      setAdsWatched((prev) => prev + 1);
     }, 1500);
   };
-
+  
+      
   useEffect(() => {
     if (!boostActive || balance === null) return;
     const interval = setInterval(() => {
@@ -373,6 +374,11 @@ export default function MMMGo() {
             🎥 Реклама просмотрена! Буст активирован на 20 секунд.
           </div>
         )}
+        {showBoostCooldownNotice && (
+  <div className="toast-notice red">
+    ⏳ Буст уже активен или на перезарядке. Попробуй позже!
+  </div>
+)}
   
         <div className="rules-container">
           <Link to="/rules">

@@ -744,3 +744,15 @@ button {
   font-weight: bold;
   z-index: 9999;
 }
+.toast-notice.red {
+  background: rgba(255, 0, 0, 0.75);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin: 12px auto;
+  max-width: 90%;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+  animation: fadeInOut 4s ease-in-out;
+}
