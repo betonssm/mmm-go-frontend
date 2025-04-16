@@ -57,6 +57,11 @@ export default function RulesPage() {
 <p style={{ color: "#ffe082", textAlign: "center", marginBottom: "20px" }}>
   💬 Это игра, а не финансовый инструмент. Никаких инвестиций, гарантий дохода или обещаний прибыли не предусмотрено.
 </p>
+<p style={{ color: "#ffe082", textAlign: "center", marginBottom: "30px" }}>
+  🔗 <a href="https://example.com/rules" target="_blank" rel="noopener noreferrer" style={{ color: "#ffe082", textDecoration: "underline" }}>
+    Читать полные правила
+  </a>
+</p>
 
       <button
         onClick={() => navigate("/")}
