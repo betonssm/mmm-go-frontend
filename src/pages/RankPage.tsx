@@ -6,22 +6,10 @@ import "../pages/MMMGo.css";
 export default function RankPage() {
   const navigate = useNavigate();
 
-  const [adsWatched, setAdsWatched] = useState(0);
+  const [adsWatched, setAdsWatched] = useState(3); // Пример
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [dailyTaps, setDailyTaps] = useState(0);
-  const [weeklyBalance, setWeeklyBalance] = useState(0);
-
-  // имитация рекламы
-  const watchAd = () => {
-    setAdsWatched((prev) => prev + 1);
-    alert("🎥 Реклама просмотрена! +500 мавродиков");
-  };
-
-  // подписка
-  const handleSubscription = () => {
-    setIsSubscribed(true);
-    alert("✅ Спасибо за подписку! +1000 мавродиков");
-  };
+  const [dailyClicks, setDailyClicks] = useState(3200); // Пример
+  const [weeklyMavro, setWeeklyMavro] = useState(650000); // Пример
 
   return (
     <div
@@ -37,53 +25,41 @@ export default function RankPage() {
         boxSizing: "border-box",
       }}
     >
-      <h2 className="section-title">🎯 Задания MMM GO</h2>
+      <h2 className="section-title">🎯 Задания</h2>
 
-      {/* 🎥 Реклама */}
+      {/* 📺 Просмотры рекламы */}
       <div className="task-block">
         <h3>🎥 Просмотры рекламы</h3>
-        <p>Просмотрено сегодня: {adsWatched}/5</p>
-        <button
-          disabled={adsWatched >= 5}
-          onClick={watchAd}
-          className="task-button"
-        >
-          Смотреть видео
-        </button>
+        <p>Посмотрено сегодня: <strong>{adsWatched}/5</strong></p>
+        <button className="task-button">▶ Посмотреть видео</button>
       </div>
 
-      {/* 📢 Подписка */}
+      {/* 📢 Подписка на партнёра */}
       <div className="task-block">
-        <h3>📢 Подписка на партнёра</h3>
+        <h3>📢 Подпишись на партнёра</h3>
         <p>Канал: <strong>@example_channel</strong></p>
         {isSubscribed ? (
-          <p>✅ Подписка подтверждена</p>
+          <div className="task-complete">✅ Подписка подтверждена</div>
         ) : (
-          <button onClick={handleSubscription} className="task-button">
-            Я подписался
-          </button>
+          <button className="task-button" onClick={() => setIsSubscribed(true)}>📎 Я подписался</button>
         )}
       </div>
 
-      {/* 🌀 Ежедневные задания */}
+      {/* 🔁 Ежедневные задания */}
       <div className="task-block">
-        <h3>🌀 Ежедневное задание</h3>
-        <p>Натапай 10 000 мавродиков: {dailyTaps}/10000</p>
-        <progress value={dailyTaps} max={10000}></progress>
+        <h3>🌀 Ежедневные задания</h3>
+        <p>Натапай 5 000 мавродиков<br />Прогресс: <strong>{dailyClicks}/5000</strong></p>
+        <button className="task-button" disabled={dailyClicks < 5000}>🎁 Забрать награду</button>
       </div>
 
       {/* 🧭 Миссия недели */}
       <div className="task-block">
         <h3>🧭 Миссия недели</h3>
-        <p>Накопи 1 000 000 мавродиков: {weeklyBalance}/1000000</p>
-        <progress value={weeklyBalance} max={1000000}></progress>
+        <p>Накопи 1 000 000 мавродиков<br />Прогресс: <strong>{weeklyMavro}/1000000</strong></p>
+        <button className="task-button" disabled={weeklyMavro < 1000000}>🎁 Забрать награду</button>
       </div>
 
-      <button
-        onClick={() => navigate("/")}
-        className="back-btn"
-        style={{ marginTop: "30px" }}
-      >
+      <button className="back-button" onClick={() => navigate("/")}>
         🔙 Назад
       </button>
     </div>
