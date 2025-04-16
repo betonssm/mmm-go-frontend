@@ -1,22 +1,45 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css";
 
 export default function RankPage() {
   const navigate = useNavigate();
 
-  const [adsWatched, setAdsWatched] = useState(3); // Пример
+  const [telegramId, setTelegramId] = useState<number | null>(null);
+  const [adsWatched, setAdsWatched] = useState(0);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [dailyClicks, setDailyClicks] = useState(3200); // Пример
-  const [weeklyMavro, setWeeklyMavro] = useState(650000); // Пример
+  const [dailyClicks, setDailyClicks] = useState(0);
+  const [weeklyMavro, setWeeklyMavro] = useState(0);
+
+  useEffect(() => {
+    const tg = (window as any).Telegram?.WebApp;
+    const user = tg?.initDataUnsafe?.user;
+
+    if (user) {
+      setTelegramId(user.id);
+
+      fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
+        .then(res => res.json())
+        .then(data => {
+          setAdsWatched(data.adsWatched || 0);
+          setIsSubscribed(data.partnerSubscribed || false);
+          setDailyClicks(data.dailyTasks?.dailyTaps || 0);
+          setWeeklyMavro(data.weeklyMission?.current || 0);
+        })
+        .catch(err => console.error("Ошибка загрузки данных игрока", err));
+    }
+  }, []);
+
   const sendTestTasks = () => {
+    if (!telegramId) return;
+
     fetch("https://mmmgo-backend.onrender.com/player", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        telegramId: 123456,
-        playerName: "Тестовый игрок",
+        telegramId,
+        playerName: "Игрок",
         dailyTasks: {
           dailyTaps: dailyClicks,
           dailyTarget: 5000,
@@ -27,13 +50,14 @@ export default function RankPage() {
           current: weeklyMavro,
           completed: weeklyMavro >= 1000000,
         },
-        partnerSubscribed: isSubscribed
+        partnerSubscribed: isSubscribed,
       }),
     })
       .then((res) => res.json())
       .then((data) => console.log("✅ Обновлено", data))
       .catch((err) => console.error("❌ Ошибка", err));
   };
+
   return (
     <div
       className="info-page"
@@ -81,7 +105,10 @@ export default function RankPage() {
         <p>Накопи 1 000 000 мавродиков<br />Прогресс: <strong>{weeklyMavro}/1000000</strong></p>
         <button className="task-button" disabled={weeklyMavro < 1000000}>🎁 Забрать награду</button>
       </div>
-      <button onClick={sendTestTasks}>Сохранить задания</button>
+
+      <button onClick={sendTestTasks} className="task-button" style={{ marginTop: 20 }}>
+        ✅ Сохранить прогресс
+      </button>
 
       <button className="back-button" onClick={() => navigate("/")}>
         🔙 Назад
