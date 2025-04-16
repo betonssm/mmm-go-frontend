@@ -17,39 +17,22 @@ export default function TopUpPage() {
   }
 
   return (
-    <div
-      className="topup-container"
-      style={{
-        backgroundImage: `url(/assets/bg-topup.png)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        padding: "30px 16px 60px",
-        boxSizing: "border-box",
-      }}
-    >
+    <div className="topup-container">
       <h1>Пополнение баланса</h1>
       <p>Выберите удобный способ оплаты:</p>
 
       <div className="payment-options">
         <div className="payment-option">
-          <h3>💳 Freekassa</h3>
-          <p>Оплата картой, ЮMoney, Qiwi и другие способы</p>
-          <button disabled>Скоро будет доступно</button>
-        </div>
-
-        <div className="payment-option">
-          <h3>🪙 Cryptomus</h3>
-          <p>Оплата в USDT (TRC20) — комиссия минимальна</p>
-          <Link to="/pay/cryptomus">
-            <button>Оплатить через Cryptomus</button>
+          <h3>🪙 Plisio</h3>
+          <p>Оплата в криптовалюте (USDT, BTC и другие)</p>
+          <Link to="/pay/plisio">
+            <button>Оплатить через Plisio</button>
           </Link>
         </div>
       </div>
 
       <p className="note">
-        💡 Для оплаты в USDT убедитесь, что у вас есть немного TRX (0.5–1 TRX) на кошельке для оплаты комиссии.
+        💡 Перед оплатой убедитесь, что у вас достаточно средств на кошельке для покрытия комиссии.
       </p>
 
       <Link to="/">
