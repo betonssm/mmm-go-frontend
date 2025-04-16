@@ -17,7 +17,7 @@ export default function TopUpPage() {
   }
 
   return (
-    <div className="topup-container">
+    <div className="topup-container"
       style={{
         backgroundImage: `url(/assets/bg-topup.png)`,
         backgroundSize: "cover",
@@ -27,6 +27,7 @@ export default function TopUpPage() {
         padding: "30px 16px 60px",
         boxSizing: "border-box",
       }}
+      >
       <h1>Пополнение баланса</h1>
       <p>Выберите удобный способ оплаты:</p>
 
