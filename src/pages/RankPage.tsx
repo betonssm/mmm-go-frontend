@@ -37,7 +37,19 @@ export default function RankPage() {
   }, []);
 
   const claimDailyReward = () => {
-    if (!telegramId || rewardCollected || dailyClicks < 5000) return;
+    if (!telegramId) return;
+
+    if (rewardCollected) {
+      setShowNotice("🎁 Награда уже получена сегодня!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
+
+    if (dailyClicks < 5000) {
+      setShowNotice("❌ Надо натапать 5 000 мавродиков!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
 
     setRewardCollected(true);
 
@@ -49,18 +61,36 @@ export default function RankPage() {
         dailyTasks: {
           dailyTaps: dailyClicks,
           dailyTarget: 5000,
-          rewardReceived: true,
+          rewardReceived: true
         },
-        balanceBonus: 5000, // награда
+        balanceBonus: 5000
       }),
-    });
+    })
+      .then(res => res.json())
+      .then(() => {
+        setShowNotice("✅ +5 000 мавродиков за ежедневное задание!");
+        setTimeout(() => setShowNotice(null), 4000);
+      })
+      .catch(err => console.error("❌ Ошибка выдачи награды:", err));
   };
 
   const claimWeeklyReward = () => {
-    if (!telegramId || weeklyReward || weeklyMavro < 1000000) return;
-
+    if (!telegramId) return;
+  
+    if (weeklyReward) {
+      setShowNotice("🎁 Ты уже получил награду за эту неделю!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
+  
+    if (weeklyMavro < 1000000) {
+      setShowNotice("❌ Надо накопить 1 000 000 мавродиков!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
+  
     setWeeklyReward(true);
-
+  
     fetch("https://mmmgo-backend.onrender.com/player", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -68,12 +98,22 @@ export default function RankPage() {
         telegramId,
         weeklyMission: {
           mavrodikGoal: 1000000,
-          current: weeklyMavro,
+          current: 0,
           completed: true,
         },
         balanceBonus: 10000,
       }),
-    });
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
+        setWeeklyMavro(0);
+        setTimeout(() => setShowNotice(null), 4000);
+      })
+      .catch(() => {
+        setShowNotice("🚫 Ошибка при выдаче награды");
+        setTimeout(() => setShowNotice(null), 4000);
+      });
   };
 
   return (
