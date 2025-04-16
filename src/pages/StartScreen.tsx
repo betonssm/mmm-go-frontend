@@ -45,6 +45,9 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
             <button className="start-button glow" onClick={handleStart}>
               <img src={startButtonImg} alt="Начать" />
             </button>
+            <p className="disclaimer-text">
+  🎮 Это WebApp-игра в стиле 90-х. Все персонажи и валюты вымышлены.
+</p>
           </>
         )}
       </div>
