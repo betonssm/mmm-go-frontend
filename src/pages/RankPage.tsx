@@ -205,47 +205,15 @@ export default function RankPage() {
 
       {/* 🧭 Миссия недели */}
       <div className="task-block">
-        <h3>🧭 Миссия недели</h3>
-        <p>Накопи 1 000 000 мавродиков<br />Прогресс: <strong>{weeklyMavro}/1000000</strong></p>
-        <button
-  className="task-button"
-  onClick={() => {
-    if (!telegramId) return;
+  <h3>🧭 Миссия недели</h3>
+  <p>
+    Накопи 1 000 000 мавродиков<br />
+    Прогресс: <strong>{weeklyMavro}/1000000</strong>
+  </p>
+  <button className="task-button" onClick={claimWeeklyReward}>
+    🎁 Забрать награду
+  </button>
 
-    if (weeklyMavro < 1000000) {
-      setShowNotice("❌ Сначала накопи 1 000 000 мавродиков за неделю!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
-
-    fetch("https://mmmgo-backend.onrender.com/player", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        telegramId,
-        weeklyMission: {
-          completed: true,
-          current: 0,
-        },
-        balanceBonus: 10000, // 🎁 награда за миссию недели
-      }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setShowNotice("🏆 Ты получил 10 000 мавродиков за выполнение миссии!");
-        setWeeklyMavro(0); // сбрасываем локально
-        setTimeout(() => setShowNotice(null), 4000);
-      })
-      .catch((err) => {
-        console.error("❌ Ошибка при получении недельной награды:", err);
-        setShowNotice("🚫 Ошибка при выдаче награды");
-        setTimeout(() => setShowNotice(null), 4000);
-      });
-  }}
-  disabled={weeklyMavro < 1000000}
->
-  🎁 Забрать награду
-</button>
         
       </div>
 
