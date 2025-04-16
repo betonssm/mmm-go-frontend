@@ -49,7 +49,7 @@ export default function MMMGo() {
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
     "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
   ];
-
+  const [dailyClicks, setDailyClicks] = useState(0);
   const levelBackgrounds = { 1: bg1, 2: bg2, 3: bg3, 4: bg4, 5: bg5, 6: bg6, 7: bg7, 8: bg8 };
   const calculatedLevel = Math.min(Math.floor((balance ?? 0) / 100), 8);
   const backgroundImage = initialLoad ? "none" : calculatedLevel === 0 ? `url(${moneyBg})` : `url(${levelBackgrounds[calculatedLevel]})`;
@@ -156,8 +156,12 @@ export default function MMMGo() {
   
     const coinsToAdd = boostActive ? 3 : 1;
     const newBalance = balance + coinsToAdd;
+    const newTaps = totalTaps + 1;
+    const newDaily = dailyClicks + 1;
+  
     setBalance(newBalance);
-    setTotalTaps((prev) => prev + 1);
+    setTotalTaps(newTaps);
+    setDailyClicks(newDaily);
   
     if (newBalance % 100000 === 0) {
       setShowMavrodik(true);
@@ -180,9 +184,13 @@ export default function MMMGo() {
         isBoostActive: boostActive,
         isInvestor,
         referrals,
-        totalTaps: totalTaps + 1,
+        totalTaps: newTaps,
         adsWatched,
-        boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null
+        boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null,
+        dailyTasks: {
+          dailyTaps: newDaily,
+          dailyTarget: 5000,
+        },
       }),
     }).catch((err) => console.error("❌ Ошибка сохранения баланса:", err));
   };
