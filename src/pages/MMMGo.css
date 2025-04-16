@@ -766,3 +766,23 @@ button {
   background-color: #000; /* Тёмный фон, чтобы текст был читаем */
   text-align: center;
 }
+.task-block {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  color: #ffe082;
+  box-shadow: 0 0 10px #000;
+}
+
+.task-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(to bottom, #ffe259, #ffa751);
+  color: #000;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ffca28;
+}

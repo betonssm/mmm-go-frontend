@@ -1,25 +1,27 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css";
 
 export default function RankPage() {
-  const [bgLoaded, setBgLoaded] = useState(false);
   const navigate = useNavigate();
 
-  const balance = 2500000;
-  const level = Math.floor(balance / 1000000);
-  const progress = (balance % 1000000) / 1000000;
+  const [adsWatched, setAdsWatched] = useState(0);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [dailyTaps, setDailyTaps] = useState(0);
+  const [weeklyBalance, setWeeklyBalance] = useState(0);
 
-  useEffect(() => {
-    const img = new Image();
-    img.src = "/assets/bg-rank.png";
-    img.onload = () => setBgLoaded(true);
-  }, []);
+  // имитация рекламы
+  const watchAd = () => {
+    setAdsWatched((prev) => prev + 1);
+    alert("🎥 Реклама просмотрена! +500 мавродиков");
+  };
 
-  if (!bgLoaded) {
-    return <div className="loading-screen">Загрузка...</div>;
-  }
+  // подписка
+  const handleSubscription = () => {
+    setIsSubscribed(true);
+    alert("✅ Спасибо за подписку! +1000 мавродиков");
+  };
 
   return (
     <div
@@ -29,112 +31,58 @@ export default function RankPage() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        paddingTop: "30px",
-        paddingBottom: "30px",
+        padding: "30px 16px 60px",
+        minHeight: "100vh",
+        overflowY: "auto",
+        boxSizing: "border-box",
       }}
     >
-      <div
-        style={{
-          position: "relative",
-          marginBottom: "20px",
-          background: "rgba(255, 215, 0, 0.7)",
-          color: "#000",
-          fontSize: "18px",
-          padding: "8px 15px",
-          borderRadius: "12px",
-          fontWeight: "bold",
-          boxShadow: "0 0 10px #ffd700",
-          zIndex: 10,
-          textAlign: "center",
-          maxWidth: "90%",
-          margin: "0 auto",
-        }}
-      >
-        <h3>🏆 Месячный рейтинг активности игроков</h3>
-        <p>Чем выше твой ранг, тем больше достижений ты откроешь!</p>
+      <h2 className="section-title">🎯 Задания MMM GO</h2>
+
+      {/* 🎥 Реклама */}
+      <div className="task-block">
+        <h3>🎥 Просмотры рекламы</h3>
+        <p>Просмотрено сегодня: {adsWatched}/5</p>
+        <button
+          disabled={adsWatched >= 5}
+          onClick={watchAd}
+          className="task-button"
+        >
+          Смотреть видео
+        </button>
       </div>
 
-      <h2
-        style={{
-          color: "#ffe082",
-          textShadow: "2px 2px 6px #000",
-          marginBottom: "8px",
-        }}
-      >
-        🎯 Твой игровой статус
-      </h2>
-
-      <p style={{ marginBottom: "8px", color: "#ffe082" }}>
-        У тебя уровень <strong>{level}</strong>. Отличный прогресс! 🔥
-      </p>
-
-      <p style={{ color: "#ffe082" }}>
-        Продолжай набирать мавродики — это поможет прокачать ранг.
-        <br />
-        Чем выше уровень, тем больше игровых возможностей!
-      </p>
-
-      <div
-        style={{
-          width: "100%",
-          backgroundColor: "#ddd",
-          borderRadius: "10px",
-          overflow: "hidden",
-          marginBottom: "20px",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress * 100}%`,
-            height: "10px",
-            background: "linear-gradient(to right, #ffe259, #ffa751)",
-            borderRadius: "10px",
-          }}
-        ></div>
+      {/* 📢 Подписка */}
+      <div className="task-block">
+        <h3>📢 Подписка на партнёра</h3>
+        <p>Канал: <strong>@example_channel</strong></p>
+        {isSubscribed ? (
+          <p>✅ Подписка подтверждена</p>
+        ) : (
+          <button onClick={handleSubscription} className="task-button">
+            Я подписался
+          </button>
+        )}
       </div>
 
-      <div
-        style={{
-          marginTop: "20px",
-          padding: "20px",
-          background: "rgba(0, 0, 0, 0.6)",
-          borderRadius: "12px",
-        }}
-      >
-        <h3 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000" }}>
-          🎮 О рейтинге:
-        </h3>
-        <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
-          <li>
-            <strong style={{ color: "#ffe082" }}>1. Рейтинг формируется на основе:</strong> активности, очков и достижений.
-          </li>
-          <li>
-            <strong style={{ color: "#ffe082" }}>2. ТОП игроки попадают в таблицу месяца</strong> и получают признание.
-          </li>
-          <li>
-            <strong style={{ color: "#ffe082" }}>3. Твои очки можно улучшать за счёт:</strong> игры, заданий и приглашений.
-          </li>
-          <li>
-            <strong style={{ color: "#ffe082" }}>4. Новые уровни открывают бонусные фоны и визуальные эффекты.</strong>
-          </li>
-        </ul>
+      {/* 🌀 Ежедневные задания */}
+      <div className="task-block">
+        <h3>🌀 Ежедневное задание</h3>
+        <p>Натапай 10 000 мавродиков: {dailyTaps}/10000</p>
+        <progress value={dailyTaps} max={10000}></progress>
+      </div>
+
+      {/* 🧭 Миссия недели */}
+      <div className="task-block">
+        <h3>🧭 Миссия недели</h3>
+        <p>Накопи 1 000 000 мавродиков: {weeklyBalance}/1000000</p>
+        <progress value={weeklyBalance} max={1000000}></progress>
       </div>
 
       <button
         onClick={() => navigate("/")}
-        style={{
-          marginTop: "24px",
-          padding: "12px 24px",
-          fontSize: "16px",
-          borderRadius: "12px",
-          background: "linear-gradient(to bottom, #ffe259, #ffa751)",
-          border: "none",
-          cursor: "pointer",
-          boxShadow: "0 0 10px #ffca28",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
+        className="back-btn"
+        style={{ marginTop: "30px" }}
       >
         🔙 Назад
       </button>
