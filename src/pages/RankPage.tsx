@@ -195,47 +195,13 @@ export default function RankPage() {
       <div className="task-block">
         <h3>🌀 Ежедневные задания</h3>
         <p>Натапай 5 000 мавродиков<br />Прогресс: <strong>{dailyClicks}/5000</strong></p>
-        <button
-  className="task-button"
-  onClick={() => {
-    if (!telegramId) return;
-
-    if (dailyClicks < 5000) {
-      setShowNotice("❌ Награда доступна после выполнения 5 000 тапов!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
-
-    // Отправляем на сервер и выдаём награду
-    fetch("https://mmmgo-backend.onrender.com/player", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        telegramId,
-        dailyTasks: {
-          rewardReceived: true,
-          dailyTaps: 0, // сбрасываем
-        },
-        balanceBonus: 5000, // 🎁 награда за задание
-      }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setShowNotice("🎉 Ты получил 5 000 мавродиков за активность!");
-        setDailyClicks(0); // сбрасываем локально
-        setTimeout(() => setShowNotice(null), 4000);
-      })
-      .catch((err) => {
-        console.error("❌ Ошибка при получении награды:", err);
-        setShowNotice("🚫 Ошибка при выдаче награды");
-        setTimeout(() => setShowNotice(null), 4000);
-      });
-  }}
-  disabled={dailyClicks < 5000}
->
-  🎁 Забрать награду
-</button>
+        <button className="task-button" onClick={claimDailyReward}>
+          🎁 Забрать награду
+        </button>
       </div>
+
+   
+ 
 
       {/* 🧭 Миссия недели */}
       <div className="task-block">
