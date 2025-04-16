@@ -786,3 +786,16 @@ button {
   cursor: pointer;
   box-shadow: 0 0 10px #ffca28;
 }
+.notice-box {
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffe082;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin: 10px auto;
+  width: fit-content;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 0 10px #000;
+  font-size: 16px;
+  z-index: 1000;
+}

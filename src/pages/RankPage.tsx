@@ -13,6 +13,7 @@ export default function RankPage() {
   const [weeklyMavro, setWeeklyMavro] = useState(0);
   const [rewardCollected, setRewardCollected] = useState(false);
   const [weeklyReward, setWeeklyReward] = useState(false);
+  const [showNotice, setShowNotice] = useState<string | null>(null);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -90,6 +91,11 @@ export default function RankPage() {
       }}
     >
       <h2 className="section-title">🎯 Задания</h2>
+      {showNotice && (
+  <div className="notice-box">
+    {showNotice}
+  </div>
+)}
 
       {/* 📺 Просмотры рекламы */}
       <div className="task-block">
@@ -149,12 +155,18 @@ export default function RankPage() {
         <h3>🌀 Ежедневные задания</h3>
         <p>Натапай 5 000 мавродиков<br />Прогресс: <strong>{dailyClicks}/5000</strong></p>
         <button
-          className="task-button"
-          onClick={claimDailyReward}
-          disabled={rewardCollected || dailyClicks < 5000}
-        >
-          🎁 Забрать 5000 мавродиков
-        </button>
+  className="task-button"
+  onClick={() => {
+    if (dailyClicks < 5000) {
+      setShowNotice("❌ Награда доступна после выполнения 5 000 тапов!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
+    // TODO: отправка на сервер / выдача награды
+  }}
+>
+  🎁 Забрать награду
+</button>
       </div>
 
       {/* 🧭 Миссия недели */}
@@ -162,34 +174,19 @@ export default function RankPage() {
         <h3>🧭 Миссия недели</h3>
         <p>Накопи 1 000 000 мавродиков<br />Прогресс: <strong>{weeklyMavro}/1000000</strong></p>
         <button
-          className="task-button"
-          onClick={claimWeeklyReward}
-          disabled={weeklyReward || weeklyMavro < 1000000}
-        >
-          🎁 Забрать 10 000 мавродиков
-        </button>
-        <button
   className="task-button"
   onClick={() => {
-    const tg = (window as any).Telegram?.WebApp;
-    const user = tg?.initDataUnsafe?.user;
-    if (!user) return;
-
-    fetch("https://mmmgo-backend.onrender.com/player", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        telegramId: user.id,
-        balanceBonus: 10000, // 👈 тестовая сумма
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log("✅ balanceBonus обновлён", data))
-      .catch((err) => console.error("❌ Ошибка при сохранении bonus", err));
+    if (weeklyMavro < 1000000) {
+      setShowNotice("❌ Сначала накопи 1 000 000 мавродиков!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
+    // TODO: отправка на сервер / выдача награды
   }}
 >
-  💰 Тест баланса (10 000)
+  🎁 Забрать награду
 </button>
+        
       </div>
 
       <button className="back-button" onClick={() => navigate("/")}>
