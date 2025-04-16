@@ -98,6 +98,8 @@ export default function MMMGo() {
               setReferrals(data.referrals || 0);
               setAdsWatched(data.adsWatched || 0);
               setTotalTaps(data.totalTaps || 0);
+              setWeeklyMavro(data.weeklyMission?.current || 0);
+              setDailyClicks(data.dailyTasks?.dailyTaps || 0);
 
               if (ref && data.refSource === null && data.referrals === 0) {
                 setShowNoRefNotice(true);
