@@ -10,7 +10,30 @@ export default function RankPage() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [dailyClicks, setDailyClicks] = useState(3200); // Пример
   const [weeklyMavro, setWeeklyMavro] = useState(650000); // Пример
-
+  const sendTestTasks = () => {
+    fetch("https://mmmgo-backend.onrender.com/player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        telegramId: 123456,
+        playerName: "Тестовый игрок",
+        dailyTasks: {
+          dailyTaps: dailyClicks,
+          dailyTarget: 5000,
+          rewardReceived: dailyClicks >= 5000,
+        },
+        weeklyMission: {
+          mavrodikGoal: 1000000,
+          current: weeklyMavro,
+          completed: weeklyMavro >= 1000000,
+        },
+        partnerSubscribed: isSubscribed
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log("✅ Обновлено", data))
+      .catch((err) => console.error("❌ Ошибка", err));
+  };
   return (
     <div
       className="info-page"
@@ -58,6 +81,7 @@ export default function RankPage() {
         <p>Накопи 1 000 000 мавродиков<br />Прогресс: <strong>{weeklyMavro}/1000000</strong></p>
         <button className="task-button" disabled={weeklyMavro < 1000000}>🎁 Забрать награду</button>
       </div>
+      <button onClick={sendTestTasks}>Сохранить задания</button>
 
       <button className="back-button" onClick={() => navigate("/")}>
         🔙 Назад
