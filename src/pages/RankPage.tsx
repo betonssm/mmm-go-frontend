@@ -168,11 +168,34 @@ export default function RankPage() {
         >
           🎁 Забрать 10 000 мавродиков
         </button>
+        <button
+  className="task-button"
+  onClick={() => {
+    const tg = (window as any).Telegram?.WebApp;
+    const user = tg?.initDataUnsafe?.user;
+    if (!user) return;
+
+    fetch("https://mmmgo-backend.onrender.com/player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        telegramId: user.id,
+        balanceBonus: 10000, // 👈 тестовая сумма
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log("✅ balanceBonus обновлён", data))
+      .catch((err) => console.error("❌ Ошибка при сохранении bonus", err));
+  }}
+>
+  💰 Тест баланса (10 000)
+</button>
       </div>
 
       <button className="back-button" onClick={() => navigate("/")}>
         🔙 Назад
       </button>
     </div>
+    
   );
 }
