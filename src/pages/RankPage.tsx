@@ -1,41 +1,37 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/MMMGo.css"; // общий стиль
-
+import "../pages/MMMGo.css";
 
 export default function RankPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const navigate = useNavigate();
 
-  // Пример данных
   const balance = 2500000;
   const level = Math.floor(balance / 1000000);
   const progress = (balance % 1000000) / 1000000;
-  const totalPool = 5000000;
 
   useEffect(() => {
     const img = new Image();
     img.src = "/assets/bg-rank.png";
     img.onload = () => setBgLoaded(true);
   }, []);
-  
+
   if (!bgLoaded) {
     return <div className="loading-screen">Загрузка...</div>;
   }
 
   return (
     <div
-  className="info-page"
-  style={{
-    backgroundImage: `url(/assets/bg-rank.png)`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    paddingTop: "30px",
-    paddingBottom: "30px",
-  }}
-
+      className="info-page"
+      style={{
+        backgroundImage: `url(/assets/bg-rank.png)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        paddingTop: "30px",
+        paddingBottom: "30px",
+      }}
     >
       <div
         style={{
@@ -54,23 +50,28 @@ export default function RankPage() {
           margin: "0 auto",
         }}
       >
-        <h3>Общий фонд на этот месяц: {totalPool} мавродиков</h3>
-        <p>Этот пул разделяется среди топ 10% инвесторов</p>
+        <h3>🏆 Месячный рейтинг активности игроков</h3>
+        <p>Чем выше твой ранг, тем больше достижений ты откроешь!</p>
       </div>
 
-      <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "8px" }}>
-        🏅 Твой Инвесторский Ранг
+      <h2
+        style={{
+          color: "#ffe082",
+          textShadow: "2px 2px 6px #000",
+          marginBottom: "8px",
+        }}
+      >
+        🎯 Твой игровой статус
       </h2>
 
       <p style={{ marginBottom: "8px", color: "#ffe082" }}>
-        Ты уже инвестор уровня <strong>{level}</strong>!<br />
-        А может, почти...
+        У тебя уровень <strong>{level}</strong>. Отличный прогресс! 🔥
       </p>
 
       <p style={{ color: "#ffe082" }}>
-        Чем больше у тебя мавродиков, тем выше твой статус.
+        Продолжай набирать мавродики — это поможет прокачать ранг.
         <br />
-        Следующий ранг откроется при новом уровне 💸
+        Чем выше уровень, тем больше игровых возможностей!
       </p>
 
       <div
@@ -100,22 +101,21 @@ export default function RankPage() {
           borderRadius: "12px",
         }}
       >
-        <h3 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000" }}>📊 Ключевые принципы:</h3>
+        <h3 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000" }}>
+          🎮 О рейтинге:
+        </h3>
         <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
           <li>
-            <strong style={{ color: "#ffe082" }}>1. Фонд состоит из выплат от:</strong> инвестиций и дохода от рекламы
+            <strong style={{ color: "#ffe082" }}>1. Рейтинг формируется на основе:</strong> активности, очков и достижений.
           </li>
           <li>
-            <strong style={{ color: "#ffe082" }}>2. Фонд разделяется по итогам месяца среди топ </strong>10% инвесторов
+            <strong style={{ color: "#ffe082" }}>2. ТОП игроки попадают в таблицу месяца</strong> и получают признание.
           </li>
           <li>
-            <strong style={{ color: "#ffe082" }}>3. Рейтинг инвесторов формируется исходя из количества баллов </strong>SR
+            <strong style={{ color: "#ffe082" }}>3. Твои очки можно улучшать за счёт:</strong> игры, заданий и приглашений.
           </li>
           <li>
-            <strong style={{ color: "#ffe082" }}>
-              4. Чтобы участвовать в разделе фонда, инвестор должен быть активен минимум:
-            </strong>{" "}
-            22 дня в месяц.
+            <strong style={{ color: "#ffe082" }}>4. Новые уровни открывают бонусные фоны и визуальные эффекты.</strong>
           </li>
         </ul>
       </div>
