@@ -83,12 +83,16 @@
   text-align: center;
 }
 .disclaimer-text {
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #ffffff;
   text-align: center;
-  font-size: 12px;
-  color: #fff;
-  margin-top: 12px;
-  padding: 0 10px;
-  text-shadow: 1px 1px 2px #000;
+  text-shadow: 0 0 5px #000;
+  font-weight: 500;
+  width: 90%;
+  z-index: 5;
 }
-
 
