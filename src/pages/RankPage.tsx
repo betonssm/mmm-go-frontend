@@ -92,10 +92,11 @@ export default function RankPage() {
     >
       <h2 className="section-title">🎯 Задания</h2>
       {showNotice && (
-  <div className="notice-box">
+  <div className="task-notification">
     {showNotice}
   </div>
 )}
+ 
 
       {/* 📺 Просмотры рекламы */}
       <div className="task-block">
