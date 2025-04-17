@@ -1,0 +1,4 @@
+routes:
+  - type: rewrite
+    source: /.*  # Все пути
+    destination: /index.html
