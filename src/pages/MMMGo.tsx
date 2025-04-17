@@ -28,24 +28,6 @@ export default function MMMGo() {
   const [playerName, setPlayerName] = useState(null);
   const [telegramId, setTelegramId] = useState(null);
   const [investors, setInvestors] = useState(0);
-  const levelThresholds = [
-    0,        // Уровень 1
-    10_000,   // Уровень 2
-    50_000,   // Уровень 3
-    100_000,  // Уровень 4
-    300_000,  // Уровень 5
-    600_000,  // Уровень 6
-    1_000_000,// Уровень 7
-    2_500_000,// Уровень 8
-    5_000_000 // Уровень 9 (максимум)
-  ];
-  const nextLevelThreshold = level < levelThresholds.length
-  ? levelThresholds[level]
-  : null;
-
-const progressToNextLevel = nextLevelThreshold !== null
-  ? nextLevelThreshold - balance
-  : 0;
   const [highlightRecharge, setHighlightRecharge] = useState(false);
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
@@ -81,6 +63,23 @@ const progressToNextLevel = nextLevelThreshold !== null
     return 0;
   };
   const calculatedLevel = getLevelByBalance(balance ?? 0);
+  const levelThresholds = [
+    0,        // Уровень 1
+    10_000,   // Уровень 2
+    50_000,   // Уровень 3
+    100_000,  // Уровень 4
+    300_000,  // Уровень 5
+    600_000,  // Уровень 6
+    1_000_000,// Уровень 7
+    2_500_000,// Уровень 8
+    5_000_000 // Уровень 9 (максимум)
+  ];
+  const nextLevelThreshold = calculatedLevel + 1 < levelThresholds.length
+  ? levelThresholds[calculatedLevel + 1]
+  : null;
+const progressToNextLevel = nextLevelThreshold !== null
+  ? nextLevelThreshold - (balance ?? 0)
+  : 0;
   const backgroundImage = initialLoad
   ? "none"
   : calculatedLevel === 0
@@ -384,7 +383,7 @@ const progressToNextLevel = nextLevelThreshold !== null
           <div className="bar-wrapper">
   <img src={barLevel} className="bar-img" alt="До уровня" />
   <div className="bar-text">
-    {progressToNextLevel <= 0
+    {nextLevelThreshold === null
       ? "🔝 Максимальный уровень"
       : `⬆ До следующего уровня: ${progressToNextLevel.toLocaleString()} мавродиков`}
   </div>
