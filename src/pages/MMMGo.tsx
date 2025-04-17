@@ -28,7 +28,24 @@ export default function MMMGo() {
   const [playerName, setPlayerName] = useState(null);
   const [telegramId, setTelegramId] = useState(null);
   const [investors, setInvestors] = useState(0);
-  const [nextLevel, setNextLevel] = useState(50000);
+  const levelThresholds = [
+    0,        // Уровень 1
+    10_000,   // Уровень 2
+    50_000,   // Уровень 3
+    100_000,  // Уровень 4
+    300_000,  // Уровень 5
+    600_000,  // Уровень 6
+    1_000_000,// Уровень 7
+    2_500_000,// Уровень 8
+    5_000_000 // Уровень 9 (максимум)
+  ];
+  const nextLevelThreshold = level < levelThresholds.length
+  ? levelThresholds[level]
+  : null;
+
+const progressToNextLevel = nextLevelThreshold !== null
+  ? nextLevelThreshold - balance
+  : 0;
   const [highlightRecharge, setHighlightRecharge] = useState(false);
   const [boostActive, setBoostActive] = useState(false);
   const [boostCooldown, setBoostCooldown] = useState(false);
@@ -107,7 +124,7 @@ export default function MMMGo() {
 
             if (typeof data.balance === "number") {
               setBalance(data.balance);
-              setLevel(Math.min(Math.floor(data.balance / 100), 8));
+              setLevel(getLevelByBalance(data.balance || 0));
               setIsInvestor(data.isInvestor || false);
               setSrRating(data.srRating || 0);
               setReferrals(data.referrals || 0);
@@ -364,12 +381,14 @@ export default function MMMGo() {
         {/* БАРЫ 2x2 */}
         <div className="info-bars">
           <Link to="/level">
-            <div className="bar-wrapper">
-              <img src={barLevel} className="bar-img" alt="До уровня" />
-              <div className="bar-text">
-                🔁 До уровня: {nextLevel - (balance ?? 0)} мавродиков
-              </div>
-            </div>
+          <div className="bar-wrapper">
+  <img src={barLevel} className="bar-img" alt="До уровня" />
+  <div className="bar-text">
+    {progressToNextLevel <= 0
+      ? "🔝 Максимальный уровень"
+      : `⬆ До следующего уровня: ${progressToNextLevel.toLocaleString()} мавродиков`}
+  </div>
+</div>
           </Link>
   
           <Link to="/rank">
