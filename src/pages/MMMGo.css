@@ -243,11 +243,12 @@ button {
   transform: translate(-50%, -50%);
   font-size: 14px; /* увеличено для лучшей читаемости */
   font-weight: bold;
-  color: #f8f2dc;
+  color: #FFD700;
   text-align: center;
   padding: 0 8px;
   line-height: 1.3; /* немного увеличено */
   word-break: break-word;
+  text-shadow: 1px 1px 2px black;
 }
 
 .recharge-gold-button {
