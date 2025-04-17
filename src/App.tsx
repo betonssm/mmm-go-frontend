@@ -10,6 +10,8 @@ import StartScreen from "./pages/StartScreen";
 import RulesPage from "./pages/RulesPage";
 import ReferralPage from "./pages/ReferralPage"; // ✅ добавили рефералы
 import TopUpPage from "./pages/TopUpPage";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -35,6 +37,8 @@ export default function App() {
   return (
     <div>
       <Routes>
+      <Route path="/payment-success" element={<PaymentSuccess />} />
+      <Route path="/payment-failed" element={<PaymentFailed />} />
         <Route path="/topup" element={<TopUpPage />} />
         <Route path="/" element={<MMMGo />} />
         <Route path="/level" element={<LevelPage />} />
