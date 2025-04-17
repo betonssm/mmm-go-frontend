@@ -28,10 +28,10 @@ export default function TopUpPage() {
         padding: "30px 16px 60px",
         boxSizing: "border-box",
       }}
-    >
+    ><div className="note-box">
       <h1>🎁 Премиум-доступ</h1>
       <p>Разблокируй расширенные возможности и бонусы!</p>
-
+      </div>
       <div className="payment-options">
         <div className="payment-option">
           <h3>🪙 Оплата через Plisio</h3>
