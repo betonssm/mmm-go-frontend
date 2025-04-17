@@ -358,11 +358,11 @@ export default function MMMGo() {
           </Link>
   
           <Link to="/rank">
-            <div className="bar-wrapper">
-              <img src={barRank} className="bar-img" alt="Ранг" />
-              <div className="bar-text">🏅 Инвестор {level ?? 0}-го ранга</div>
-            </div>
-          </Link>
+  <div className="bar-wrapper">
+    <img src={barRank} className="bar-img" alt="Задания" />
+    <div className="bar-text">📋 Задания: проверь цели</div>
+  </div>
+</Link>
   
           <Link to="/referrals">
             <div className="bar-wrapper">
