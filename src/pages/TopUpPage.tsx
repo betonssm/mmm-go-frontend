@@ -13,40 +13,34 @@ export default function TopUpPage() {
     img.src = "/assets/bg-topup.png";
     img.onload = () => setBgLoaded(true);
 
-    // Получаем Telegram ID
     const tg = (window as any).Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user;
-    if (user) {
-      setTelegramId(user.id);
-    }
+    if (user) setTelegramId(user.id);
   }, []);
 
   const handlePlisioPayment = async () => {
     if (!telegramId) return;
 
     setIsLoading(true);
-
     try {
-      const response = await fetch("https://mmmgo-backend.onrender.com/plisio/create-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          telegramId,
-          amount: 10, // 💰 Указываем сумму в USD
-        }),
-      });
-
+      const response = await fetch(
+        "https://mmmgo-backend.onrender.com/plisio/create-payment",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ telegramId, amount: 10 }),
+        }
+      );
       const data = await response.json();
-
       if (data && data.data && data.data.invoice_url) {
-        window.location.href = data.data.invoice_url; // Переход на оплату
+        window.location.href = data.data.invoice_url;
       } else {
         alert("Ошибка создания платежа. Попробуй позже.");
+        setIsLoading(false);
       }
     } catch (err) {
-      console.error("❌ Ошибка:", err);
+      console.error("❌ Ошибка при создании платежа:", err);
       alert("Сервер временно недоступен.");
-    } finally {
       setIsLoading(false);
     }
   };
@@ -54,9 +48,7 @@ export default function TopUpPage() {
   if (!bgLoaded) return <div className="loading-screen">Загрузка...</div>;
 
   return (
-    <div
-      className="topup-container"
-      style={{
+    <div className="topup-container" style={{
         backgroundImage: `url(/assets/bg-topup.png)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -64,8 +56,16 @@ export default function TopUpPage() {
         minHeight: "100vh",
         padding: "30px 16px 60px",
         boxSizing: "border-box",
-      }}
-    >
+      }}>
+
+      {/* Overlay для загрузки */}
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+          <p>Загрузка платежа...</p>
+        </div>
+      )}
+
       <div className="note-box">
         <h1>🎁 Премиум-доступ</h1>
         <p>Разблокируй расширенные возможности и бонусы!</p>
@@ -85,7 +85,7 @@ export default function TopUpPage() {
         💡 Убедись, что на кошельке есть средства на оплату и комиссию сети.
       </div>
       <div className="note-box">
-        💡 Платёж является добровольным. В MMM GO нет обещаний дохода или возврата средств.
+        💡 Платёж является добровольным. В MMMGO нет обещаний дохода или возврата средств.
       </div>
 
       <Link to="/">
