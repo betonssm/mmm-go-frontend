@@ -801,3 +801,9 @@ button {
   box-shadow: 0 0 10px #000;
   text-align: center;
 }
+.current-level {
+  background: rgba(255, 255, 0, 0.15);
+  border: 2px solid gold;
+  box-shadow: 0 0 10px gold;
+  border-radius: 12px;
+}
