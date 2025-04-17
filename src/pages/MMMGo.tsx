@@ -385,7 +385,7 @@ const progressToNextLevel = nextLevelThreshold !== null
   <div className="bar-text">
     {nextLevelThreshold === null
       ? "🔝 Максимальный уровень"
-      : `⬆ До следующего уровня: ${progressToNextLevel.toLocaleString()}`}
+      : `📶⬆ До следующего уровня: ${progressToNextLevel.toLocaleString()}`}
   </div>
 </div>
           </Link>
