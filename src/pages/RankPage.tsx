@@ -100,8 +100,8 @@ export default function RankPage() {
       return;
     }
   
-    if (weeklyMavro < 1000000) {
-      setShowNotice("❌ Надо накопить 1 000 000 мавродиков!");
+    if (weeklyMavro < 100000) {
+      setShowNotice("❌ Надо накопить 100 000 мавродиков!");
       setTimeout(() => setShowNotice(null), 4000);
       return;
     }
@@ -114,7 +114,7 @@ export default function RankPage() {
       body: JSON.stringify({
         telegramId,
         weeklyMission: {
-          mavrodikGoal: 1000000,
+          mavrodikGoal: 100000,
           current: 0,
           completed: true,
         },
@@ -236,8 +236,8 @@ export default function RankPage() {
       <div className="task-block">
   <h3>🧭 Миссия недели</h3>
   <p>
-    Накопи 1 000 000 мавродиков<br />
-    Прогресс: <strong>{weeklyMavro}/1000000</strong>
+    Накопи 1 00 000 мавродиков<br />
+    Прогресс: <strong>{weeklyMavro}/100000</strong>
   </p>
   <button className="task-button" onClick={claimWeeklyReward}>
     🎁 Забрать награду
