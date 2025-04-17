@@ -95,7 +95,7 @@ export default function RankPage() {
     if (!telegramId) return;
   
     if (weeklyReward) {
-      setShowNotice("🎁 Ты уже получил награду за эту неделю!");
+      setShowNotice("🎁 Награда уже получена на этой неделе!");
       setTimeout(() => setShowNotice(null), 4000);
       return;
     }
@@ -106,7 +106,7 @@ export default function RankPage() {
       return;
     }
   
-    setWeeklyReward(true);
+    setWeeklyReward(true); // временно блокируем кнопку
   
     fetch("https://mmmgo-backend.onrender.com/player", {
       method: "POST",
@@ -121,14 +121,26 @@ export default function RankPage() {
         balanceBonus: 10000,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((data) => {
+            throw new Error(data.error || "Ошибка при получении награды");
+          });
+        }
+        return res.json();
+      })
       .then(() => {
         setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
         setWeeklyMavro(0);
         setTimeout(() => setShowNotice(null), 4000);
       })
-      .catch(() => {
-        setShowNotice("🚫 Ошибка при выдаче награды");
+      .catch((err) => {
+        setWeeklyReward(false); // отменяем блокировку, если ошибка
+        if (err.message.includes("уже получена")) {
+          setShowNotice("🎁 Награда уже была получена на этой неделе!");
+        } else {
+          setShowNotice("🚫 Ошибка при выдаче награды");
+        }
         setTimeout(() => setShowNotice(null), 4000);
       });
   };
