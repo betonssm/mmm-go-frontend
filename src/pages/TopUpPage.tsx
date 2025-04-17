@@ -1,14 +1,14 @@
 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./TopUpPage.css"; // Подключаем стили
+import "./TopUpPage.css";
 
 export default function TopUpPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
 
   useEffect(() => {
     const img = new Image();
-    img.src = "/assets/bg-topup.png"; // Убедись, что файл есть в public/assets
+    img.src = "/assets/bg-topup.png";
     img.onload = () => setBgLoaded(true);
   }, []);
 
@@ -17,7 +17,8 @@ export default function TopUpPage() {
   }
 
   return (
-    <div className="topup-container"
+    <div
+      className="topup-container"
       style={{
         backgroundImage: `url(/assets/bg-topup.png)`,
         backgroundSize: "cover",
@@ -27,26 +28,26 @@ export default function TopUpPage() {
         padding: "30px 16px 60px",
         boxSizing: "border-box",
       }}
-      >
-      <h1>Пополнение баланса</h1>
-      <p>Выберите удобный способ оплаты:</p>
+    >
+      <h1>🎁 Премиум-доступ</h1>
+      <p>Разблокируй расширенные возможности и бонусы!</p>
 
       <div className="payment-options">
         <div className="payment-option">
-          <h3>🪙 Plisio</h3>
-          <p>Оплата в криптовалюте (USDT, BTC и другие)</p>
+          <h3>🪙 Оплата через Plisio</h3>
+          <p>Поддерживаются USDT, BTC, ETH и другие криптовалюты</p>
           <Link to="/pay/plisio">
-            <button>Оплатить через Plisio</button>
+            <button>🚀 Получить премиум</button>
           </Link>
         </div>
       </div>
 
       <p className="note">
-        💡 Перед оплатой убедитесь, что у вас достаточно средств на кошельке для покрытия комиссии.
+        💡 Убедись, что на кошельке есть средства на оплату и комиссию сети.
       </p>
 
       <Link to="/">
-        <button className="back-btn">⬅ Вернуться назад</button>
+        <button className="back-btn">⬅ Вернуться в игру</button>
       </Link>
     </div>
   );
