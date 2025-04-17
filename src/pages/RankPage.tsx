@@ -66,12 +66,29 @@ export default function RankPage() {
         balanceBonus: 5000
       }),
     })
-      .then(res => res.json())
-      .then(() => {
-        setShowNotice("✅ +5 000 мавродиков за ежедневное задание!");
-        setTimeout(() => setShowNotice(null), 4000);
-      })
-      .catch(err => console.error("❌ Ошибка выдачи награды:", err));
+    .then(res => {
+      if (!res.ok) {
+        return res.json().then(data => {
+          if (data.error === "Награда за сегодня уже получена") {
+            setShowNotice("🎁 Награда уже получена сегодня!");
+          } else {
+            setShowNotice("🚫 Ошибка: " + data.error);
+          }
+          setTimeout(() => setShowNotice(null), 4000);
+        });
+      } else {
+        return res.json().then(() => {
+          setShowNotice("✅ +5 000 мавродиков за ежедневное задание!");
+          setRewardCollected(true);
+          setTimeout(() => setShowNotice(null), 4000);
+        });
+      }
+    })
+    .catch(err => {
+      console.error("❌ Ошибка выдачи награды:", err);
+      setShowNotice("🚫 Ошибка при попытке получить награду");
+      setTimeout(() => setShowNotice(null), 4000);
+    });
   };
 
   const claimWeeklyReward = () => {
