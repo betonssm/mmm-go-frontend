@@ -52,7 +52,6 @@ export default function MMMGo() {
   const [dailyClicks, setDailyClicks] = useState(0);
   const [weeklyMavro, setWeeklyMavro] = useState(0);
   const levelBackgrounds = { 1: bg1, 2: bg2, 3: bg3, 4: bg4, 5: bg5, 6: bg6, 7: bg7, 8: bg8 };
-  const calculatedLevel = getLevelByBalance(balance ?? 0);
   const getLevelByBalance = (balance: number): number => {
     if (balance >= 5_000_000) return 8;
     if (balance >= 2_500_000) return 7;
@@ -62,8 +61,9 @@ export default function MMMGo() {
     if (balance >= 100_000) return 3;
     if (balance >= 50_000) return 2;
     if (balance >= 10_000) return 1;
-    return 0; // Стартовый уровень
+    return 0;
   };
+  const calculatedLevel = getLevelByBalance(balance ?? 0);
   const backgroundImage = initialLoad
   ? "none"
   : calculatedLevel === 0
