@@ -8,6 +8,7 @@ export default function PlayerRatingPage() {
   const [playerData, setPlayerData] = useState(null);
   const [bgLoaded, setBgLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [fund, setFund] = useState<number | null>(null);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -23,6 +24,11 @@ export default function PlayerRatingPage() {
     } else {
       setLoading(false);
     }
+    fetch(`https://mmmgo-backend.onrender.com/fund`)
+    .then(res => res.json())
+    .then(data => setFund(data.total))
+    .catch(err => console.error("Ошибка загрузки пула:", err));
+    
 
     const img = new Image();
     img.src = "/assets/bg-rating.png";
@@ -41,6 +47,7 @@ export default function PlayerRatingPage() {
   const now = new Date();
   const expires = premiumExpires ? new Date(premiumExpires) : null;
   const isActive = isInvestor && expires && now < expires;
+  
 
   return (
     <div
@@ -78,13 +85,20 @@ export default function PlayerRatingPage() {
             <h3>SR рейтинг игрока: {srRating}</h3>
             <p>Подписка активна до: {expires?.toLocaleDateString()}</p>
           </>
-        ) : (
+          ) : (
           <>
             <h3>SR рейтинг недоступен</h3>
             <p>Подписка не активна или истекла.</p>
           </>
         )}
       </div>
+      <div style={{ marginTop: 12, padding: 12, background: "rgba(0,0,0,0.5)", borderRadius: 8, color: "#ffe082", textAlign: "center" }}>
+  <h4>💰 Общий призовой фонд:</h4>
+  {fund !== null
+    ? <span style={{ fontSize: 18, fontWeight: "bold" }}>{fund.toLocaleString()} мавродиков</span>
+    : <span>Загрузка...</span>
+  }
+</div>
 
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "8px" }}>
         📊 SR Рейтинг Игрока
