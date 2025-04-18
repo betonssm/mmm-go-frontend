@@ -15,13 +15,12 @@ export default function RankPage() {
   const [weeklyReward, setWeeklyReward] = useState(false);
   const [showNotice, setShowNotice] = useState<string | null>(null);
 
+  // Загрузка начальных данных игрока
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user;
-
     if (user) {
       setTelegramId(user.id);
-
       fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
         .then(res => res.json())
         .then(data => {
@@ -36,22 +35,16 @@ export default function RankPage() {
     }
   }, []);
 
+  const showTempNotice = (msg: string) => {
+    setShowNotice(msg);
+    setTimeout(() => setShowNotice(null), 4000);
+  };
+
+  // Ежедневная награда
   const claimDailyReward = () => {
     if (!telegramId) return;
-
-    if (rewardCollected) {
-      setShowNotice("🎁 Награда уже получена сегодня!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
-
-    if (dailyClicks < 5000) {
-      setShowNotice("❌ Надо натапать 5 000 мавродиков!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
-
-    setRewardCollected(true);
+    if (rewardCollected) return showTempNotice("🎁 Награда уже получена сегодня!");
+    if (dailyClicks < 5000) return showTempNotice("❌ Надо натапать 5 000 мавродиков!");
 
     fetch("https://mmmgo-backend.onrender.com/player", {
       method: "POST",
@@ -61,53 +54,31 @@ export default function RankPage() {
         dailyTasks: {
           dailyTaps: dailyClicks,
           dailyTarget: 5000,
-          rewardReceived: true
+          rewardReceived: true,
         },
-        balanceBonus: 5000
+        balanceBonus: 5000,
       }),
+      keepalive: true,
     })
-    .then(res => {
-      if (!res.ok) {
-        return res.json().then(data => {
-          if (data.error === "Награда за сегодня уже получена") {
-            setShowNotice("🎁 Награда уже получена сегодня!");
-          } else {
-            setShowNotice("🚫 Ошибка: " + data.error);
-          }
-          setTimeout(() => setShowNotice(null), 4000);
-        });
-      } else {
-        return res.json().then(() => {
-          setShowNotice("✅ +5 000 мавродиков за ежедневное задание!");
-          setRewardCollected(true);
-          setTimeout(() => setShowNotice(null), 4000);
-        });
-      }
-    })
-    .catch(err => {
-      console.error("❌ Ошибка выдачи награды:", err);
-      setShowNotice("🚫 Ошибка при попытке получить награду");
-      setTimeout(() => setShowNotice(null), 4000);
-    });
+      .then(res => res.json())
+      .then(updated => {
+        setDailyClicks(updated.dailyTasks.dailyTaps);
+        setRewardCollected(updated.dailyTasks.rewardReceived);
+        setWeeklyMavro(updated.weeklyMission.current);
+        showTempNotice("✅ +5 000 мавродиков за ежедневное задание!");
+      })
+      .catch(err => {
+        console.error("❌ Ошибка выдачи ежедневной награды:", err);
+        showTempNotice("🚫 Ошибка при получении награды");
+      });
   };
 
+  // Недельная награда
   const claimWeeklyReward = () => {
     if (!telegramId) return;
-  
-    if (weeklyReward) {
-      setShowNotice("🎁 Награда уже получена на этой неделе!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
-  
-    if (weeklyMavro < 100000) {
-      setShowNotice("❌ Надо накопить 100 000 мавродиков!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
-  
-    setWeeklyReward(true); // временно блокируем кнопку
-  
+    if (weeklyReward) return showTempNotice("🎁 Награда уже получена на этой неделе!");
+    if (weeklyMavro < 100000) return showTempNotice("❌ Надо накопить 100 000 мавродиков!");
+
     fetch("https://mmmgo-backend.onrender.com/player", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -120,36 +91,54 @@ export default function RankPage() {
         },
         balanceBonus: 10000,
       }),
+      keepalive: true,
     })
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((data) => {
-            throw new Error(data.error || "Ошибка при получении награды");
-          });
-        }
-        return res.json();
+      .then(res => res.json())
+      .then(updated => {
+        setWeeklyMavro(updated.weeklyMission.current);
+        setWeeklyReward(updated.weeklyMission.completed);
+        showTempNotice("🏆 +10 000 мавродиков за недельную миссию!");
       })
-      .then(() => {
-        setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
-        setWeeklyMavro(0);
-        setTimeout(() => setShowNotice(null), 4000);
-      })
-      .catch((err) => {
-        setWeeklyReward(false); // отменяем блокировку, если ошибка
-        if (err.message.includes("уже получена")) {
-          setShowNotice("🎁 Награда уже была получена на этой неделе!");
-        } else {
-          setShowNotice("🚫 Ошибка при выдаче награды");
-        }
-        setTimeout(() => setShowNotice(null), 4000);
+      .catch(err => {
+        console.error("❌ Ошибка выдачи недельной награды:", err);
+        showTempNotice("🚫 Ошибка при получении награды");
       });
+  };
+
+  // Просмотр рекламы
+  const handleAdWatch = () => {
+    if (!telegramId || adsWatched >= 5) return;
+    const newCount = adsWatched + 1;
+    fetch("https://mmmgo-backend.onrender.com/player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegramId, adsWatched: newCount }),
+      keepalive: true,
+    })
+      .then(res => res.json())
+      .then(updated => setAdsWatched(updated.adsWatched))
+      .catch(err => console.error(err));
+  };
+
+  // Подписка на партнёра
+  const handleSubscribe = () => {
+    if (!telegramId) return;
+    fetch("https://mmmgo-backend.onrender.com/player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegramId, partnerSubscribed: true }),
+      keepalive: true,
+    })
+      .then(res => res.json())
+      .then(() => setIsSubscribed(true))
+      .catch(err => console.error(err));
   };
 
   return (
     <div
       className="info-page"
       style={{
-        backgroundImage: `url(/assets/bg-rank.png)`,
+        backgroundImage: "url(/assets/bg-rank.png)",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -160,96 +149,52 @@ export default function RankPage() {
       }}
     >
       <h2 className="section-title">🎯 Задания</h2>
-      {showNotice && (
-  <div className="task-notification">
-    {showNotice}
-  </div>
-)}
- 
+      {showNotice && <div className="task-notification">{showNotice}</div>}
 
-      {/* 📺 Просмотры рекламы */}
+      {/* Просмотры рекламы */}
       <div className="task-block">
         <h3>🎥 Просмотры рекламы</h3>
         <p>Посмотрено сегодня: <strong>{adsWatched}/5</strong></p>
         <button
           className="task-button"
           disabled={adsWatched >= 5}
-          onClick={() => {
-            if (!telegramId || adsWatched >= 5) return;
-            const newCount = adsWatched + 1;
-            setAdsWatched(newCount);
-
-            fetch("https://mmmgo-backend.onrender.com/player", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                telegramId,
-                adsWatched: newCount,
-              }),
-            });
-          }}
-        >
-          ▶ Посмотреть видео
-        </button>
+          onClick={handleAdWatch}
+        >▶ Посмотреть видео</button>
       </div>
 
-      {/* 📢 Подписка на партнёра */}
+      {/* Подписка на партнёра */}
       <div className="task-block">
         <h3>📢 Подпишись на партнёра</h3>
         <p>Канал: <strong>@example_channel</strong></p>
-        {isSubscribed ? (
-          <div className="task-complete">✅ Подписка подтверждена</div>
-        ) : (
-          <button
-            className="task-button"
-            onClick={() => {
-              if (!telegramId) return;
-              setIsSubscribed(true);
-              fetch("https://mmmgo-backend.onrender.com/player", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  telegramId,
-                  partnerSubscribed: true,
-                }),
-              });
-            }}
-          >
-            📎 Я подписался
-          </button>
-        )}
+        {isSubscribed
+          ? <div className="task-complete">✅ Подписка подтверждена</div>
+          : <button className="task-button" onClick={handleSubscribe}>📎 Я подписался</button>
+        }
       </div>
 
-      {/* 🔁 Ежедневные задания */}
+      {/* Ежедневные задания */}
       <div className="task-block">
         <h3>🌀 Ежедневные задания</h3>
-        <p>Натапай 5 000 мавродиков<br />Прогресс: <strong>{dailyClicks}/5000</strong></p>
-        <button className="task-button" onClick={claimDailyReward}>
-          🎁 Забрать награду
-        </button>
+        <p>Натапай 5 000 мавродиков<br/>Прогресс: <strong>{dailyClicks}/5000</strong></p>
+        <button
+          className="task-button"
+          onClick={claimDailyReward}
+          disabled={rewardCollected}
+        >🎁 Забрать награду</button>
       </div>
 
-   
- 
-
-      {/* 🧭 Миссия недели */}
+      {/* Миссия недели */}
       <div className="task-block">
-  <h3>🧭 Миссия недели</h3>
-  <p>
-    Накопи 1 00 000 мавродиков<br />
-    Прогресс: <strong>{weeklyMavro}/100000</strong>
-  </p>
-  <button className="task-button" onClick={claimWeeklyReward}>
-    🎁 Забрать награду
-  </button>
-
-        
+        <h3>🧭 Миссия недели</h3>
+        <p>Накопи 100 000 мавродиков<br/>Прогресс: <strong>{weeklyMavro}/100000</strong></p>
+        <button
+          className="task-button"
+          onClick={claimWeeklyReward}
+          disabled={weeklyReward}
+        >🎁 Забрать награду</button>
       </div>
 
-      <button className="back-button" onClick={() => navigate("/")}>
-        🔙 Назад
-      </button>
+      <button className="back-button" onClick={() => navigate("/")}>🔙 Назад</button>
     </div>
-    
   );
 }
