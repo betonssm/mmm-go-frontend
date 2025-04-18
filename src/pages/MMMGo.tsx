@@ -173,7 +173,6 @@ const progressToNextLevel = nextLevelThreshold !== null
       body: JSON.stringify({
         telegramId,
         playerName,
-        balance,
         level: calculatedLevel,
         isBoostActive: boostActive,
         isInvestor,
