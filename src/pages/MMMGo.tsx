@@ -50,6 +50,7 @@ export default function MMMGo() {
   ];
   const [dailyClicks, setDailyClicks] = useState(0);
   const [weeklyMavro, setWeeklyMavro] = useState(0);
+  const [premiumExpires, setPremiumExpires] = useState<string | null>(null);
   const levelBackgrounds = { 1: bg1, 2: bg2, 3: bg3, 4: bg4, 5: bg5, 6: bg6, 7: bg7, 8: bg8 };
   const getLevelByBalance = (balance: number): number => {
     if (balance >= 5_000_000) return 8;
@@ -126,6 +127,7 @@ const progressToNextLevel = nextLevelThreshold !== null
               setLevel(getLevelByBalance(data.balance || 0));
               setIsInvestor(data.isInvestor || false);
               setSrRating(data.srRating || 0);
+              setPremiumExpires(data.premiumExpires || null);
               setReferrals(data.referrals || 0);
               setAdsWatched(data.adsWatched || 0);
               setTotalTaps(data.totalTaps || 0);
@@ -407,7 +409,13 @@ const progressToNextLevel = nextLevelThreshold !== null
           <Link to="/rating">
             <div className="bar-wrapper">
               <img src={barRating} className="bar-img" alt="SR рейтинг" />
-              <div className="bar-text">📊 SR рейтинг: {srRating}</div>
+              <div className="bar-text">📊 SR рейтинг: {(() => {
+    const now = new Date();
+    const exp = premiumExpires ? new Date(premiumExpires) : null;
+    return (isInvestor && exp && now < exp)
+      ? srRating
+      : "—";
+  })()}</div>
             </div>
           </Link>
         </div>
