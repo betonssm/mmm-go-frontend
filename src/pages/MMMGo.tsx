@@ -228,11 +228,7 @@ const progressToNextLevel = nextLevelThreshold !== null
           dailyTaps: newDaily,
           dailyTarget: 5000,
         },
-        weeklyMission: {
-          mavrodikGoal: 100000,
-          current: newWeekly,
-          completed: newWeekly >= 100000,
-        },
+        
       }),
       keepalive: true
     }).catch((err) => console.error("❌ Ошибка сохранения баланса:", err));
