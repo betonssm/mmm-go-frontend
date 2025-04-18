@@ -217,7 +217,7 @@ const progressToNextLevel = nextLevelThreshold !== null
       body: JSON.stringify({
         telegramId,
         playerName,
-        balance: newBalance,
+        balanceBonus: coinsToAdd,
         level: calculatedLevel,
         isBoostActive: boostActive,
         isInvestor,
@@ -230,9 +230,9 @@ const progressToNextLevel = nextLevelThreshold !== null
           dailyTarget: 5000,
         },
         weeklyMission: {
-          mavrodikGoal: 1000000,
+          mavrodikGoal: 100000,
           current: newWeekly,
-          completed: newWeekly >= 1000000,
+          completed: newWeekly >= 100000,
         },
       }),
     }).catch((err) => console.error("❌ Ошибка сохранения баланса:", err));
@@ -262,7 +262,6 @@ const progressToNextLevel = nextLevelThreshold !== null
           body: JSON.stringify({
             telegramId,
             playerName,
-            balance,
             level: calculatedLevel,
             isBoostActive: true,
             isInvestor,
@@ -288,13 +287,24 @@ const progressToNextLevel = nextLevelThreshold !== null
           fetch("https://mmmgo-backend.onrender.com/player", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ telegramId, playerName, balance: newBalance, level: calculatedLevel, isBoostActive: true, isInvestor, referrals, totalTaps, adsWatched })
+            body: JSON.stringify({
+              telegramId,
+              playerName,
+              balanceBonus: 3,             // вместо полного баланса — отправляем бонус
+              level: calculatedLevel,
+              isBoostActive: true,
+              isInvestor,
+              referrals,
+              totalTaps,
+              adsWatched,
+              boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null
+            }),
           }).catch(err => console.error("Ошибка сохранения:", err));
         }
         return newBalance;
       });
     }, 500);
-
+  
     const stopBoost = setTimeout(() => {
       clearInterval(interval);
       setBoostActive(false);
@@ -303,13 +313,12 @@ const progressToNextLevel = nextLevelThreshold !== null
       setTimeout(() => setShowBoostEndedNotice(false), 5000);
       setTimeout(() => setBoostCooldown(false), 3600000);
     }, 20000);
-
+  
     return () => {
       clearInterval(interval);
       clearTimeout(stopBoost);
     };
   }, [boostActive]);
-
   return (
     <>
       {showLevelNotice && (
