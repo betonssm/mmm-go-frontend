@@ -1,35 +1,46 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/MMMGo.css"; // правильный путь к стилям
+import "../pages/MMMGo.css";
 
 export default function PlayerRatingPage() {
   const navigate = useNavigate();
-  const [srRating, setSrRating] = useState(0);
+  const [playerData, setPlayerData] = useState(null);
   const [bgLoaded, setBgLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user;
-
     if (user) {
       fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
         .then((res) => res.json())
         .then((data) => {
-          setSrRating(data.srRating || 0);
+          setPlayerData(data);
         })
-        .catch((err) => console.error("Ошибка загрузки SR рейтинга:", err));
+        .catch((err) => console.error("Ошибка загрузки данных игрока:", err))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
 
-    // Подгрузка фона
     const img = new Image();
     img.src = "/assets/bg-rating.png";
     img.onload = () => setBgLoaded(true);
   }, []);
 
-  if (!bgLoaded) {
+  if (!bgLoaded || loading) {
     return <div className="loading-screen">Загрузка...</div>;
   }
+
+  if (!playerData) {
+    return <div className="error">Не удалось загрузить данные игрока.</div>;
+  }
+
+  const { srRating, isInvestor, premiumExpires } = playerData;
+  const now = new Date();
+  const expires = premiumExpires ? new Date(premiumExpires) : null;
+  const isActive = isInvestor && expires && now < expires;
 
   return (
     <div
@@ -62,21 +73,32 @@ export default function PlayerRatingPage() {
           margin: "0 auto",
         }}
       >
-        <h3>SR рейтинг игрока: {srRating}</h3>
-        <p>Этот рейтинг зависит от активности и рефералов.</p>
+        {isActive ? (
+          <>
+            <h3>SR рейтинг игрока: {srRating}</h3>
+            <p>Подписка активна до: {expires?.toLocaleDateString()}</p>
+          </>
+        ) : (
+          <>
+            <h3>SR рейтинг недоступен</h3>
+            <p>Подписка не активна или истекла.</p>
+          </>
+        )}
       </div>
 
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "8px" }}>
         📊 SR Рейтинг Игрока
       </h2>
 
-      <p style={{ marginBottom: "8px", color: "#ffe082" }}>
-        Твой SR рейтинг: <strong>{srRating}</strong>
-      </p>
-
-      <p style={{ color: "#ffe082" }}>
-        Рейтинг зависит от активности, рефералов и других факторов.
-      </p>
+      {isActive ? (
+        <p style={{ marginBottom: "8px", color: "#ffe082" }}>
+          Твой SR рейтинг: <strong>{srRating}</strong>
+        </p>
+      ) : (
+        <p style={{ marginBottom: "8px", color: "#ff8c00" }}>
+          Приобретите или продлите премиум, чтобы начать накапливать SR очки.
+        </p>
+      )}
 
       <button
         onClick={() => navigate("/")}
