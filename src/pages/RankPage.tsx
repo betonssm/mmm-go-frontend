@@ -74,61 +74,59 @@ export default function RankPage() {
   };
 
   // Недельная награда
-  const claimWeeklyReward = () => {
+  const claimWeeklyReward = async () => {
     if (!telegramId) return;
   
-    // 🛡️ Проверяем, получил ли уже награду
-    if (weeklyReward) {
-      setShowNotice("🎁 Награда уже получена на этой неделе!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
+    try {
+      const res = await fetch(`https://mmmgo-backend.onrender.com/player/${telegramId}`);
+      const player = await res.json();
+      const current = player.weeklyMission?.current || 0;
+      const completed = player.weeklyMission?.completed || false;
   
-    // ⚠️ Проверяем прогресс — важно чтобы шло после проверки на получение
-    if (weeklyMavro < 100000) {
-      setShowNotice("❌ Надо накопить 100 000 мавродиков!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
-  
-    // ✅ Всё ок
-    setWeeklyReward(true);
-  
-    fetch("https://mmmgo-backend.onrender.com/player", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        telegramId,
-        weeklyMission: {
-          mavrodikGoal: 100000,
-          current: 0,
-          completed: true,
-        },
-        balanceBonus: 10000,
-      }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((data) => {
-            throw new Error(data.error || "Ошибка при получении награды");
-          });
-        }
-        return res.json();
-      })
-      .then(() => {
-        setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
-        setWeeklyMavro(0); // ← только здесь обнуляем
+      if (completed) {
+        setShowNotice("🎁 Награда уже получена на этой неделе!");
         setTimeout(() => setShowNotice(null), 4000);
+        return;
+      }
+  
+      if (current < 100000) {
+        setShowNotice("❌ Надо накопить 100 000 мавродиков!");
+        setTimeout(() => setShowNotice(null), 4000);
+        return;
+      }
+  
+      // Всё ок, отправляем запрос
+      fetch("https://mmmgo-backend.onrender.com/player", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          telegramId,
+          weeklyMission: {
+            mavrodikGoal: 100000,
+            current: 0,
+            completed: true,
+          },
+          balanceBonus: 10000,
+        }),
       })
-      .catch((err) => {
-        setWeeklyReward(false);
-        if (err.message.includes("уже получена")) {
-          setShowNotice("🎁 Награда уже была получена на этой неделе!");
-        } else {
+        .then(res => res.json())
+        .then(() => {
+          setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
+          setWeeklyMavro(0);
+          setWeeklyReward(true);
+          setTimeout(() => setShowNotice(null), 4000);
+        })
+        .catch((err) => {
           setShowNotice("🚫 Ошибка при выдаче награды");
-        }
-        setTimeout(() => setShowNotice(null), 4000);
-      });
+          console.error(err);
+          setTimeout(() => setShowNotice(null), 4000);
+        });
+  
+    } catch (err) {
+      console.error("❌ Ошибка при проверке недельного прогресса:", err);
+      setShowNotice("🚫 Ошибка подключения");
+      setTimeout(() => setShowNotice(null), 4000);
+    }
   };
   // Просмотр рекламы
   const handleAdWatch = () => {
