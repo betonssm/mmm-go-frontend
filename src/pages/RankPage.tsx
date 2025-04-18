@@ -77,21 +77,21 @@ export default function RankPage() {
   const claimWeeklyReward = () => {
     if (!telegramId) return;
   
-    // 💡 Сначала проверяем прогресс
-    if (weeklyMavro < 100000) {
-      setShowNotice("❌ Надо накопить 100 000 мавродиков!");
-      setTimeout(() => setShowNotice(null), 4000);
-      return;
-    }
-  
-    // 🔒 Затем проверяем, получал ли уже
+    // 🛡️ Проверяем, получил ли уже награду
     if (weeklyReward) {
       setShowNotice("🎁 Награда уже получена на этой неделе!");
       setTimeout(() => setShowNotice(null), 4000);
       return;
     }
   
-    // ✅ Всё в порядке — отправляем запрос
+    // ⚠️ Проверяем прогресс — важно чтобы шло после проверки на получение
+    if (weeklyMavro < 100000) {
+      setShowNotice("❌ Надо накопить 100 000 мавродиков!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
+  
+    // ✅ Всё ок
     setWeeklyReward(true);
   
     fetch("https://mmmgo-backend.onrender.com/player", {
@@ -117,7 +117,7 @@ export default function RankPage() {
       })
       .then(() => {
         setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
-        setWeeklyMavro(0);
+        setWeeklyMavro(0); // ← только здесь обнуляем
         setTimeout(() => setShowNotice(null), 4000);
       })
       .catch((err) => {
