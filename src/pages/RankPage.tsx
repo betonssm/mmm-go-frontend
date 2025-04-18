@@ -85,12 +85,11 @@ export default function RankPage() {
       body: JSON.stringify({
         telegramId,
         weeklyMission: {
-          mavrodikGoal: 100000,
-          current: 0,
-          completed: true,
+          completed: true
         },
         balanceBonus: 10000,
       }),
+    
       keepalive: true,
     })
       .then(res => res.json())
