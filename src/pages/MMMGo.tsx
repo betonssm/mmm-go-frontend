@@ -267,23 +267,24 @@ const progressToNextLevel = nextLevelThreshold !== null
             isInvestor,
             referrals,
             totalTaps,
-            adsWatched,
+            adsWatched,                  // текущее adsWatched
             boostCooldownUntil: cooldownEndTime.toISOString(),
           }),
         }).catch(err => console.error("Ошибка сохранения буста:", err));
-        
       }
   
-      setAdsWatched((prev) => prev + 1);
+      setAdsWatched(prev => prev + 1);
     }, 1500);
   };
   
       
   useEffect(() => {
     if (!boostActive || balance === null) return;
+  
     const interval = setInterval(() => {
       setBalance(prev => {
         const newBalance = (prev ?? 0) + 3;
+  
         if (telegramId) {
           fetch("https://mmmgo-backend.onrender.com/player", {
             method: "POST",
@@ -291,7 +292,7 @@ const progressToNextLevel = nextLevelThreshold !== null
             body: JSON.stringify({
               telegramId,
               playerName,
-              balanceBonus: 3,             // вместо полного баланса — отправляем бонус
+              balanceBonus: 3,               // <-- отправляем только бонус
               level: calculatedLevel,
               isBoostActive: true,
               isInvestor,
@@ -300,8 +301,9 @@ const progressToNextLevel = nextLevelThreshold !== null
               adsWatched,
               boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null
             }),
-          }).catch(err => console.error("Ошибка сохранения:", err));
+          }).catch(err => console.error("Ошибка сохранения буста:", err));
         }
+  
         return newBalance;
       });
     }, 500);
@@ -319,7 +321,8 @@ const progressToNextLevel = nextLevelThreshold !== null
       clearInterval(interval);
       clearTimeout(stopBoost);
     };
-  }, [boostActive]);
+  }, [boostActive, balance, telegramId]);
+
   return (
     <>
       {showLevelNotice && (
