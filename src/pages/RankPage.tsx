@@ -76,34 +76,60 @@ export default function RankPage() {
   // Недельная награда
   const claimWeeklyReward = () => {
     if (!telegramId) return;
-    if (weeklyReward) return showTempNotice("🎁 Награда уже получена на этой неделе!");
-    if (weeklyMavro < 100000) return showTempNotice("❌ Надо накопить 100 000 мавродиков!");
-
+  
+    // 💡 Сначала проверяем прогресс
+    if (weeklyMavro < 100000) {
+      setShowNotice("❌ Надо накопить 100 000 мавродиков!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
+  
+    // 🔒 Затем проверяем, получал ли уже
+    if (weeklyReward) {
+      setShowNotice("🎁 Награда уже получена на этой неделе!");
+      setTimeout(() => setShowNotice(null), 4000);
+      return;
+    }
+  
+    // ✅ Всё в порядке — отправляем запрос
+    setWeeklyReward(true);
+  
     fetch("https://mmmgo-backend.onrender.com/player", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         telegramId,
         weeklyMission: {
-          completed: true
+          mavrodikGoal: 100000,
+          current: 0,
+          completed: true,
         },
         balanceBonus: 10000,
       }),
-    
-      keepalive: true,
     })
-      .then(res => res.json())
-      .then(updated => {
-        setWeeklyMavro(updated.weeklyMission.current);
-        setWeeklyReward(updated.weeklyMission.completed);
-        showTempNotice("🏆 +10 000 мавродиков за недельную миссию!");
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((data) => {
+            throw new Error(data.error || "Ошибка при получении награды");
+          });
+        }
+        return res.json();
       })
-      .catch(err => {
-        console.error("❌ Ошибка выдачи недельной награды:", err);
-        showTempNotice("🚫 Ошибка при получении награды");
+      .then(() => {
+        setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
+        setWeeklyMavro(0);
+        setTimeout(() => setShowNotice(null), 4000);
+      })
+      .catch((err) => {
+        setWeeklyReward(false);
+        if (err.message.includes("уже получена")) {
+          setShowNotice("🎁 Награда уже была получена на этой неделе!");
+        } else {
+          setShowNotice("🚫 Ошибка при выдаче награды");
+        }
+        setTimeout(() => setShowNotice(null), 4000);
       });
   };
-
   // Просмотр рекламы
   const handleAdWatch = () => {
     if (!telegramId || adsWatched >= 5) return;
