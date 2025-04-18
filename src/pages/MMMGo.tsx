@@ -270,7 +270,8 @@ const progressToNextLevel = nextLevelThreshold !== null
             adsWatched,
             boostCooldownUntil: cooldownEndTime.toISOString(),
           }),
-        });
+        }).catch(err => console.error("Ошибка сохранения буста:", err));
+        
       }
   
       setAdsWatched((prev) => prev + 1);
