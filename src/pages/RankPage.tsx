@@ -80,8 +80,11 @@ export default function RankPage() {
     try {
       const res = await fetch(`https://mmmgo-backend.onrender.com/player/${telegramId}`);
       const player = await res.json();
-      const current = player.weeklyMission?.current || 0;
-      const completed = player.weeklyMission?.completed || false;
+  
+      const current = player.weeklyMission?.current ?? 0;
+      const completed = player.weeklyMission?.completed ?? false;
+  
+      setWeeklyMavro(current); // ⬅️ обязательно обновить UI-прогресс
   
       if (completed) {
         setShowNotice("🎁 Награда уже получена на этой неделе!");
@@ -95,8 +98,8 @@ export default function RankPage() {
         return;
       }
   
-      // Всё ок, отправляем запрос
-      fetch("https://mmmgo-backend.onrender.com/player", {
+      // Всё ок — отправляем POST на выдачу награды
+      await fetch("https://mmmgo-backend.onrender.com/player", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -108,19 +111,12 @@ export default function RankPage() {
           },
           balanceBonus: 10000,
         }),
-      })
-        .then(res => res.json())
-        .then(() => {
-          setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
-          setWeeklyMavro(0);
-          setWeeklyReward(true);
-          setTimeout(() => setShowNotice(null), 4000);
-        })
-        .catch((err) => {
-          setShowNotice("🚫 Ошибка при выдаче награды");
-          console.error(err);
-          setTimeout(() => setShowNotice(null), 4000);
-        });
+      });
+  
+      setShowNotice("🏆 Ты получил 10 000 мавродиков за неделю!");
+      setWeeklyMavro(0);
+      setWeeklyReward(true);
+      setTimeout(() => setShowNotice(null), 4000);
   
     } catch (err) {
       console.error("❌ Ошибка при проверке недельного прогресса:", err);
