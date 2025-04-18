@@ -232,9 +232,9 @@ const progressToNextLevel = nextLevelThreshold !== null
           mavrodikGoal: 100000,
           current: newWeekly,
           completed: newWeekly >= 100000,
-          keepalive: true
         },
       }),
+      keepalive: true
     }).catch((err) => console.error("❌ Ошибка сохранения баланса:", err));
   };
   
@@ -299,9 +299,9 @@ const progressToNextLevel = nextLevelThreshold !== null
               referrals,
               totalTaps,
               adsWatched,
-              boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null,
-              keepalive: true
+              boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null
             }),
+            keepalive: true
           }).catch(err => console.error("Ошибка сохранения буста:", err));
         }
   
