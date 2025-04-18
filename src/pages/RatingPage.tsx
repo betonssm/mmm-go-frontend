@@ -95,9 +95,8 @@ export default function PlayerRatingPage() {
       <div style={{ marginTop: 12, padding: 12, background: "rgba(0,0,0,0.5)", borderRadius: 8, color: "#ffe082", textAlign: "center" }}>
   <h4>💰 Общий призовой фонд:</h4>
   {fund !== null
-    ? <span style={{ fontSize: 18, fontWeight: "bold" }}>{fund.toLocaleString()} мавродиков</span>
-    : <span>Загрузка...</span>
-  }
+    ? <span>{fund.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})} USDT</span>
+    : <span>Загрузка…</span>}
 </div>
 
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "8px" }}>
