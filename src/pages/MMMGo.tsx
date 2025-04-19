@@ -17,7 +17,7 @@ import bg5 from "../assets/bg-level-5.png";
 import bg6 from "../assets/bg-level-6.png";
 import bg7 from "../assets/bg-level-7.png";
 import bg8 from "../assets/bg-level-8.png";
-import translations from "..src/locales.js";
+import { translations } from "../src/locales.js";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
