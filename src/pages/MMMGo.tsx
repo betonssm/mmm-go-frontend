@@ -276,50 +276,53 @@ const progressToNextLevel = nextLevelThreshold !== null
       
   // 1️⃣ Интервал «+3 мавродика» и fetch — запускается/чистится только при изменении boostActive
   useEffect(() => {
-    if (!boostActive || balance === null) return;
+    if (!boostActive || telegramId === null) return;
   
-    const interval = setInterval(() => {
-      setBalance(prev => {
-        const newBalance = (prev ?? 0) + 3;
+    let interval: ReturnType<typeof setInterval>;
+    let stopBoost: ReturnType<typeof setTimeout>;
   
-        // 👇 Обновляем прогресс дневного и недельного задания
-        setDailyClicks(prev => prev + 3);
-        setWeeklyMavro(prev => prev + 3);
+    let localDaily = dailyClicks;
+    let localWeekly = weeklyMavro;
   
-        if (telegramId) {
-          fetch("https://mmmgo-backend.onrender.com/player", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              telegramId,
-              playerName,
-              balanceBonus: 3,
-              level: calculatedLevel,
-              isBoostActive: true,
-              isInvestor,
-              referrals,
-              totalTaps,
-              adsWatched,
-              boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null,
-              dailyTasks: {
-                dailyTaps: dailyClicks + 3,
-                dailyTarget: 5000
-              },
-              weeklyMission: {
-                mavrodikGoal: 100000,
-                current: weeklyMavro + 3,
-                completed: weeklyMavro + 3 >= 100000
-              }
-            }),
-            keepalive: true
-          }).catch(err => console.error("Ошибка сохранения буста:", err));
-        }
+    interval = setInterval(() => {
+      const coinsToAdd = 3;
   
-        return newBalance;
-      });
+      setBalance(prev => (prev ?? 0) + coinsToAdd);
+      localDaily += coinsToAdd;
+      localWeekly += coinsToAdd;
+  
+      setDailyClicks(localDaily);
+      setWeeklyMavro(localWeekly);
+  
+      fetch("https://mmmgo-backend.onrender.com/player", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          telegramId,
+          playerName,
+          balanceBonus: coinsToAdd,
+          level: calculatedLevel,
+          isBoostActive: true,
+          isInvestor,
+          referrals,
+          totalTaps,
+          adsWatched,
+          boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null,
+          dailyTasks: {
+            dailyTaps: localDaily,
+            dailyTarget: 5000
+          },
+          weeklyMission: {
+            mavrodikGoal: 100000,
+            current: localWeekly,
+            completed: localWeekly >= 100000
+          }
+        }),
+        keepalive: true
+      }).catch(err => console.error("Ошибка сохранения буста:", err));
     }, 500);
   
-    const stopBoost = setTimeout(() => {
+    stopBoost = setTimeout(() => {
       clearInterval(interval);
       setBoostActive(false);
       setBoostCooldown(true);
@@ -332,7 +335,7 @@ const progressToNextLevel = nextLevelThreshold !== null
       clearInterval(interval);
       clearTimeout(stopBoost);
     };
-  }, [boostActive, balance, telegramId]);
+  }, [boostActive, telegramId]);
 
   return (
     <>
