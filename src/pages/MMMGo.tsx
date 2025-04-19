@@ -275,53 +275,65 @@ const progressToNextLevel = nextLevelThreshold !== null
   
       
   // 1️⃣ Интервал «+3 мавродика» и fetch — запускается/чистится только при изменении boostActive
-useEffect(() => {
-  if (!boostActive || balance === null) return;
-  const interval = setInterval(() => {
-    setBalance(prev => {
-      const newBalance = (prev ?? 0) + 3;
-      if (telegramId) {
-        fetch("https://mmmgo-backend.onrender.com/player", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            telegramId,
-            playerName,
-            balanceBonus: 3,
-            level: calculatedLevel,
-            isBoostActive: true,
-            isInvestor,
-            referrals,
-            totalTaps,
-            adsWatched,
-            boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null
-          }),
-          keepalive: true
-        }).catch(err => console.error("Ошибка сохранения буста:", err));
-      }
-      return newBalance;
-    });
-  }, 500);
-
-  return () => clearInterval(interval);
-}, [boostActive, telegramId]);
-
-// 2️⃣ Таймаут на 20 сек — останавливает буст ровно через 20 сек от момента включения
-useEffect(() => {
-  if (!boostActive) return;
-  const timeout = setTimeout(() => {
-    setBoostActive(false);
-    setBoostCooldown(true);
-    setShowBoostEndedNotice(true);
-
-    // Скрыть уведомление через 5 сек
-    setTimeout(() => setShowBoostEndedNotice(false), 5000);
-    // Снять перезарядку через час
-    setTimeout(() => setBoostCooldown(false), 3600 * 1000);
-  }, 20000);
-
-  return () => clearTimeout(timeout);
-}, [boostActive]);
+  useEffect(() => {
+    if (!boostActive || balance === null) return;
+  
+    const interval = setInterval(() => {
+      setBalance(prev => {
+        const newBalance = (prev ?? 0) + 3;
+        const updatedDaily = dailyClicks + 3;
+        const updatedWeekly = weeklyMavro + 3;
+  
+        setDailyClicks(updatedDaily);
+        setWeeklyMavro(updatedWeekly);
+  
+        if (telegramId) {
+          fetch("https://mmmgo-backend.onrender.com/player", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              telegramId,
+              playerName,
+              balanceBonus: 3,
+              level: calculatedLevel,
+              isBoostActive: true,
+              isInvestor,
+              referrals,
+              totalTaps,
+              adsWatched,
+              boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null,
+              dailyTasks: {
+                dailyTaps: updatedDaily,
+                dailyTarget: 5000
+              },
+              weeklyMission: {
+                mavrodikGoal: 100000,
+                current: updatedWeekly,
+                completed: updatedWeekly >= 100000
+              }
+            }),
+            keepalive: true
+          }).catch(err => console.error("Ошибка сохранения буста:", err));
+        }
+  
+        return newBalance;
+      });
+    }, 500);
+  
+    const stopBoost = setTimeout(() => {
+      clearInterval(interval);
+      setBoostActive(false);
+      setBoostCooldown(true);
+      setShowBoostEndedNotice(true);
+      setTimeout(() => setShowBoostEndedNotice(false), 5000);
+      setTimeout(() => setBoostCooldown(false), 3600000);
+    }, 20000);
+  
+    return () => {
+      clearInterval(interval);
+      clearTimeout(stopBoost);
+    };
+  }, [boostActive, balance, telegramId, dailyClicks, weeklyMavro]);
 
   return (
     <>
