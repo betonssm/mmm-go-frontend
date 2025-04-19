@@ -281,11 +281,10 @@ const progressToNextLevel = nextLevelThreshold !== null
     const interval = setInterval(() => {
       setBalance(prev => {
         const newBalance = (prev ?? 0) + 3;
-        const updatedDaily = dailyClicks + 3;
-        const updatedWeekly = weeklyMavro + 3;
   
-        setDailyClicks(updatedDaily);
-        setWeeklyMavro(updatedWeekly);
+        // 👇 Обновляем прогресс дневного и недельного задания
+        setDailyClicks(prev => prev + 3);
+        setWeeklyMavro(prev => prev + 3);
   
         if (telegramId) {
           fetch("https://mmmgo-backend.onrender.com/player", {
@@ -303,13 +302,13 @@ const progressToNextLevel = nextLevelThreshold !== null
               adsWatched,
               boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null,
               dailyTasks: {
-                dailyTaps: updatedDaily,
+                dailyTaps: dailyClicks + 3,
                 dailyTarget: 5000
               },
               weeklyMission: {
                 mavrodikGoal: 100000,
-                current: updatedWeekly,
-                completed: updatedWeekly >= 100000
+                current: weeklyMavro + 3,
+                completed: weeklyMavro + 3 >= 100000
               }
             }),
             keepalive: true
@@ -333,7 +332,7 @@ const progressToNextLevel = nextLevelThreshold !== null
       clearInterval(interval);
       clearTimeout(stopBoost);
     };
-  }, [boostActive, balance, telegramId, dailyClicks, weeklyMavro]);
+  }, [boostActive, balance, telegramId]);
 
   return (
     <>
