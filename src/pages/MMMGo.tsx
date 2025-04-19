@@ -99,68 +99,72 @@ const progressToNextLevel = nextLevelThreshold !== null
     if (!tg) return;
     tg.ready?.();
     tg.expand?.();
-
+  
     const ref = new URLSearchParams(window.location.search).get("ref");
     setRefSource(ref ?? null);
-
+  
     const loadUser = () => {
       const user = tg.initDataUnsafe?.user;
       if (user) {
         setPlayerName(user.first_name);
         setTelegramId(user.id);
-
+  
         fetch(`https://mmmgo-backend.onrender.com/player/${user.id}?ref=${ref ?? ""}`)
-  .then(res => res.json())
-  .then(data => {
-    if (data.boostCooldownUntil) {
-      const cooldownEnd = new Date(data.boostCooldownUntil);
-      setBoostCooldownUntil(cooldownEnd);
-      const now = new Date();
-      if (cooldownEnd > now) {
-        setBoostCooldown(true);
-        setTimeout(() => setBoostCooldown(false), cooldownEnd.getTime() - now.getTime());
+          .then(res => res.json())
+          .then(data => {
+            if (data.boostCooldownUntil) {
+              const cooldownEnd = new Date(data.boostCooldownUntil);
+              setBoostCooldownUntil(cooldownEnd);
+              const now = new Date();
+              if (cooldownEnd > now) {
+                setBoostCooldown(true);
+                setTimeout(() => setBoostCooldown(false), cooldownEnd.getTime() - now.getTime());
+              } else {
+                setBoostCooldown(false);
+              }
+            }
+  
+            if (typeof data.balance === "number") {
+              setBalance(data.balance);
+              setLevel(getLevelByBalance(data.balance || 0));
+              setIsInvestor(data.isInvestor || false);
+              setSrRating(data.srRating || 0);
+              setPremiumExpires(data.premiumExpires || null);
+              setReferrals(data.referrals || 0);
+              setAdsWatched(data.adsWatched || 0);
+              setTotalTaps(data.totalTaps || 0);
+              setWeeklyMavro(data.weeklyMission?.current || 0);
+              setDailyClicks(data.dailyTasks?.dailyTaps || 0);
+  
+              if (ref && data.refSource === null && data.referrals === 0) {
+                setShowNoRefNotice(true);
+              }
+            }
+  
+            if (data.srActiveSince) {
+              const srStart = new Date(data.srActiveSince);
+              const now = new Date();
+              if (srStart > now) {
+                const locale = navigator.language.startsWith("en") ? "en" : "ru";
+                const formattedDate = srStart.toLocaleDateString(locale === "en" ? "en-US" : "ru-RU");
+                const msg = translations[locale].srNotice(formattedDate);
+                setShowNotice(msg);
+                setTimeout(() => setShowNotice(null), 6000);
+              }
+            }
+  
+            setInitialLoad(false);
+          })
+          .catch(err => {
+            console.error("❌ Ошибка загрузки игрока:", err);
+            setInitialLoad(false);
+          });
       } else {
-        setBoostCooldown(false);
+        setTimeout(loadUser, 300);
       }
-    }
-
-    if (typeof data.balance === "number") {
-      setBalance(data.balance);
-      setLevel(getLevelByBalance(data.balance || 0));
-      setIsInvestor(data.isInvestor || false);
-      setSrRating(data.srRating || 0);
-      setPremiumExpires(data.premiumExpires || null);
-      setReferrals(data.referrals || 0);
-      setAdsWatched(data.adsWatched || 0);
-      setTotalTaps(data.totalTaps || 0);
-      setWeeklyMavro(data.weeklyMission?.current || 0);
-      setDailyClicks(data.dailyTasks?.dailyTaps || 0);
-
-      if (ref && data.refSource === null && data.referrals === 0) {
-        setShowNoRefNotice(true);
-      }
-    }
-
-    if (data.srActiveSince) {
-      const srStart = new Date(data.srActiveSince);
-      const now = new Date();
-      if (srStart > now) {
-        const locale = navigator.language.startsWith("en") ? "en" : "ru";
-        const formattedDate = srStart.toLocaleDateString(locale === "en" ? "en-US" : "ru-RU");
-        const msg = translations[locale].srNotice(formattedDate);
-        setShowNotice(msg);
-        setTimeout(() => setShowNotice(null), 6000);
-      }
-    }
-
-    setInitialLoad(false);
-  })
-  .catch(err => {
-    console.error("❌ Ошибка загрузки игрока:", err);
-    setInitialLoad(false);
-  });
-
-    loadUser();
+    };
+  
+    loadUser(); // вызываем ЗДЕСЬ — после объявления функции
   }, []);
   useEffect(() => {
     document.body.classList.add("no-scroll");
