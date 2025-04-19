@@ -80,6 +80,11 @@ export default function RankPage() {
     try {
       const res = await fetch(`https://mmmgo-backend.onrender.com/player/${telegramId}`);
       const player = await res.json();
+      if (!player.weeklyMission) {
+        setShowNotice("🚫 Данные о задании недоступны.");
+        setTimeout(() => setShowNotice(null), 4000);
+        return;
+      }
   
       const current = player.weeklyMission?.current ?? 0;
       const completed = player.weeklyMission?.completed ?? false;
