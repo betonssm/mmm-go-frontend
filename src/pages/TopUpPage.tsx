@@ -47,6 +47,31 @@ export default function TopUpPage() {
 
   if (!bgLoaded) return <div className="loading-screen">Загрузка...</div>;
 
+  const handleBuyMavrodiks = async () => {
+    if (!telegramId) return;
+    setIsLoading(true);
+  
+    try {
+      const response = await fetch("https://mmmgo-backend.onrender.com/plisio/create-balance-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ telegramId }),
+      });
+  
+      const data = await response.json();
+      if (data?.data?.invoice_url) {
+        window.open(data.data.invoice_url, "_blank");
+      } else {
+        alert("Ошибка создания счёта на оплату.");
+      }
+    } catch (err) {
+      console.error("❌ Ошибка оплаты 50 000 мавродиков:", err);
+      alert("Произошла ошибка при создании платежа.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="topup-container" style={{
         backgroundImage: `url(/assets/bg-topup.png)`,
@@ -78,6 +103,9 @@ export default function TopUpPage() {
           <button onClick={handlePlisioPayment} disabled={isLoading}>
             {isLoading ? "⏳ Ожидание..." : "🚀 Получить премиум"}
           </button>
+          <button className="your-button-class" onClick={handleBuyMavrodiks} disabled={isLoading}>
+  Купить 50 000 мавродиков — 10 $
+</button>
         </div>
       </div>
 
