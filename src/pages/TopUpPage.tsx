@@ -6,8 +6,8 @@ import "./TopUpPage.css";
 export default function TopUpPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const [telegramId, setTelegramId] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [isPremiumLoading, setPremiumLoading] = useState(false);
+  const [isBuyLoading, setBuyLoading] = useState(false);
   useEffect(() => {
     const img = new Image();
     img.src = "/assets/bg-topup.png";
@@ -20,8 +20,8 @@ export default function TopUpPage() {
 
   const handlePlisioPayment = async () => {
     if (!telegramId) return;
-
-    setIsLoading(true);
+  
+    setPremiumLoading(true);
     try {
       const response = await fetch(
         "https://mmmgo-backend.onrender.com/plisio/create-payment",
@@ -32,16 +32,16 @@ export default function TopUpPage() {
         }
       );
       const data = await response.json();
-      if (data && data.data && data.data.invoice_url) {
+      if (data?.data?.invoice_url) {
         window.location.href = data.data.invoice_url;
       } else {
         alert("Ошибка создания платежа. Попробуй позже.");
-        setIsLoading(false);
       }
     } catch (err) {
       console.error("❌ Ошибка при создании платежа:", err);
       alert("Сервер временно недоступен.");
-      setIsLoading(false);
+    } finally {
+      setPremiumLoading(false);
     }
   };
 
@@ -49,7 +49,7 @@ export default function TopUpPage() {
 
   const handleBuyMavrodiks = async () => {
     if (!telegramId) return;
-    setIsLoading(true);
+    setBuyLoading(true)
   
     try {
       const response = await fetch("https://mmmgo-backend.onrender.com/plisio/create-balance-payment", {
@@ -71,12 +71,14 @@ export default function TopUpPage() {
       console.error("❌ Ошибка оплаты 50 000 мавродиков:", err);
       alert("Произошла ошибка при создании платежа.");
     } finally {
-      setIsLoading(false);
+      setBuyLoading(false);
     }
   };
 
   return (
-    <div className="topup-container" style={{
+    <div
+      className="topup-container"
+      style={{
         backgroundImage: `url(/assets/bg-topup.png)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -84,44 +86,49 @@ export default function TopUpPage() {
         minHeight: "100vh",
         padding: "30px 16px 60px",
         boxSizing: "border-box",
-      }}>
-
+      }}
+    >
       {/* Overlay для загрузки */}
-      {isLoading && (
+      {(isPremiumLoading || isBuyLoading) && (
         <div className="loading-overlay">
           <div className="spinner"></div>
           <p>Загрузка платежа...</p>
         </div>
       )}
-
+  
       <div className="note-box">
         <h1>🎁 Премиум-доступ</h1>
         <p>Разблокируй расширенные возможности и бонусы!</p>
       </div>
-
+  
       <div className="payment-options">
         <div className="payment-option">
           <h3>🪙 Оплата через Plisio</h3>
           <p>Поддерживаются USDT, BTC, ETH и другие криптовалюты</p>
-          <button onClick={handlePlisioPayment} disabled={isLoading}>
-            {isLoading ? "⏳ Ожидание..." : "🚀 Получить премиум"}
+  
+          <button onClick={handlePlisioPayment} disabled={isPremiumLoading}>
+            {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум"}
           </button>
-          <button className="your-button-class" onClick={handleBuyMavrodiks} disabled={isLoading}>
-  Купить 50 000 мавродиков — 10 $
-</button>
+  
+          <button
+            className="your-button-class"
+            onClick={handleBuyMavrodiks}
+            disabled={isBuyLoading}
+          >
+            {isBuyLoading ? "⏳ Ожидание..." : "Купить 50 000 мавродиков — 10 $"}
+          </button>
         </div>
       </div>
-
+  
       <div className="note-box">
         💡 Убедись, что на кошельке есть средства на оплату и комиссию сети.
       </div>
       <div className="note-box">
         💡 Платёж является добровольным. В MMMGO нет обещаний дохода или возврата средств.
       </div>
-
+  
       <Link to="/">
         <button className="back-btn">⬅ Вернуться в игру</button>
       </Link>
     </div>
   );
-}
