@@ -138,15 +138,17 @@ const progressToNextLevel = nextLevelThreshold !== null
               setAdsWatched(data.adsWatched || 0);
               setTotalTaps(data.totalTaps || 0);
               setWeeklyMavro(data.weeklyMission?.current || 0);
-              if (data.weeklyMission?.completed && data.lastWeeklyRewardAt) {
+              if (
+                data.weeklyMission?.completed &&
+                data.lastWeeklyRewardAt &&
+                data.weeklyMission.current >= data.weeklyMission.mavrodikGoal
+              ) {
                 const rewardDate = new Date(data.lastWeeklyRewardAt);
                 const now = new Date();
                 const rewardWeek = rewardDate.getFullYear() + "-" + rewardDate.getWeek();
                 const nowWeek = now.getFullYear() + "-" + now.getWeek();
               
-                if (rewardWeek === nowWeek) {
-                  console.log("⏳ Награда за неделю уже получена");
-                } else {
+                if (rewardWeek !== nowWeek) {
                   setShowNotice("🎁 Ты получил 10 000 мавродиков за выполнение недельной цели!");
                   setTimeout(() => setShowNotice(null), 6000);
                 }
