@@ -62,7 +62,7 @@ export default function TopUpPage() {
       console.log("📦 Ответ от Plisio (докупка):", data); // 👈 добавим лог
   
       if (data?.data?.invoice_url) {
-        window.open(data.data.invoice_url, "_blank");
+        window.location.href = data.data.invoice_url; // ← вот здесь ключ
       } else {
         alert("❌ Ошибка создания счёта на оплату.");
         console.warn("Ответ Plisio без invoice_url:", data); // 👈 лог если не пришёл URL
