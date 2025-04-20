@@ -59,10 +59,13 @@ export default function TopUpPage() {
       });
   
       const data = await response.json();
+      console.log("📦 Ответ от Plisio (докупка):", data); // 👈 добавим лог
+  
       if (data?.data?.invoice_url) {
         window.open(data.data.invoice_url, "_blank");
       } else {
-        alert("Ошибка создания счёта на оплату.");
+        alert("❌ Ошибка создания счёта на оплату.");
+        console.warn("Ответ Plisio без invoice_url:", data); // 👈 лог если не пришёл URL
       }
     } catch (err) {
       console.error("❌ Ошибка оплаты 50 000 мавродиков:", err);
