@@ -25,13 +25,23 @@ export default function PaymentSuccess() {
   }, []);
   return (
     <div className="topup-container">
-      <div className="note-box">
-        <h2>✅ Оплата прошла успешно</h2>
-        <p>Премиум-доступ будет активирован в течение 1–2 минут.</p>
-      </div>
-      <Link to="/">
-        <button className="back-btn">⬅ Вернуться в игру</button>
-      </Link>
+  <div className="note-box">
+  <h2>✅ Оплата прошла успешно</h2>
+  <p>Премиум-доступ активирован,мавродики на балансе. Вернись в Telegram, чтобы продолжить игру!</p>
+</div>
+<button
+  className="back-btn"
+  onClick={() => {
+    const tg = (window as any).Telegram?.WebApp;
+    if (tg) {
+      tg.close(); // Закрывает WebApp и возвращает в Telegram
+    } else {
+      window.location.href = "https://t.me/mmmgo_bot"; // Фолбэк для обычного браузера
+    }
+  }}
+>
+  ⬅ Вернуться в Telegram
+</button>
     </div>
   );
 }
