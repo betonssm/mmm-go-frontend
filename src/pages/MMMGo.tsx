@@ -20,6 +20,10 @@ import bg8 from "../assets/bg-level-8.png";
 import translations from "../locales.js";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+Date.prototype.getWeek = function () {
+  const oneJan = new Date(this.getFullYear(), 0, 1);
+  return Math.ceil((((this as any) - oneJan) / 86400000 + oneJan.getDay() + 1) / 7);
+};
 
 export default function MMMGo() {
   const [balance, setBalance] = useState(null);
@@ -134,6 +138,19 @@ const progressToNextLevel = nextLevelThreshold !== null
               setAdsWatched(data.adsWatched || 0);
               setTotalTaps(data.totalTaps || 0);
               setWeeklyMavro(data.weeklyMission?.current || 0);
+              if (data.weeklyMission?.completed && data.lastWeeklyRewardAt) {
+                const rewardDate = new Date(data.lastWeeklyRewardAt);
+                const now = new Date();
+                const rewardWeek = rewardDate.getFullYear() + "-" + rewardDate.getWeek();
+                const nowWeek = now.getFullYear() + "-" + now.getWeek();
+              
+                if (rewardWeek === nowWeek) {
+                  console.log("⏳ Награда за неделю уже получена");
+                } else {
+                  setShowNotice("🎁 Ты получил 10 000 мавродиков за выполнение недельной цели!");
+                  setTimeout(() => setShowNotice(null), 6000);
+                }
+              }
               setDailyClicks(data.dailyTasks?.dailyTaps || 0);
   
               if (ref && data.refSource === null && data.referrals === 0) {
