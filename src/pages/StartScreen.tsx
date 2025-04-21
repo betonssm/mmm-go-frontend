@@ -56,9 +56,9 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
               </button>
             )}
 
-            <p className="disclaimer-text">
+<div className="start-screen-footer">
               🎮 Это WebApp-игра в стиле 90-х. Все персонажи и валюты вымышлены.
-            </p>
+              </div>
           </>
         )}
       </div>
