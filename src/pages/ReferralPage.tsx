@@ -10,6 +10,7 @@ export default function ReferralPage() {
   const [copied, setCopied] = useState(false);
   const [bgLoaded, setBgLoaded] = useState(false);
   const navigate = useNavigate();
+  const [referralEarnings, setReferralEarnings] = useState(0);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -19,10 +20,11 @@ export default function ReferralPage() {
       setTelegramId(user.id);
 
       fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
-        .then(res => res.json())
-        .then(data => {
-          setReferrals(data.referrals || 0);
-        });
+  .then(res => res.json())
+  .then(data => {
+    setReferrals(data.referrals || 0);
+    setReferralEarnings(data.referralEarnings || 0);
+  });
 
       fetch("https://mmmgo-backend.onrender.com/player/count")
         .then(res => res.json())
@@ -72,7 +74,9 @@ export default function ReferralPage() {
       <p style={{ color: "#fff" }}>
         Всего игроков в системе: <strong>{totalPlayers}</strong>
       </p>
-      <p>👥 Заработано от рефералов: {player.referralEarnings ?? 0}</p>
+      <p style={{ color: "#fff" }}>
+  👥 Заработано от рефералов: <strong>{referralEarnings}</strong>
+</p>
       <p style={{ color: "#fff", marginTop: "20px", fontStyle: "italic" }}>
         Скопируй свою уникальную ссылку и отправь другу. Когда он впервые зайдёт в игру — ты получишь +1 к рефералам.
       </p>
