@@ -97,7 +97,7 @@
 }
 .start-screen-footer {
   position: fixed;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  bottom: 16px; /* стандартный отступ */
   left: 0;
   right: 0;
   text-align: center;
@@ -106,6 +106,13 @@
   z-index: 1000;
   pointer-events: none;
   padding: 8px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  background: none;
 }
 
+/* Только для iPhone X и новее */
+@supports (bottom: env(safe-area-inset-bottom)) {
+  .start-screen-footer {
+    bottom: calc(env(safe-area-inset-bottom) + 16px);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  }
+}
