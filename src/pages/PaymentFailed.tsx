@@ -14,10 +14,16 @@ export default function PaymentFailed() {
   className="back-btn"
   onClick={() => {
     const tg = (window as any).Telegram?.WebApp;
-    if (tg) {
-      tg.close(); // Закрывает WebApp и возвращает в Telegram
+    if (tg?.close) {
+      tg.close(); // Закрывает WebApp, если запущен внутри Telegram
     } else {
-      window.location.href = "https://t.me/mmmgo_bot"; // Фолбэк для обычного браузера
+      // Пытаемся открыть Telegram через deep link (работает на мобильных)
+      window.location.href = "tg://resolve?domain=mmmgo_bot";
+
+      // Фолбэк — обычная ссылка, если deep link не сработает (ПК, браузер)
+      setTimeout(() => {
+        window.location.href = "https://t.me/mmmgo_bot";
+      }, 1500);
     }
   }}
 >
