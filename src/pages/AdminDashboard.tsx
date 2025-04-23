@@ -139,8 +139,8 @@ export default function AdminDashboard() {
       <Modal
   isOpen={!!selectedPlayer}
   onRequestClose={() => setSelectedPlayer(null)}
-  className="bg-white rounded-xl shadow-2xl w-full max-w-xl p-6 outline-none"
-  overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  className="bg-white p-6 rounded max-w-xl w-full shadow-lg"
+  overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
 >
   {selectedPlayer && (
     <div>
