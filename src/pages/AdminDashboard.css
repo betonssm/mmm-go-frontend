@@ -1,0 +1,21 @@
+
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.ReactModal__Content {
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 24px;
+  background: white;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  outline: none;
+  position: relative;
+}
