@@ -16,7 +16,6 @@ export default function AdminDashboard() {
     })
       .then((res) => res.json())
       .then((data) => {
-        // Сортировка по окончанию подписки (новее выше)
         const sorted = data.players.sort((a, b) => {
           const aDate = a.premiumExpires ? new Date(a.premiumExpires) : 0;
           const bDate = b.premiumExpires ? new Date(b.premiumExpires) : 0;
@@ -48,15 +47,15 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Админ-панель игроков</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-yellow-600">Админ-панель игроков</h1>
 
-      <div className="flex gap-4 mb-6">
+      <div className="flex flex-col md:flex-row gap-4 mb-6 justify-center">
         <input
           type="text"
           placeholder="Поиск по имени или ID..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-3 border rounded w-1/2"
+          className="p-3 border rounded w-full md:w-1/2"
         />
 
         <label className="flex items-center gap-2">
@@ -69,38 +68,45 @@ export default function AdminDashboard() {
         </label>
       </div>
 
-      <div className="overflow-x-auto shadow border border-gray-300 rounded-lg">
-  <table className="min-w-full table-auto text-sm text-left">
-    <thead className="bg-gray-100 text-gray-800">
-      <tr>
-        <th className="p-3 border">Telegram ID</th>
-        <th className="p-3 border">Имя</th>
-        <th className="p-3 border">Баланс</th>
-        <th className="p-3 border">Уровень</th>
-        <th className="p-3 border">Инвестор</th>
-        <th className="p-3 border">SR</th>
-        <th className="p-3 border">Подписка до</th>
-      </tr>
-    </thead>
-    <tbody>
-      {filtered.map((player) => {
-        const sub = getExpireStatus(player.premiumExpires);
-        return (
-          <tr key={player.telegramId} className="hover:bg-gray-50">
-            <td className="p-3 border font-mono">{player.telegramId}</td>
-            <td className="p-3 border">{player.playerName}</td>
-            <td className="p-3 border text-right">{player.balance}</td>
-            <td className="p-3 border text-center">{player.level}</td>
-            <td className="p-3 border text-center">{player.isInvestor ? "✅" : ""}</td>
-            <td className="p-3 border text-right">{player.srRating}</td>
-            <td className={`p-3 border ${sub.color}`}>{sub.text}</td>
-          </tr>
-        );
-      })}
+      <div className="overflow-auto">
+        <table className="w-full border border-gray-300 text-sm text-center">
+          <thead className="bg-gray-100 text-gray-700">
+            <tr>
+              <th className="p-2 border">Telegram ID</th>
+              <th className="p-2 border">Имя</th>
+              <th className="p-2 border">Баланс</th>
+              <th className="p-2 border">Уровень</th>
+              <th className="p-2 border">Инвестор</th>
+              <th className="p-2 border">SR</th>
+              <th className="p-2 border">Подписка до</th>
+              <th className="p-2 border">Рефералы</th>
+              <th className="p-2 border">Оплаты</th>
+              <th className="p-2 border">Источник</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((player) => {
+              const sub = getExpireStatus(player.premiumExpires);
+              return (
+                <tr key={player.telegramId} className="hover:bg-gray-50">
+                  <td className="p-2 border font-mono text-sm">{player.telegramId}</td>
+                  <td className="p-2 border text-left">{player.playerName}</td>
+                  <td className="p-2 border text-right">{player.balance}</td>
+                  <td className="p-2 border">{player.level}</td>
+                  <td className="p-2 border">{player.isInvestor ? "✅" : ""}</td>
+                  <td className="p-2 border">{player.srRating}</td>
+                  <td className={`p-2 border ${sub.color}`}>{sub.text}</td>
+                  <td className="p-2 border">{player.referrals || 0}</td>
+                  <td className="p-2 border">{player.paymentsCount || 0}</td>
+                  <td className="p-2 border">{player.refSource || "—"}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
     </div>
   );
 }
+
        
