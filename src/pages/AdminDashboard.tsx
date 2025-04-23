@@ -2,82 +2,95 @@
 import React, { useEffect, useState } from "react";
 
 export default function AdminDashboard() {
-  const [token, setToken] = useState("");
-  const [authorized, setAuthorized] = useState(false);
-  const [data, setData] = useState<any>(null);
-  const [error, setError] = useState("");
+  const [players, setPlayers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [showInvestorsOnly, setShowInvestorsOnly] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("adminToken") || "");
 
-  const handleLogin = async () => {
+  useEffect(() => {
     if (!token) return;
-    try {
-      const res = await fetch("https://mmmgo-backend.onrender.com/admin/overview", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) throw new Error("Неверный токен или ошибка доступа");
-      const json = await res.json();
-      setData(json);
-      setAuthorized(true);
-    } catch (err: any) {
-      setError(err.message);
-    }
+    fetch("https://mmmgo-backend.onrender.com/admin/overview", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setPlayers(data.players))
+      .catch((err) => console.error("Ошибка загрузки игроков:", err));
+  }, [token]);
+
+  const filtered = players.filter((p) => {
+    const matchesSearch = p.playerName.toLowerCase().includes(search.toLowerCase()) ||
+                          p.telegramId.toString().includes(search);
+    const matchesInvestor = !showInvestorsOnly || p.isInvestor;
+    return matchesSearch && matchesInvestor;
+  });
+
+  const handleTokenChange = (e) => {
+    const value = e.target.value;
+    setToken(value);
+    localStorage.setItem("adminToken", value);
   };
 
-  if (!authorized) {
-    return (
-      <div className="p-6 max-w-md mx-auto">
-        <h1 className="text-xl font-bold mb-4">🔐 Вход в админку</h1>
-        <input
-          className="w-full p-2 border border-gray-300 rounded mb-2"
-          type="password"
-          placeholder="Введите токен"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-        />
-        <button
-          onClick={handleLogin}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Войти
-        </button>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-      </div>
-    );
-  }
-
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">📊 Админ-панель</h1>
-      <p className="mb-4">Всего игроков: <strong>{data.totalPlayers}</strong></p>
-      <p className="mb-6">Общий фонд: <strong>{data.fundTotal} USDT</strong></p>
+    <div className="p-6 max-w-6xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Админ-панель игроков</h1>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 border">Telegram ID</th>
-              <th className="p-2 border">Имя</th>
-              <th className="p-2 border">Баланс</th>
-              <th className="p-2 border">Уровень</th>
-              <th className="p-2 border">Инвестор</th>
-              <th className="p-2 border">SR рейтинг</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.players.map((p: any) => (
-              <tr key={p.telegramId} className="text-center">
-                <td className="p-2 border">{p.telegramId}</td>
-                <td className="p-2 border">{p.playerName}</td>
-                <td className="p-2 border">{p.balance}</td>
-                <td className="p-2 border">{p.level}</td>
-                <td className="p-2 border">{p.isInvestor ? "✅" : "❌"}</td>
-                <td className="p-2 border">{p.srRating}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mb-4">
+        <label className="block mb-1">Admin Token</label>
+        <input
+          type="password"
+          value={token}
+          onChange={handleTokenChange}
+          className="p-2 border rounded w-full"
+        />
       </div>
+
+      <div className="flex gap-4 mb-6">
+        <input
+          type="text"
+          placeholder="Поиск по имени или ID..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="p-2 border rounded w-1/2"
+        />
+
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={showInvestorsOnly}
+            onChange={(e) => setShowInvestorsOnly(e.target.checked)}
+          />
+          Только инвесторы
+        </label>
+      </div>
+
+      <table className="w-full table-auto border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="p-2 border">Telegram ID</th>
+            <th className="p-2 border">Имя</th>
+            <th className="p-2 border">Баланс</th>
+            <th className="p-2 border">Уровень</th>
+            <th className="p-2 border">Инвестор</th>
+            <th className="p-2 border">SR-рейтинг</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filtered.map((player) => (
+            <tr key={player.telegramId}>
+              <td className="p-2 border text-center">{player.telegramId}</td>
+              <td className="p-2 border">{player.playerName}</td>
+              <td className="p-2 border text-right">{player.balance}</td>
+              <td className="p-2 border text-center">{player.level}</td>
+              <td className="p-2 border text-center">{player.isInvestor ? "✅" : ""}</td>
+              <td className="p-2 border text-right">{player.srRating}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
+  
+       
