@@ -69,34 +69,34 @@ export default function AdminDashboard() {
         </label>
       </div>
 
-      <div className="overflow-auto">
-        <table className="w-full border border-gray-300 text-sm">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th className="p-2 border">Telegram ID</th>
-              <th className="p-2 border">Имя</th>
-              <th className="p-2 border">Баланс</th>
-              <th className="p-2 border">Уровень</th>
-              <th className="p-2 border">Инвестор</th>
-              <th className="p-2 border">SR</th>
-              <th className="p-2 border">Подписка до</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((player) => {
-              const sub = getExpireStatus(player.premiumExpires);
-              return (
-                <tr key={player.telegramId} className="text-center hover:bg-gray-50">
-                  <td className="p-2 border font-mono text-sm">{player.telegramId}</td>
-                  <td className="p-2 border text-left">{player.playerName}</td>
-                  <td className="p-2 border text-right">{player.balance}</td>
-                  <td className="p-2 border">{player.level}</td>
-                  <td className="p-2 border">{player.isInvestor ? "✅" : ""}</td>
-                  <td className="p-2 border">{player.srRating}</td>
-                  <td className={`p-2 border ${sub.color}`}>{sub.text}</td>
-                </tr>
-              );
-            })}
+      <div className="overflow-x-auto shadow border border-gray-300 rounded-lg">
+  <table className="min-w-full table-auto text-sm text-left">
+    <thead className="bg-gray-100 text-gray-800">
+      <tr>
+        <th className="p-3 border">Telegram ID</th>
+        <th className="p-3 border">Имя</th>
+        <th className="p-3 border">Баланс</th>
+        <th className="p-3 border">Уровень</th>
+        <th className="p-3 border">Инвестор</th>
+        <th className="p-3 border">SR</th>
+        <th className="p-3 border">Подписка до</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filtered.map((player) => {
+        const sub = getExpireStatus(player.premiumExpires);
+        return (
+          <tr key={player.telegramId} className="hover:bg-gray-50">
+            <td className="p-3 border font-mono">{player.telegramId}</td>
+            <td className="p-3 border">{player.playerName}</td>
+            <td className="p-3 border text-right">{player.balance}</td>
+            <td className="p-3 border text-center">{player.level}</td>
+            <td className="p-3 border text-center">{player.isInvestor ? "✅" : ""}</td>
+            <td className="p-3 border text-right">{player.srRating}</td>
+            <td className={`p-3 border ${sub.color}`}>{sub.text}</td>
+          </tr>
+        );
+      })}
           </tbody>
         </table>
       </div>
