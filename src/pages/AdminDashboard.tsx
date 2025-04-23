@@ -1,13 +1,13 @@
 
 import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
 
 export default function AdminDashboard() {
   const [players, setPlayers] = useState([]);
   const [search, setSearch] = useState("");
   const [showInvestorsOnly, setShowInvestorsOnly] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const playersPerPage = 10;
-
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [targetId, setTargetId] = useState("");
   const token = localStorage.getItem("adminToken") || "";
 
   useEffect(() => {
@@ -47,13 +47,6 @@ export default function AdminDashboard() {
     return { text: date.toLocaleDateString(), color: "text-green-600" };
   };
 
-  // Pagination
-  const totalPages = Math.ceil(filtered.length / playersPerPage);
-  const paginatedPlayers = filtered.slice(
-    (currentPage - 1) * playersPerPage,
-    currentPage * playersPerPage
-  );
-
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-center text-yellow-600">Админ-панель игроков</h1>
@@ -66,7 +59,6 @@ export default function AdminDashboard() {
           onChange={(e) => setSearch(e.target.value)}
           className="p-3 border rounded w-full md:w-1/2"
         />
-
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
@@ -77,11 +69,37 @@ export default function AdminDashboard() {
         </label>
       </div>
 
-      <div className="overflow-auto mb-4">
+      <div className="flex flex-wrap gap-4 mb-6 justify-center">
+        <input
+          type="number"
+          placeholder="Telegram ID игрока"
+          value={targetId}
+          onChange={(e) => setTargetId(e.target.value)}
+          className="p-2 border rounded w-64"
+        />
+        <button
+          onClick={async () => {
+            if (!targetId) return alert("Введите ID игрока");
+            const ok = confirm(`Сбросить миссии игроку ${targetId}?`);
+            if (ok) {
+              await fetch(`https://mmmgo-backend.onrender.com/admin/reset-player/${targetId}`, {
+                method: "POST",
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              alert("Миссии сброшены для игрока");
+            }
+          }}
+          className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition"
+        >
+          🔄 Сбросить миссии игроку
+        </button>
+      </div>
+
+      <div className="overflow-auto">
         <table className="w-full border border-gray-300 text-sm text-center">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
-              <th className="p-2 border w-10 text-center">#</th>
+              <th className="p-2 border">#</th>
               <th className="p-2 border">Telegram ID</th>
               <th className="p-2 border">Имя</th>
               <th className="p-2 border">Баланс</th>
@@ -95,13 +113,11 @@ export default function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {paginatedPlayers.map((player, index) => {
+            {filtered.map((player, index) => {
               const sub = getExpireStatus(player.premiumExpires);
               return (
-                <tr key={player.telegramId} className="hover:bg-gray-50">
-                  <td className="p-2 border text-center font-medium">
-                    {(currentPage - 1) * playersPerPage + index + 1}.
-                  </td>
+                <tr key={player.telegramId} className="hover:bg-yellow-50 cursor-pointer" onClick={() => setSelectedPlayer(player)}>
+                  <td className="p-2 border font-semibold">{index + 1}.</td>
                   <td className="p-2 border font-mono text-sm">{player.telegramId}</td>
                   <td className="p-2 border text-left">{player.playerName}</td>
                   <td className="p-2 border text-right">{player.balance}</td>
@@ -119,23 +135,32 @@ export default function AdminDashboard() {
         </table>
       </div>
 
-      <div className="flex justify-center items-center gap-2 mt-4">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-        >
-          ← Назад
-        </button>
-        <span className="px-4">Страница {currentPage} из {totalPages}</span>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-        >
-          Вперёд →
-        </button>
-      </div>
+      <Modal
+        isOpen={!!selectedPlayer}
+        onRequestClose={() => setSelectedPlayer(null)}
+        className="bg-white p-6 rounded max-w-xl mx-auto mt-20 shadow-lg"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center"
+      >
+        {selectedPlayer && (
+          <div>
+            <h2 className="text-xl font-bold mb-4">Игрок: {selectedPlayer.playerName}</h2>
+            <ul className="text-sm space-y-2">
+              <li><strong>ID:</strong> {selectedPlayer.telegramId}</li>
+              <li><strong>Баланс:</strong> {selectedPlayer.balance}</li>
+              <li><strong>Уровень:</strong> {selectedPlayer.level}</li>
+              <li><strong>Инвестор:</strong> {selectedPlayer.isInvestor ? "Да" : "Нет"}</li>
+              <li><strong>Рефералов:</strong> {selectedPlayer.referrals}</li>
+              <li><strong>Рейтинг SR:</strong> {selectedPlayer.srRating}</li>
+              <li><strong>Подписка до:</strong> {selectedPlayer.premiumExpires ? new Date(selectedPlayer.premiumExpires).toLocaleDateString() : "—"}</li>
+              <li><strong>Источник регистрации:</strong> {selectedPlayer.refSource || "—"}</li>
+              <li><strong>Оплат:</strong> {selectedPlayer.paymentsCount || 0}</li>
+            </ul>
+            <div className="text-right mt-4">
+              <button onClick={() => setSelectedPlayer(null)} className="text-blue-600 hover:underline">Закрыть</button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
