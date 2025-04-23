@@ -12,6 +12,8 @@ import ReferralPage from "./pages/ReferralPage"; // ✅ добавили реф�
 import TopUpPage from "./pages/TopUpPage";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
+import AdminDashboard from "./pages/AdminDashboard";
+
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -46,6 +48,7 @@ export default function App() {
         <Route path="/referrals" element={<ReferralPage />} />
         <Route path="/rating" element={<RatingPage />} />
         <Route path="/rules" element={<RulesPage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </div>
   );
