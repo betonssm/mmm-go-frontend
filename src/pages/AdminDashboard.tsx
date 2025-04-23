@@ -27,7 +27,8 @@ export default function AdminDashboard() {
   }, []);
 
   const filtered = players.filter((p) => {
-    const matchesSearch = p.playerName.toLowerCase().includes(search.toLowerCase()) ||
+    const matchesSearch =
+      p.playerName.toLowerCase().includes(search.toLowerCase()) ||
       p.telegramId.toString().includes(search);
     const matchesInvestor = !showInvestorsOnly || p.isInvestor;
     return matchesSearch && matchesInvestor;
@@ -39,15 +40,29 @@ export default function AdminDashboard() {
     const date = new Date(dateStr);
     const daysLeft = Math.ceil((date - now) / (1000 * 60 * 60 * 24));
 
-    if (daysLeft < 0) return { text: date.toLocaleDateString(), color: "text-red-600 font-semibold" };
-    if (daysLeft <= 3) return { text: `${date.toLocaleDateString()} ⏳`, color: "text-orange-500 font-medium" };
+    if (daysLeft < 0)
+      return {
+        text: date.toLocaleDateString(),
+        color: "text-red-600 font-semibold",
+      };
+    if (daysLeft <= 3)
+      return {
+        text: `${date.toLocaleDateString()} ⏳`,
+        color: "text-orange-500 font-medium",
+      };
 
     return { text: date.toLocaleDateString(), color: "text-green-600" };
   };
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center text-yellow-600">Админ-панель игроков</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center text-yellow-600">
+        Админ-панель игроков
+      </h1>
+
+      <div className="text-center mb-6 text-gray-700 font-medium">
+        Всего игроков: {filtered.length}
+      </div>
 
       <div className="flex flex-col md:flex-row gap-4 mb-6 justify-center">
         <input
@@ -72,6 +87,7 @@ export default function AdminDashboard() {
         <table className="w-full border border-gray-300 text-sm text-center">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
+              <th className="p-2 border">№</th>
               <th className="p-2 border">Telegram ID</th>
               <th className="p-2 border">Имя</th>
               <th className="p-2 border">Баланс</th>
@@ -85,10 +101,11 @@ export default function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((player) => {
+            {filtered.map((player, index) => {
               const sub = getExpireStatus(player.premiumExpires);
               return (
                 <tr key={player.telegramId} className="hover:bg-gray-50">
+                  <td className="p-2 border">{index + 1}</td>
                   <td className="p-2 border font-mono text-sm">{player.telegramId}</td>
                   <td className="p-2 border text-left">{player.playerName}</td>
                   <td className="p-2 border text-right">{player.balance}</td>
