@@ -1,7 +1,7 @@
 
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import "./TopUpPage.css"; // можно использовать те же стили
+import "./TopUpPage.css";
 
 export default function PaymentSuccess() {
   useEffect(() => {
@@ -22,32 +22,38 @@ export default function PaymentSuccess() {
         })
         .catch(err => console.error("Ошибка загрузки данных игрока:", err));
     }
-  }, []);
-  return (
-    <div className="topup-container">
-  <div className="note-box">
-  <h2>✅ Оплата прошла успешно</h2>
-  <p>Премиум-доступ активирован,мавродики на балансе. Вернись в Telegram, чтобы продолжить игру!</p>
-</div>
-<button
-  className="back-btn"
-  onClick={() => {
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg?.close) {
-      tg.close(); // Закрывает WebApp, если запущен внутри Telegram
-    } else {
-      // Пытаемся открыть Telegram через deep link (работает на мобильных)
-      window.location.href = "tg://resolve?domain=mmmgo_bot";
 
-      // Фолбэк — обычная ссылка, если deep link не сработает (ПК, браузер)
+    // ⛔ добавь auto-close как fallback
+    if (tg?.close) {
+      tg.close();
+    } else {
       setTimeout(() => {
         window.location.href = "https://t.me/mmmgo_bot";
-      }, 1500);
+      }, 2000);
     }
-  }}
->
-  ⬅ Вернуться в Telegram
-</button>
+  }, []);
+
+  return (
+    <div className="topup-container">
+      <div className="note-box">
+        <h2>✅ Оплата прошла успешно</h2>
+
+        <p className="text-center mt-4">
+          Если Telegram не открылся автоматически,&nbsp;
+          <a href="https://t.me/mmmgo_bot" target="_blank" rel="noopener noreferrer">
+            нажмите сюда, чтобы вернуться в бота
+          </a>.
+        </p>
+
+        <div className="mt-4 text-center">
+          <a
+            href="https://t.me/mmmgo_bot"
+            className="back-btn inline-block px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition"
+          >
+            🔄 Вернуться в Telegram
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

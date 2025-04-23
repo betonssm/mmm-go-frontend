@@ -8,27 +8,22 @@ export default function PaymentFailed() {
     <div className="topup-container">
       <div className="note-box">
   <h2>❌ Ошибка оплаты</h2>
-  <p>Платёж не был завершён. Вернись в Telegram и попробуй снова или используй другой способ.</p>
-</div>
-<button
-  className="back-btn"
-  onClick={() => {
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg?.close) {
-      tg.close(); // Закрывает WebApp, если запущен внутри Telegram
-    } else {
-      // Пытаемся открыть Telegram через deep link (работает на мобильных)
-      window.location.href = "tg://resolve?domain=mmmgo_bot";
+  <p className="text-center mt-4">
+          Если Telegram не открылся автоматически,&nbsp;
+          <a href="https://t.me/mmmgo_bot" target="_blank" rel="noopener noreferrer">
+            нажмите сюда, чтобы вернуться в бота
+          </a>.
+        </p>
 
-      // Фолбэк — обычная ссылка, если deep link не сработает (ПК, браузер)
-      setTimeout(() => {
-        window.location.href = "https://t.me/mmmgo_bot";
-      }, 1500);
-    }
-  }}
->
-  ⬅ Вернуться в Telegram
-</button>
+        <div className="mt-4 text-center">
+          <a
+            href="https://t.me/mmmgo_bot"
+            className="back-btn inline-block px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition"
+          >
+            🔄 Вернуться в Telegram
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
