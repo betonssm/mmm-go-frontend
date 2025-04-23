@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import "./AdminDashboard.css";
 
 export default function AdminDashboard() {
   const [players, setPlayers] = useState([]);
