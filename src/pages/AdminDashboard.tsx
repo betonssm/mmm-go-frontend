@@ -136,31 +136,42 @@ export default function AdminDashboard() {
       </div>
 
       <Modal
-        isOpen={!!selectedPlayer}
-        onRequestClose={() => setSelectedPlayer(null)}
-        className="bg-white p-6 rounded max-w-xl mx-auto mt-20 shadow-lg"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center"
-      >
-        {selectedPlayer && (
-          <div>
-            <h2 className="text-xl font-bold mb-4">Игрок: {selectedPlayer.playerName}</h2>
-            <ul className="text-sm space-y-2">
-              <li><strong>ID:</strong> {selectedPlayer.telegramId}</li>
-              <li><strong>Баланс:</strong> {selectedPlayer.balance}</li>
-              <li><strong>Уровень:</strong> {selectedPlayer.level}</li>
-              <li><strong>Инвестор:</strong> {selectedPlayer.isInvestor ? "Да" : "Нет"}</li>
-              <li><strong>Рефералов:</strong> {selectedPlayer.referrals}</li>
-              <li><strong>Рейтинг SR:</strong> {selectedPlayer.srRating}</li>
-              <li><strong>Подписка до:</strong> {selectedPlayer.premiumExpires ? new Date(selectedPlayer.premiumExpires).toLocaleDateString() : "—"}</li>
-              <li><strong>Источник регистрации:</strong> {selectedPlayer.refSource || "—"}</li>
-              <li><strong>Оплат:</strong> {selectedPlayer.paymentsCount || 0}</li>
-            </ul>
-            <div className="text-right mt-4">
-              <button onClick={() => setSelectedPlayer(null)} className="text-blue-600 hover:underline">Закрыть</button>
-            </div>
-          </div>
-        )}
-      </Modal>
+  isOpen={!!selectedPlayer}
+  onRequestClose={() => setSelectedPlayer(null)}
+  className="bg-white rounded-xl shadow-2xl w-full max-w-xl p-6 outline-none"
+  overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+>
+  {selectedPlayer && (
+    <div>
+      <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">👤 Игрок: {selectedPlayer.playerName}</h2>
+      <ul className="text-sm space-y-2 text-gray-700">
+        <li><strong>ID:</strong> {selectedPlayer.telegramId}</li>
+        <li><strong>Баланс:</strong> {selectedPlayer.balance}</li>
+        <li><strong>Уровень:</strong> {selectedPlayer.level}</li>
+        <li><strong>Инвестор:</strong> {selectedPlayer.isInvestor ? "Да" : "Нет"}</li>
+        <li><strong>Рефералов:</strong> {selectedPlayer.referrals}</li>
+        <li><strong>Рейтинг SR:</strong> {selectedPlayer.srRating}</li>
+        <li>
+          <strong>Подписка до:</strong>{" "}
+          {selectedPlayer.premiumExpires
+            ? new Date(selectedPlayer.premiumExpires).toLocaleDateString()
+            : "—"}
+        </li>
+        <li><strong>Источник регистрации:</strong> {selectedPlayer.refSource || "—"}</li>
+        <li><strong>Оплат:</strong> {selectedPlayer.paymentsCount || 0}</li>
+      </ul>
+
+      <div className="text-center mt-6">
+        <button
+          onClick={() => setSelectedPlayer(null)}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          Закрыть
+        </button>
+      </div>
+    </div>
+  )}
+</Modal>
     </div>
   );
 }
