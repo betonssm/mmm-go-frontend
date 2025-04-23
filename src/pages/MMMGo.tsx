@@ -155,7 +155,7 @@ const progressToNextLevel = nextLevelThreshold !== null
               }
               setDailyClicks(data.dailyTasks?.dailyTaps || 0);
   
-              if (ref && data.refSource === null && data.referrals === 0) {
+              if (ref && !data.refSourceSaved && data.referrals === 0) {
                 setShowNoRefNotice(true);
               }
             }
