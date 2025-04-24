@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import "./AdminDashboard.css";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
   const [players, setPlayers] = useState([]);
@@ -11,6 +12,7 @@ export default function AdminDashboard() {
   const [targetId, setTargetId] = useState("");
   const token = localStorage.getItem("adminToken") || "";
   const [resetId, setResetId] = useState("");
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     fetch("https://mmmgo-backend.onrender.com/admin/overview", {
@@ -100,6 +102,20 @@ export default function AdminDashboard() {
   >
     🔄 Сбросить миссии игрока
   </button>
+  <div className="flex gap-4 mb-6 justify-center">
+  <button
+    onClick={() => navigate("/admin")}
+    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+  >
+    📊 Игроки
+  </button>
+  <button
+    onClick={() => navigate("/admin/logs")}
+    className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800 transition"
+  >
+    📜 Журнал действий
+  </button>
+</div>
 </div>
 
       <div className="overflow-auto">

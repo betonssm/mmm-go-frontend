@@ -13,6 +13,12 @@ import TopUpPage from "./pages/TopUpPage";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
 import AdminDashboard from "./pages/AdminDashboard";
+import Modal from "react-modal";
+import AdminLogs from "./pages/AdminLogs";
+
+
+
+Modal.setAppElement("#root");
 
 
 export default function App() {
@@ -49,6 +55,7 @@ export default function App() {
         <Route path="/rating" element={<RatingPage />} />
         <Route path="/rules" element={<RulesPage />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/logs" element={<AdminLogs />} />
       </Routes>
     </div>
   );
