@@ -17,14 +17,14 @@ export default function DashboardLayout({ children }) {
     }`
   }
 >📊 Игроки</NavLink>
-            <NavLink to="/admin"
+            <NavLink to="/admin/logs"
   className={({ isActive }) =>
     `px-2 py-1 rounded ${
       isActive ? "bg-white text-gray-800 font-semibold" : "hover:underline"
     }`
   }
 >📜 Журнал</NavLink>
-            <NavLink to="/admin"
+            <NavLink to="/stats"
   className={({ isActive }) =>
     `px-2 py-1 rounded ${
       isActive ? "bg-white text-gray-800 font-semibold" : "hover:underline"
