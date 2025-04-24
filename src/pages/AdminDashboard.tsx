@@ -54,7 +54,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <DashboardLayout>
+    <>
       <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
         <input
           type="text"
@@ -195,7 +195,7 @@ export default function AdminDashboard() {
           </div>
         )}
       </Modal>
-    </DashboardLayout>
+      </>
   );
 }
 
