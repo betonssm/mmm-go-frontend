@@ -106,6 +106,12 @@ export default function AdminDashboard() {
           🔄 Сбросить миссии игрока
         </button>
       </div>
+      <button
+  onClick={() => navigate("/admin/analytics")}
+  className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
+>
+  📈 Аналитика
+</button>
 
       <div className="overflow-auto">
         <table className="w-full border border-gray-300 text-sm text-center">
