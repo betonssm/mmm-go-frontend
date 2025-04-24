@@ -402,7 +402,7 @@ const progressToNextLevel = nextLevelThreshold !== null
       >
         <h2>Привет, {playerName || "вкладчик"}!</h2>
         <p className="player-id">ID: {telegramId || "неизвестен"}</p>
-  
+  {/* 
         {showNoRefNotice && (
           <div className="ref-warning">
             ⚠️ Реферал не засчитан.<br />
@@ -410,7 +410,7 @@ const progressToNextLevel = nextLevelThreshold !== null
             <u>удалите бота и начните заново</u> по ссылке.
           </div>
         )}
-  
+ */} 
         <h1>
           Баланс:
           <br />
