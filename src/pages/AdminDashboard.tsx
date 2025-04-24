@@ -10,6 +10,7 @@ export default function AdminDashboard() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [targetId, setTargetId] = useState("");
   const token = localStorage.getItem("adminToken") || "";
+  const [resetId, setResetId] = useState("");
 
   useEffect(() => {
     fetch("https://mmmgo-backend.onrender.com/admin/overview", {
@@ -70,31 +71,36 @@ export default function AdminDashboard() {
         </label>
       </div>
 
-      <div className="flex flex-wrap gap-4 mb-6 justify-center">
-        <input
-          type="number"
-          placeholder="Telegram ID игрока"
-          value={targetId}
-          onChange={(e) => setTargetId(e.target.value)}
-          className="p-2 border rounded w-64"
-        />
-        <button
-          onClick={async () => {
-            if (!targetId) return alert("Введите ID игрока");
-            const ok = confirm(`Сбросить миссии игроку ${targetId}?`);
-            if (ok) {
-              await fetch(`https://mmmgo-backend.onrender.com/admin/reset-player/${targetId}`, {
-                method: "POST",
-                headers: { Authorization: `Bearer ${token}` },
-              });
-              alert("Миссии сброшены для игрока");
-            }
-          }}
-          className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition"
-        >
-          🔄 Сбросить миссии игроку
-        </button>
-      </div>
+      <div className="flex flex-col md:flex-row gap-4 mb-6 justify-center">
+  <input
+    type="text"
+    placeholder="ID игрока для сброса"
+    value={resetId}
+    onChange={(e) => setResetId(e.target.value)}
+    className="p-3 border rounded w-full md:w-1/3"
+  />
+  <button
+    onClick={async () => {
+      if (!resetId) return alert("Введите ID игрока");
+      const ok = confirm(`Сбросить миссии для ${resetId}?`);
+      if (ok) {
+        const res = await fetch(`https://mmmgo-backend.onrender.com/admin/reset-player/${resetId}`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          alert(`✅ Миссии сброшены для ${resetId}`);
+        } else {
+          const err = await res.json();
+          alert(`❌ Ошибка: ${err.error}`);
+        }
+      }
+    }}
+    className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition"
+  >
+    🔄 Сбросить миссии игрока
+  </button>
+</div>
 
       <div className="overflow-auto">
         <table className="w-full border border-gray-300 text-sm text-center">
