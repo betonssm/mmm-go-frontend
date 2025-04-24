@@ -14,7 +14,9 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
 import AdminDashboard from "./pages/AdminDashboard";
 import Modal from "react-modal";
+import DashboardLayout from "./pages/DashboardLayout";
 import AdminLogs from "./pages/AdminLogs";
+import AdminStats from "./pages/AdminStats";
 
 
 
@@ -54,8 +56,9 @@ export default function App() {
         <Route path="/referrals" element={<ReferralPage />} />
         <Route path="/rating" element={<RatingPage />} />
         <Route path="/rules" element={<RulesPage />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/logs" element={<AdminLogs />} />
+        <Route path="/admin" element={<DashboardLayout><AdminDashboard /></DashboardLayout>} />
+  <Route path="/admin/logs" element={<DashboardLayout><AdminLogs /></DashboardLayout>} />
+  <Route path="/admin/stats" element={<DashboardLayout><AdminStats /></DashboardLayout>} />
       </Routes>
     </div>
   );
