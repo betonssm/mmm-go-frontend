@@ -1,7 +1,11 @@
 
 import React, { useEffect, useState } from "react";
+import DashboardLayout from "./DashboardLayout";
 
 export default function AdminLogs() {
+  useEffect(() => {
+    document.title = "Журнал логов | Админка MMM GO";
+  }, []);
   const [logs, setLogs] = useState([]);
   const token = localStorage.getItem("adminToken") || "";
 
@@ -15,6 +19,7 @@ export default function AdminLogs() {
   }, []);
 
   return (
+    <DashboardLayout>
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Журнал действий</h1>
 
@@ -50,6 +55,7 @@ export default function AdminLogs() {
         </tbody>
       </table>
     </div>
+    </DashboardLayout>
   );
 }
 
