@@ -19,18 +19,15 @@ export default function RulesPage() {
 
   return (
     <div
-      className="rules-page-container"
-      style={{
-        backgroundImage: `url(/assets/bg-rules.png)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        padding: "30px 20px",
-        boxSizing: "border-box",
-      }}
+    className="rules-page-container flex flex-col items-center justify-start min-h-screen"
+    style={{
+      backgroundImage: `url(/assets/bg-rules.png)`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      padding: "30px 20px",
+      boxSizing: "border-box",
+    }}
     >
       <div className="p-4 space-y-6 bg-white bg-opacity-70 rounded-xl shadow-lg max-w-3xl mx-auto">
   <h1 className="text-2xl font-bold text-yellow-600 mb-4">📜 Правила игры MMMGO</h1>
