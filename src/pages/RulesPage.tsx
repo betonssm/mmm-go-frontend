@@ -32,14 +32,15 @@ export default function RulesPage() {
         boxSizing: "border-box",
       }}
     >
-      <div className="p-4 space-y-6">
-  <h1 className="text-2xl font-bold text-yellow-600 mb-4">📜 Правила игры MMM GO</h1>
+      <div className="p-4 space-y-6 bg-white bg-opacity-70 rounded-xl shadow-lg">
+  <h1 className="text-2xl font-bold text-yellow-600 mb-4">📜 Правила игры MMMGO</h1>
 
   <div className="space-y-3">
     <h2 className="text-xl font-semibold text-gray-800">👤 Бесплатные игроки</h2>
     <ul className="list-disc list-inside text-gray-700 space-y-1">
       <li>🎯 Могут добывать до <strong>20 000 мавродиков в день</strong> обычным нажатием.</li>
       <li>📅 Выполняют ежедневные и недельные задания для получения бонусов.</li>
+      <li>💵 Могут докупить <strong>+50 000 мавродиков</strong> за $10.</li>
       <li>🔄 Могут обменивать накопленные мавродики на токены после достижения <strong>5 000 000</strong>.</li>
       <li>🚫 Не участвуют в распределении фонда и не имеют SR-рейтинг.</li>
     </ul>
@@ -50,7 +51,7 @@ export default function RulesPage() {
     <ul className="list-disc list-inside text-gray-700 space-y-1">
       <li>🎁 При оплате подписки получают сразу <strong>+50 000 мавродиков</strong> на баланс.</li>
       <li>📈 Начинают зарабатывать SR-баллы для участия в распределении фонда.</li>
-      <li>💵 Раз в месяц могут докупить ещё <strong>+50 000 мавродиков</strong> за $10.</li>
+      <li>💵 Могут докупить <strong>+50 000 мавродиков</strong> за $10.</li>
       <li>💎 После накопления токенов MMMGO участвуют в бонусных выплатах в токенах.</li>
     </ul>
   </div>
