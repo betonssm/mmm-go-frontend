@@ -29,6 +29,7 @@ export default function RulesPage() {
       boxSizing: "border-box",
     }}
     >
+      <div className="rules-content">
       <div className="p-4 space-y-6 bg-white bg-opacity-70 rounded-xl shadow-lg max-w-3xl mx-auto">
   <h1 className="text-2xl font-bold text-yellow-600 mb-4">📜 Правила игры MMMGO</h1>
 
@@ -101,6 +102,7 @@ export default function RulesPage() {
       >
         Принять
       </button>
+    </div>
     </div>
   );
 }

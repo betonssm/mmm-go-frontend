@@ -9,6 +9,14 @@ body, html {
   overflow-y: auto;  /* Прокрутка только на странице с правилами */
   padding: 0 20px;
 }
+.rules-content {
+  background: rgba(255, 255, 255, 0.85); /* белая полупрозрачная подложка */
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
 
 h1 {
   font-family: 'Rubik', sans-serif;
