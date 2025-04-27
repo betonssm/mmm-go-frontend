@@ -448,6 +448,14 @@ button {
     padding: 0 10px;
   }
 } 
+@media (max-width: 350px) {
+  .boost-tap-button,
+  .recharge-gold-button {
+    width: 70px;
+    height: 70px;
+    margin-top: 5px;
+  }
+}
 @media screen and (max-width: 390px) {
   .container {
     padding: 10px;
@@ -479,7 +487,7 @@ button {
   .recharge-gold-button {
     width: 80px;
     height: 80px;
-    top: -50px;
+    margin-top: 10px;
   }
 
   .rules-button-link {
