@@ -498,7 +498,6 @@ button {
     width: 38vw;
   }
   .bottom-buttons {
-    .bottom-buttons {
       margin-top: 20px; /* Было 10px — увеличиваем до 20px */
       padding-bottom: env(safe-area-inset-bottom, 5px); /* Было 15px — уменьшаем до 5px */
     }
