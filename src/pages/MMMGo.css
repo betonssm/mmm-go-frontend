@@ -401,6 +401,13 @@ button {
   background-repeat: no-repeat;
   transition: background-image 0.8s ease-in-out, background-color 0.8s ease-in-out;
 }
+@media screen and (min-width: 420px) {
+  .recharge-gold-button,
+  .boost-tap-button {
+    width: 25vw;
+    max-width: 100px; /* ограничение, чтобы не росли бесконечно */
+  }
+}
 
 @media (max-width: 768px) {
   .container {
@@ -491,9 +498,10 @@ button {
     width: 38vw;
   }
   .bottom-buttons {
-    margin-top: 10px; /* Чуть меньше отступ сверху */
-    padding-bottom: env(safe-area-inset-bottom, 15px); /* Меньше safe area */
-  }
+    .bottom-buttons {
+      margin-top: 20px; /* Было 10px — увеличиваем до 20px */
+      padding-bottom: env(safe-area-inset-bottom, 5px); /* Было 15px — уменьшаем до 5px */
+    }
   .boost-tap-button,
   .recharge-gold-button {
     width: 65px;
