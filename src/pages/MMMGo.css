@@ -401,11 +401,12 @@ button {
   background-repeat: no-repeat;
   transition: background-image 0.8s ease-in-out, background-color 0.8s ease-in-out;
 }
-@media screen and (min-width: 420px) {
-  .recharge-gold-button,
-  .boost-tap-button {
-    width: 25vw;
-    max-width: 100px; /* ограничение, чтобы не росли бесконечно */
+@media screen and (min-width: 390px) {
+  .boost-tap-button,
+  .recharge-gold-button {
+    width: 30vw;
+    max-width: 100px;
+    min-width: 70px;
   }
 }
 
