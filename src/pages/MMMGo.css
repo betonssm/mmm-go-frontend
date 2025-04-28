@@ -430,7 +430,13 @@ button {
     max-width: 500px;
   }
 }
-
+@media screen and (min-width: 500px) and (max-width: 768px) {
+.boost-tap-button,
+  .recharge-gold-button {
+    width: 90px;
+    height: 90px;
+  }
+} 
 @media (min-width: 769px) {
   .info-bars {
     grid-template-columns: repeat(4, 1fr);
@@ -447,6 +453,8 @@ button {
     font-size: 15px;
     padding: 0 10px;
   }
+  
+
 } 
 @media (max-width: 350px) {
   .boost-tap-button,
@@ -482,12 +490,14 @@ button {
   .coin-button {
     width: 38vw;
   }
-
+  .bottom-buttons {
+    margin-top: 10px; /* Чуть меньше отступ сверху */
+    padding-bottom: env(safe-area-inset-bottom, 15px); /* Меньше safe area */
+  }
   .boost-tap-button,
   .recharge-gold-button {
-    width: 80px;
-    height: 80px;
-    margin-top: 10px;
+    width: 65px;
+    height: 65px;
   }
 
   .rules-button-link {
@@ -728,9 +738,10 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 80px auto 10px auto; /* ⬅️ это опускает кнопки вниз */
   width: 90%;
-  max-width: 500px;
+  max-width: 420px;
+  margin: 20px auto 0 auto; /* Отступ сверху от монеты */
+  padding-bottom: env(safe-area-inset-bottom, 20px); /* iPhone X + Huawei безопасная зона снизу */
   position: relative;
   z-index: 2;
 }
@@ -743,16 +754,18 @@ button {
   padding-bottom: 16px;
 }
 
-@media (max-width: 420px) {
-  .bar-text {
-    font-size: 12px;
+@media screen and (max-width: 400px) {
+  .boost-tap-button,
+  .recharge-gold-button {
+    width: 65px;
+    height: 65px;
   }
 
-  .recharge-gold-button,
-  .boost-tap-button {
-    width: 90px;
-    height: auto;
+  .bottom-buttons {
+    margin-top: 10px; /* Чуть меньше отступ сверху */
+    padding-bottom: env(safe-area-inset-bottom, 15px); /* Меньше safe area */
   }
+
 }
 .splash-loader {
   position: fixed;
