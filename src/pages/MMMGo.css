@@ -433,8 +433,8 @@ button {
 @media screen and (min-width: 500px) and (max-width: 768px) {
 .boost-tap-button,
   .recharge-gold-button {
-    width: 90px;
-    height: 90px;
+    width: 70px;
+    height: 70px;
   }
 } 
 @media (min-width: 769px) {
