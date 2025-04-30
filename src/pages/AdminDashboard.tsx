@@ -5,6 +5,7 @@ import "./AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "./DashboardLayout";
 
+
 export default function AdminDashboard() {
   useEffect(() => {
     document.title = "Игроки | Админка MMM GO";
@@ -16,6 +17,9 @@ export default function AdminDashboard() {
   const [resetId, setResetId] = useState("");
   const token = localStorage.getItem("adminToken") || "";
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 15;
+
 
   useEffect(() => {
     fetch("https://mmmgo-backend.onrender.com/admin/overview", {
@@ -41,7 +45,11 @@ export default function AdminDashboard() {
       p.telegramId.toString().includes(search);
     const matchesInvestor = !showInvestorsOnly || p.isInvestor;
     return matchesSearch && matchesInvestor;
-  });
+    });
+  const pageStart = (currentPage - 1) * itemsPerPage;
+const pageEnd = pageStart + itemsPerPage;
+const paginated = filtered.slice(pageStart, pageEnd);
+const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
   const getExpireStatus = (dateStr: string | null) => {
     if (!dateStr) return { text: "-", color: "text-gray-400" };
@@ -131,7 +139,7 @@ export default function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((player, index) => {
+          {paginated.map((player, index) => {
               const sub = getExpireStatus(player.premiumExpires);
               return (
                 <tr
@@ -195,7 +203,21 @@ export default function AdminDashboard() {
           </div>
         )}
       </Modal>
+      <div className="flex justify-center mt-4 gap-2">
+  <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&larr;</button>
+  {[...Array(totalPages)].map((_, i) => (
+    <button
+      key={i}
+      className={`px-2 ${currentPage === i + 1 ? "font-bold" : ""}`}
+      onClick={() => setCurrentPage(i + 1)}
+    >
+      {i + 1}
+    </button>
+  ))}
+  <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>&rarr;</button>
+</div>
       </>
+      
   );
 }
 
