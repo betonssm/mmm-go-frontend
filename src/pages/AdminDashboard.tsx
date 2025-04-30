@@ -63,6 +63,17 @@ export default function AdminDashboard() {
   };
 
   return (
+    <div className="min-h-screen flex flex-col md:flex-row">
+      {/* Сайдбар */}
+      <aside className="w-full md:w-60 bg-gray-900 text-white py-6 px-4 shadow-md">
+        <h2 className="text-xl font-bold mb-6">MMM GO Admin</h2>
+        <nav className="flex flex-col gap-3 text-sm">
+          <button onClick={() => navigate("/admin")} className="text-left hover:text-yellow-400">📊 Игроки</button>
+          <button onClick={() => navigate("/admin/logs")} className="text-left hover:text-yellow-400">📜 Журнал</button>
+          <button onClick={() => navigate("/admin/analytics")} className="text-left hover:text-yellow-400">📈 Аналитика</button>
+          <button onClick={() => navigate("/admin/sr")} className="text-left hover:text-yellow-400">🧮 SR Рейтинг</button>
+        </nav>
+      </aside>
     <div className="max-w-screen-xl mx-auto px-4">
       <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
         <input
@@ -222,6 +233,7 @@ export default function AdminDashboard() {
           </div>
         )}
       </Modal>
+    </div>
     </div>
   );
 }
