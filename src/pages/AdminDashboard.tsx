@@ -1,9 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import "./AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
-import DashboardLayout from "./DashboardLayout";
 
 export default function AdminDashboard() {
   useEffect(() => {
@@ -23,9 +21,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetch("https://mmmgo-backend.onrender.com/admin/overview", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -64,7 +60,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Сайдбар */}
+      {/* Sidebar */}
       <aside className="w-full md:w-60 bg-gray-900 text-white py-6 px-4 shadow-md">
         <h2 className="text-xl font-bold mb-6">MMM GO Admin</h2>
         <nav className="flex flex-col gap-3 text-sm">
@@ -74,169 +70,162 @@ export default function AdminDashboard() {
           <button onClick={() => navigate("/admin/sr")} className="text-left hover:text-yellow-400">🧮 SR Рейтинг</button>
         </nav>
       </aside>
-    <div className="max-w-screen-xl mx-auto px-4">
-      <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
-        <input
-          type="text"
-          placeholder="Поиск по имени или ID..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="p-3 border rounded w-full md:w-1/2"
-        />
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={showInvestorsOnly}
-            onChange={(e) => setShowInvestorsOnly(e.target.checked)}
-          />
-          Только инвесторы
-        </label>
-      </div>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-6 justify-center">
-        <input
-          type="text"
-          placeholder="ID игрока для сброса"
-          value={resetId}
-          onChange={(e) => setResetId(e.target.value)}
-          className="p-3 border rounded w-full md:w-1/3"
-        />
-        <button
-          onClick={async () => {
-            if (!resetId) return alert("Введите ID игрока");
-            const ok = confirm(`Сбросить миссии для ${resetId}?`);
-            if (ok) {
-              const res = await fetch(
-                `https://mmmgo-backend.onrender.com/admin/reset-player/${resetId}`,
-                {
-                  method: "POST",
-                  headers: { Authorization: `Bearer ${token}` },
-                }
-              );
-              if (res.ok) {
-                alert(`✅ Миссии сброшены для ${resetId}`);
-              } else {
-                const err = await res.json();
-                alert(`❌ Ошибка: ${err.error}`);
-              }
-            }
-          }}
-          className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition"
-        >
-          🔄 Сбросить миссии игрока
-        </button>
-      </div>
+      {/* Main Content */}
+      <main className="flex-1 p-6 bg-gray-50 overflow-auto">
+        <div className="max-w-screen-xl mx-auto">
+          <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
+            <input
+              type="text"
+              placeholder="Поиск по имени или ID..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="p-3 border rounded w-full md:w-1/2"
+            />
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={showInvestorsOnly}
+                onChange={(e) => setShowInvestorsOnly(e.target.checked)}
+              />
+              Только инвесторы
+            </label>
+          </div>
 
-      <button
-        onClick={() => navigate("/admin/analytics")}
-        className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition mb-4"
-      >
-        📈 Аналитика
-      </button>
-
-      <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border border-gray-300 text-sm text-center">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th className="p-2 border">#</th>
-              <th className="p-2 border">Telegram ID</th>
-              <th className="p-2 border">Имя</th>
-              <th className="p-2 border">Баланс</th>
-              <th className="p-2 border">Уровень</th>
-              <th className="p-2 border">Инвестор</th>
-              <th className="p-2 border">SR</th>
-              <th className="p-2 border">Подписка до</th>
-              <th className="p-2 border">Рефералы</th>
-              <th className="p-2 border">Оплаты</th>
-              <th className="p-2 border">Источник</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginated.map((player, index) => {
-              const sub = getExpireStatus(player.premiumExpires);
-              return (
-                <tr
-                  key={player.telegramId}
-                  className="hover:bg-yellow-50 cursor-pointer"
-                  onClick={() => setSelectedPlayer(player)}
-                >
-                  <td className="p-2 border font-semibold">{pageStart + index + 1}.</td>
-                  <td className="p-2 border font-mono text-sm">{player.telegramId}</td>
-                  <td className="p-2 border text-left">{player.playerName}</td>
-                  <td className="p-2 border text-right">{player.balance}</td>
-                  <td className="p-2 border">{player.level}</td>
-                  <td className="p-2 border">{player.isInvestor ? "✅" : ""}</td>
-                  <td className="p-2 border">{player.srRating}</td>
-                  <td className={`p-2 border ${sub.color}`}>{sub.text}</td>
-                  <td className="p-2 border">{player.referrals || 0}</td>
-                  <td className="p-2 border">{player.paymentsCount || 0}</td>
-                  <td className="p-2 border">{player.refSource || "—"}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="flex justify-center flex-col items-center mt-6 gap-2">
-        <p className="text-sm text-gray-500">Страница {currentPage} из {totalPages}</p>
-        <div className="flex gap-2">
-          <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&larr;</button>
-          {[...Array(totalPages)].map((_, i) => (
+          <div className="flex flex-col md:flex-row gap-4 mb-6 justify-center">
+            <input
+              type="text"
+              placeholder="ID игрока для сброса"
+              value={resetId}
+              onChange={(e) => setResetId(e.target.value)}
+              className="p-3 border rounded w-full md:w-1/3"
+            />
             <button
-              key={i}
-              className={`px-2 ${currentPage === i + 1 ? "font-bold" : ""}`}
-              onClick={() => setCurrentPage(i + 1)}
+              onClick={async () => {
+                if (!resetId) return alert("Введите ID игрока");
+                const ok = confirm(`Сбросить миссии для ${resetId}?`);
+                if (ok) {
+                  const res = await fetch(
+                    `https://mmmgo-backend.onrender.com/admin/reset-player/${resetId}`,
+                    {
+                      method: "POST",
+                      headers: { Authorization: `Bearer ${token}` },
+                    }
+                  );
+                  if (res.ok) {
+                    alert(`✅ Миссии сброшены для ${resetId}`);
+                  } else {
+                    const err = await res.json();
+                    alert(`❌ Ошибка: ${err.error}`);
+                  }
+                }
+              }}
+              className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition"
             >
-              {i + 1}
+              🔄 Сбросить миссии игрока
             </button>
-          ))}
-          <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>&rarr;</button>
-        </div>
-      </div>
+          </div>
 
-      <Modal
-        isOpen={!!selectedPlayer}
-        onRequestClose={() => setSelectedPlayer(null)}
-        className="bg-white p-6 rounded max-w-xl w-full shadow-lg"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-      >
-        {selectedPlayer && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-              👤 Игрок: {selectedPlayer.playerName}
-            </h2>
-            <ul className="text-sm space-y-2 text-gray-700">
-              <li><strong>ID:</strong> {selectedPlayer.telegramId}</li>
-              <li><strong>Баланс:</strong> {selectedPlayer.balance}</li>
-              <li><strong>Уровень:</strong> {selectedPlayer.level}</li>
-              <li><strong>Инвестор:</strong> {selectedPlayer.isInvestor ? "Да" : "Нет"}</li>
-              <li><strong>Рефералов:</strong> {selectedPlayer.referrals}</li>
-              <li><strong>Рейтинг SR:</strong> {selectedPlayer.srRating}</li>
-              <li>
-                <strong>Подписка до:</strong>{" "}
-                {selectedPlayer.premiumExpires
-                  ? new Date(selectedPlayer.premiumExpires).toLocaleDateString()
-                  : "—"}
-              </li>
-              <li><strong>Источник регистрации:</strong> {selectedPlayer.refSource || "—"}</li>
-              <li><strong>Оплат:</strong> {selectedPlayer.paymentsCount || 0}</li>
-            </ul>
-            <div className="text-center mt-6">
-              <button
-                onClick={() => setSelectedPlayer(null)}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-              >
-                Закрыть
-              </button>
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto border border-gray-300 text-sm text-center">
+              <thead className="bg-gray-100 text-gray-700">
+                <tr>
+                  <th className="p-2 border">#</th>
+                  <th className="p-2 border">Telegram ID</th>
+                  <th className="p-2 border">Имя</th>
+                  <th className="p-2 border">Баланс</th>
+                  <th className="p-2 border">Уровень</th>
+                  <th className="p-2 border">Инвестор</th>
+                  <th className="p-2 border">SR</th>
+                  <th className="p-2 border">Подписка до</th>
+                  <th className="p-2 border">Рефералы</th>
+                  <th className="p-2 border">Оплаты</th>
+                  <th className="p-2 border">Источник</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginated.map((player, index) => {
+                  const sub = getExpireStatus(player.premiumExpires);
+                  return (
+                    <tr
+                      key={player.telegramId}
+                      className="hover:bg-yellow-50 cursor-pointer"
+                      onClick={() => setSelectedPlayer(player)}
+                    >
+                      <td className="p-2 border font-semibold">{pageStart + index + 1}.</td>
+                      <td className="p-2 border font-mono text-sm">{player.telegramId}</td>
+                      <td className="p-2 border text-left">{player.playerName}</td>
+                      <td className="p-2 border text-right">{player.balance}</td>
+                      <td className="p-2 border">{player.level}</td>
+                      <td className="p-2 border">{player.isInvestor ? "✅" : ""}</td>
+                      <td className="p-2 border">{player.srRating}</td>
+                      <td className={`p-2 border ${sub.color}`}>{sub.text}</td>
+                      <td className="p-2 border">{player.referrals || 0}</td>
+                      <td className="p-2 border">{player.paymentsCount || 0}</td>
+                      <td className="p-2 border">{player.refSource || "—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="flex justify-center flex-col items-center mt-6 gap-2">
+            <p className="text-sm text-gray-500">Страница {currentPage} из {totalPages}</p>
+            <div className="flex gap-2">
+              <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&larr;</button>
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  className={`px-2 ${currentPage === i + 1 ? "font-bold" : ""}`}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>&rarr;</button>
             </div>
           </div>
-        )}
-      </Modal>
-    </div>
+
+          <Modal
+            isOpen={!!selectedPlayer}
+            onRequestClose={() => setSelectedPlayer(null)}
+            className="bg-white p-6 rounded max-w-xl w-full shadow-lg"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          >
+            {selectedPlayer && (
+              <div>
+                <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
+                  👤 Игрок: {selectedPlayer.playerName}
+                </h2>
+                <ul className="text-sm space-y-2 text-gray-700">
+                  <li><strong>ID:</strong> {selectedPlayer.telegramId}</li>
+                  <li><strong>Баланс:</strong> {selectedPlayer.balance}</li>
+                  <li><strong>Уровень:</strong> {selectedPlayer.level}</li>
+                  <li><strong>Инвестор:</strong> {selectedPlayer.isInvestor ? "Да" : "Нет"}</li>
+                  <li><strong>Рефералов:</strong> {selectedPlayer.referrals}</li>
+                  <li><strong>Рейтинг SR:</strong> {selectedPlayer.srRating}</li>
+                  <li>
+                    <strong>Подписка до:</strong> {selectedPlayer.premiumExpires ? new Date(selectedPlayer.premiumExpires).toLocaleDateString() : "—"}
+                  </li>
+                  <li><strong>Источник регистрации:</strong> {selectedPlayer.refSource || "—"}</li>
+                  <li><strong>Оплат:</strong> {selectedPlayer.paymentsCount || 0}</li>
+                </ul>
+                <div className="text-center mt-6">
+                  <button
+                    onClick={() => setSelectedPlayer(null)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  >
+                    Закрыть
+                  </button>
+                </div>
+              </div>
+            )}
+          </Modal>
+        </div>
+      </main>
     </div>
   );
 }
-
 
        
