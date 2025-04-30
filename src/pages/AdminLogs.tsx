@@ -42,7 +42,7 @@ const totalPages = Math.ceil(logs.length / itemsPerPage);
         <tbody>
         {paginated.map((log, i) => (
             <tr key={i} className="border-t hover:bg-gray-50">
-              <td className="p-2 border whitespace-nowrap">
+              <td className="p-2 border text-sm text-gray-700 w-32 whitespace-nowrap">
               {new Date(log.createdAt).toLocaleString()}
               </td>
               <td className="p-2 border text-center">{log.type}</td>
@@ -58,21 +58,32 @@ const totalPages = Math.ceil(logs.length / itemsPerPage);
               </td>
             </tr>
           ))}
-          <div className="flex justify-center flex-col items-center mt-6 gap-2">
-  <p className="text-sm text-gray-500">Страница {currentPage} из {totalPages}</p>
-  <div className="flex gap-2">
-    <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&larr;</button>
-    {[...Array(totalPages)].map((_, i) => (
+          <div className="flex gap-2 justify-center items-center flex-wrap">
+  {currentPage > 2 && (
+    <>
+      <button onClick={() => setCurrentPage(1)} className="px-2">1</button>
+      {currentPage > 3 && <span className="px-1">…</span>}
+    </>
+  )}
+
+  {[currentPage - 1, currentPage, currentPage + 1]
+    .filter(p => p > 1 && p < totalPages)
+    .map((p) => (
       <button
-        key={i}
-        className={`px-2 ${currentPage === i + 1 ? "font-bold" : ""}`}
-        onClick={() => setCurrentPage(i + 1)}
+        key={p}
+        className={`px-2 ${currentPage === p ? "font-bold" : ""}`}
+        onClick={() => setCurrentPage(p)}
       >
-        {i + 1}
+        {p}
       </button>
     ))}
-    <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>&rarr;</button>
-  </div>
+
+  {currentPage < totalPages - 1 && (
+    <>
+      {currentPage < totalPages - 2 && <span className="px-1">…</span>}
+      <button onClick={() => setCurrentPage(totalPages)} className="px-2">{totalPages}</button>
+    </>
+  )}
 </div>
         </tbody>
       </table>
