@@ -5,21 +5,21 @@ import "./AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "./DashboardLayout";
 
-
 export default function AdminDashboard() {
   useEffect(() => {
     document.title = "Игроки | Админка MMM GO";
   }, []);
+
   const [players, setPlayers] = useState([]);
   const [search, setSearch] = useState("");
   const [showInvestorsOnly, setShowInvestorsOnly] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [resetId, setResetId] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 15;
   const token = localStorage.getItem("adminToken") || "";
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 15;
-
 
   useEffect(() => {
     fetch("https://mmmgo-backend.onrender.com/admin/overview", {
@@ -45,13 +45,14 @@ const itemsPerPage = 15;
       p.telegramId.toString().includes(search);
     const matchesInvestor = !showInvestorsOnly || p.isInvestor;
     return matchesSearch && matchesInvestor;
-    });
-  const pageStart = (currentPage - 1) * itemsPerPage;
-const pageEnd = pageStart + itemsPerPage;
-const paginated = filtered.slice(pageStart, pageEnd);
-const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  });
 
-  const getExpireStatus = (dateStr: string | null) => {
+  const pageStart = (currentPage - 1) * itemsPerPage;
+  const pageEnd = pageStart + itemsPerPage;
+  const paginated = filtered.slice(pageStart, pageEnd);
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+  const getExpireStatus = (dateStr) => {
     if (!dateStr) return { text: "-", color: "text-gray-400" };
     const now = new Date();
     const date = new Date(dateStr);
@@ -62,7 +63,7 @@ const totalPages = Math.ceil(filtered.length / itemsPerPage);
   };
 
   return (
-    <>
+    <div className="max-w-screen-xl mx-auto px-4">
       <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
         <input
           type="text"
@@ -114,15 +115,16 @@ const totalPages = Math.ceil(filtered.length / itemsPerPage);
           🔄 Сбросить миссии игрока
         </button>
       </div>
-      <button
-  onClick={() => navigate("/admin/analytics")}
-  className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
->
-  📈 Аналитика
-</button>
 
-      <div className="overflow-auto">
-        <table className="w-full border border-gray-300 text-sm text-center">
+      <button
+        onClick={() => navigate("/admin/analytics")}
+        className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition mb-4"
+      >
+        📈 Аналитика
+      </button>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto border border-gray-300 text-sm text-center">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
               <th className="p-2 border">#</th>
@@ -139,7 +141,7 @@ const totalPages = Math.ceil(filtered.length / itemsPerPage);
             </tr>
           </thead>
           <tbody>
-          {paginated.map((player, index) => {
+            {paginated.map((player, index) => {
               const sub = getExpireStatus(player.premiumExpires);
               return (
                 <tr
@@ -147,7 +149,7 @@ const totalPages = Math.ceil(filtered.length / itemsPerPage);
                   className="hover:bg-yellow-50 cursor-pointer"
                   onClick={() => setSelectedPlayer(player)}
                 >
-                  <td className="p-2 border font-semibold">{index + 1}.</td>
+                  <td className="p-2 border font-semibold">{pageStart + index + 1}.</td>
                   <td className="p-2 border font-mono text-sm">{player.telegramId}</td>
                   <td className="p-2 border text-left">{player.playerName}</td>
                   <td className="p-2 border text-right">{player.balance}</td>
@@ -163,6 +165,23 @@ const totalPages = Math.ceil(filtered.length / itemsPerPage);
             })}
           </tbody>
         </table>
+      </div>
+
+      <div className="flex justify-center flex-col items-center mt-6 gap-2">
+        <p className="text-sm text-gray-500">Страница {currentPage} из {totalPages}</p>
+        <div className="flex gap-2">
+          <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&larr;</button>
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              className={`px-2 ${currentPage === i + 1 ? "font-bold" : ""}`}
+              onClick={() => setCurrentPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>&rarr;</button>
+        </div>
       </div>
 
       <Modal
@@ -203,21 +222,7 @@ const totalPages = Math.ceil(filtered.length / itemsPerPage);
           </div>
         )}
       </Modal>
-      <div className="flex justify-center mt-4 gap-2">
-  <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&larr;</button>
-  {[...Array(totalPages)].map((_, i) => (
-    <button
-      key={i}
-      className={`px-2 ${currentPage === i + 1 ? "font-bold" : ""}`}
-      onClick={() => setCurrentPage(i + 1)}
-    >
-      {i + 1}
-    </button>
-  ))}
-  <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>&rarr;</button>
-</div>
-      </>
-      
+    </div>
   );
 }
 
