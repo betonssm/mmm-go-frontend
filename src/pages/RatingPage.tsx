@@ -83,7 +83,9 @@ export default function PlayerRatingPage() {
         {isActive ? (
           <>
             <h3>SR рейтинг игрока: {srRating}</h3>
-            <p>Подписка активна до: {expires?.toLocaleDateString()}</p>
+            <p>Подписка активна до: {expires?.toLocaleDateString()}<br />
+  <small>Подписка действует до конца следующего месяца независимо от даты покупки</small>
+</p>
           </>
           ) : (
           <>
