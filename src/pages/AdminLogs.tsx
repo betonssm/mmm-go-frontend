@@ -43,7 +43,7 @@ const totalPages = Math.ceil(logs.length / itemsPerPage);
         {paginated.map((log, i) => (
             <tr key={i} className="border-t hover:bg-gray-50">
               <td className="p-2 border whitespace-nowrap">
-                {new Date(log.timestamp).toLocaleString()}
+              {new Date(log.createdAt).toLocaleString()}
               </td>
               <td className="p-2 border text-center">{log.type}</td>
               <td className="p-2 border">{log.message}</td>
