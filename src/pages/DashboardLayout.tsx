@@ -29,6 +29,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           >
             📈 Аналитика
           </NavLink>
+          <NavLink
+  to="/admin/sr"
+  className="block px-4 py-2 hover:bg-yellow-100 rounded"
+>
+  🧮 SR Рейтинг
+</NavLink>
         </nav>
       </aside>
 

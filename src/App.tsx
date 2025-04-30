@@ -17,7 +17,7 @@ import Modal from "react-modal";
 import DashboardLayout from "./pages/DashboardLayout";
 import AdminLogs from "./pages/AdminLogs";
 import AdminStats from "./pages/AdminStats";
-
+import AdminSR from "./pages/AdminSR";
 
 
 Modal.setAppElement("#root");
@@ -59,6 +59,7 @@ export default function App() {
         <Route path="/admin" element={<DashboardLayout><AdminDashboard /></DashboardLayout>} />
   <Route path="/admin/logs" element={<DashboardLayout><AdminLogs /></DashboardLayout>} />
   <Route path="/admin/stats" element={<DashboardLayout><AdminStats /></DashboardLayout>} />
+  <Route path="/admin/sr" element={<DashboardLayout><AdminSR /></DashboardLayout>} />
       </Routes>
     </div>
   );

@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 
+
 export default function AdminSR() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ totalPlayers: 0, top10Count: 0, totalTopSr: 0 });
   const token = localStorage.getItem("adminToken") || "";
+  const { verifyAdmin } = require("../middleware/auth");
 
   useEffect(() => {
     document.title = "SR Рейтинг | Админка MMM GO";
