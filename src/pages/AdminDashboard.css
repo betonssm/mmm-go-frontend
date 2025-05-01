@@ -52,3 +52,51 @@
   border: 1px solid #ccc;
   text-align: center;
 }
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #f9f9f9;
+}
+
+.admin-sidebar {
+  width: 240px;
+  background-color: #1f2937;
+  color: white;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.admin-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-nav button {
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: background 0.2s;
+}
+
+.admin-nav button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
