@@ -36,47 +36,47 @@ export default function AdminSR() {
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-4 text-yellow-600">SR Рейтинг игроков</h1>
-
+    <div className="admin-wrapper">
+      <h1 className="admin-title">SR Рейтинг игроков</h1>
+  
       {loading ? (
         <p>Загрузка...</p>
       ) : (
         <>
-          <div className="mb-6 text-sm text-gray-700">
+          <div className="sr-summary">
             <p>Суммарный SR в топ-10%: <strong>{srSummary.totalTopSR}</strong></p>
-            <p className="text-gray-500 italic">* Только игроки с активной подпиской и SR &gt; 0</p>
+            <p className="note">* Только игроки с активной подпиской и SR &gt; 0</p>
           </div>
-
-          <div className="overflow-x-auto">
-            <table className="min-w-full border border-gray-300 text-sm text-center">
-              <thead className="bg-gray-100 text-gray-700">
+  
+          <div className="admin-table-wrapper">
+            <table className="admin-table">
+              <thead>
                 <tr>
-                  <th className="p-2 border">#</th>
-                  <th className="p-2 border">Telegram ID</th>
-                  <th className="p-2 border">Имя</th>
-                  <th className="p-2 border">Группа</th>
-                  <th className="p-2 border">SR</th>
-                  <th className="p-2 border">Баланс</th>
-                  <th className="p-2 border">Уровень</th>
-                  <th className="p-2 border">Подписка до</th>
-                  <th className="p-2 border">SR с</th>
-                  <th className="p-2 border">Доля $</th>
+                  <th>#</th>
+                  <th>Telegram ID</th>
+                  <th>Имя</th>
+                  <th>Группа</th>
+                  <th>SR</th>
+                  <th>Баланс</th>
+                  <th>Уровень</th>
+                  <th>Подписка до</th>
+                  <th>SR с</th>
+                  <th>Доля $</th>
                 </tr>
               </thead>
               <tbody>
                 {players.map((p, i) => (
-                  <tr key={p.telegramId} className="hover:bg-yellow-50">
-                    <td className="p-2 border font-semibold">{i + 1}</td>
-                    <td className="p-2 border font-mono text-sm">{p.telegramId}</td>
-                    <td className="p-2 border text-left">{p.playerName}</td>
-                    <td className="p-2 border font-bold text-indigo-600">{p.group}</td>
-                    <td className="p-2 border text-blue-700 font-semibold">{p.srRating}</td>
-                    <td className="p-2 border text-right">{p.balance}</td>
-                    <td className="p-2 border">{p.level}</td>
-                    <td className="p-2 border">{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
-                    <td className="p-2 border">{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
-                    <td className="p-2 border font-bold text-green-700">${calculatePayout(p)}</td>
+                  <tr key={p.telegramId}>
+                    <td>{i + 1}</td>
+                    <td className="monospace">{p.telegramId}</td>
+                    <td className="text-left">{p.playerName}</td>
+                    <td className="highlight">{p.group}</td>
+                    <td className="blue-bold">{p.srRating}</td>
+                    <td className="text-right">{p.balance}</td>
+                    <td>{p.level}</td>
+                    <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
+                    <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
+                    <td className="green-bold">${calculatePayout(p)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -86,9 +86,4 @@ export default function AdminSR() {
       )}
     </div>
   );
-}
-
-
-
-
-       
+  
