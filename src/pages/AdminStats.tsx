@@ -20,17 +20,42 @@ export default function AdminStats() {
   if (!stats) return <p className="admin-loading">Загрузка аналитики...</p>;
 
   return (
-    <div className="admin-stats">
-      <h2>📈 Общая статистика</h2>
-      <ul>
-        <li><strong>Всего игроков:</strong> {stats.totalPlayers}</li>
-        <li><strong>С рефералами:</strong> {stats.playersWithReferrals}</li>
-        <li><strong>С активной подпиской:</strong> {stats.activeSubscriptions}</li>
-        <li><strong>Покупок 50k мавродиков:</strong> {stats.topupPurchases}</li>
-        <li><strong>Выполнено дневных миссий:</strong> {stats.completedDailyMissions}</li>
-        <li><strong>Выполнено недельных миссий:</strong> {stats.completedWeeklyMissions}</li>
-        <li><strong>Игроков с балансом &gt; 5 млн:</strong> {stats.playersWithLargeBalance}</li>
-      </ul>
+    <div className="admin-content">
+      <h2 className="admin-title">📈 Общая статистика</h2>
+      <div className="admin-table-wrapper">
+        <table className="admin-table">
+          <tbody>
+            <tr>
+              <td><strong>Всего игроков</strong></td>
+              <td>{stats.totalPlayers}</td>
+            </tr>
+            <tr>
+              <td><strong>С рефералами</strong></td>
+              <td>{stats.playersWithReferrals}</td>
+            </tr>
+            <tr>
+              <td><strong>С активной подпиской</strong></td>
+              <td>{stats.activeSubscriptions}</td>
+            </tr>
+            <tr>
+              <td><strong>Покупок 50k мавродиков</strong></td>
+              <td>{stats.topups50k}</td>
+            </tr>
+            <tr>
+              <td><strong>Выполнено дневных миссий</strong></td>
+              <td>{stats.completedDailyMissions}</td>
+            </tr>
+            <tr>
+              <td><strong>Выполнено недельных миссий</strong></td>
+              <td>{stats.completedWeeklyMissions}</td>
+            </tr>
+            <tr>
+              <td><strong>Игроков с балансом &gt; 5 млн</strong></td>
+              <td>{stats.playersWithLargeBalance}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
