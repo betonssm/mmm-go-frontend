@@ -1,48 +1,36 @@
 
 import React, { useEffect, useState } from "react";
+import "./AdminDashboard.css";
 
-export default function AnalyticsPage() {
-  const [data, setData] = useState(null);
-  const token = localStorage.getItem("adminToken") || "";
+export default function AdminStats() {
+  const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    document.title = "Аналитика — MMM GO";
+    document.title = "Аналитика | Админка MMM GO";
+    const token = localStorage.getItem("adminToken") || "";
 
     fetch("https://mmmgo-backend.onrender.com/admin/analytics", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
-      .then(setData)
-      .catch(console.error);
+      .then((data) => setStats(data))
+      .catch((err) => console.error("Ошибка загрузки аналитики:", err));
   }, []);
 
-  if (!data) return <div className="p-6 text-center">Загрузка...</div>;
+  if (!stats) return <p className="admin-loading">Загрузка аналитики...</p>;
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">📊 Общая аналитика</h1>
-      <div className="grid grid-cols-2 gap-4 text-lg text-center">
-        <div className="bg-white shadow rounded p-4">
-          <div className="text-gray-600">Всего игроков</div>
-          <div className="text-2xl font-bold">{data.totalPlayers}</div>
-        </div>
-        <div className="bg-white shadow rounded p-4">
-          <div className="text-gray-600">Фонд</div>
-          <div className="text-2xl font-bold">{data.fundTotal} 💰</div>
-        </div>
-        <div className="bg-white shadow rounded p-4">
-          <div className="text-gray-600">Инвесторов</div>
-          <div className="text-2xl font-bold">{data.investors}</div>
-        </div>
-        <div className="bg-white shadow rounded p-4">
-          <div className="text-gray-600">Средний баланс</div>
-          <div className="text-2xl font-bold">{data.averageBalance}</div>
-        </div>
-        <div className="bg-white shadow rounded p-4 col-span-2">
-          <div className="text-gray-600">Средний SR-рейтинг</div>
-          <div className="text-2xl font-bold">{data.averageSR}</div>
-        </div>
-      </div>
+    <div className="admin-stats">
+      <h2>📈 Общая статистика</h2>
+      <ul>
+        <li><strong>Всего игроков:</strong> {stats.totalPlayers}</li>
+        <li><strong>С рефералами:</strong> {stats.playersWithReferrals}</li>
+        <li><strong>С активной подпиской:</strong> {stats.activeSubscriptions}</li>
+        <li><strong>Покупок 50k мавродиков:</strong> {stats.topupPurchases}</li>
+        <li><strong>Выполнено дневных миссий:</strong> {stats.completedDailyMissions}</li>
+        <li><strong>Выполнено недельных миссий:</strong> {stats.completedWeeklyMissions}</li>
+        <li><strong>Игроков с балансом > 5 млн:</strong> {stats.playersWithLargeBalance}</li>
+      </ul>
     </div>
   );
 }
