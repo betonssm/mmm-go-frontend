@@ -52,6 +52,7 @@ export default function MMMGo() {
   const [showNotice, setShowNotice] = useState<string | null>(null);
   const [coins, setCoins] = useState([]);
   const [showPrizeModal, setShowPrizeModal] = useState(false);
+  const [revealedIndex, setRevealedIndex] = useState<number | null>(null);
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
     "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
@@ -413,14 +414,18 @@ const progressToNextLevel = nextLevelThreshold !== null
     <div className="modal-content">
       <h2>🎁 Ежедневный розыгрыш</h2>
       <div className="card-grid">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="card">
-            <div className="card-inner">
-            <div className="card-front"></div>
-              <div className="card-back">5000 мавродиков</div>
-            </div>
-          </div>
-        ))}
+      {Array.from({ length: 6 }).map((_, i) => (
+  <div
+    key={i}
+    className={`card ${revealedIndex === i ? "revealed" : ""}`}
+    onClick={() => setRevealedIndex(i)}
+  >
+    <div className="card-inner">
+      <div className="card-front" />
+      <div className="card-back" />
+    </div>
+  </div>
+))}
       </div>
       <button onClick={() => setShowPrizeModal(false)}>Закрыть</button>
     </div>

@@ -954,19 +954,22 @@ button {
 
 .card-front,
 .card-back {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   backface-visibility: hidden;
   width: 120px;
   height: 160px;
   border-radius: 12px;
 }
 .card-front {
-  background-image: url('/assets/card-back.png') center/cover no-repeat;
+  background-image: url('/assets/card-back.png');
+  background-size: cover;
+  background-position: center;
+  backface-visibility: hidden;
 }
 
 .card-back {
-  background: url("/assets/prize-5000.png") center/cover no-repeat;
+  background-image: url('/assets/prize-5000.png');
+  background-size: cover;
+  background-position: center;
+  backface-visibility: hidden;
   transform: rotateY(180deg);
 }
