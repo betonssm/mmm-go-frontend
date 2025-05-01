@@ -424,6 +424,13 @@ const progressToNextLevel = nextLevelThreshold !== null
           onClick={handleClick}
           disabled={balance === null}
         ></button>
+        {boostActive && (
+  <div className="coin-rain">
+    {[...Array(15)].map((_, i) => (
+      <div key={i} className="coin-drop" style={{ left: `${Math.random() * 100}%` }}></div>
+    ))}
+  </div>
+)}
   
         {/* КНОПКИ НАД БАРАМИ */}
         <div className="bottom-buttons">
