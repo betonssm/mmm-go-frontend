@@ -80,16 +80,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="admin-wrapper">
-      <aside className="admin-sidebar">
-        <h2>MMM GO Admin</h2>
-        <nav>
-          <button onClick={() => navigate("/admin")}>📊 Игроки</button>
-          <button onClick={() => navigate("/admin/logs")}>📜 Журнал</button>
-          <button onClick={() => navigate("/admin/analytics")}>📈 Аналитика</button>
-          <button onClick={() => navigate("/admin/sr")}>🧮 SR Рейтинг</button>
-        </nav>
-      </aside>
-
       <main className="admin-content">
         <div className="admin-controls">
           <input
