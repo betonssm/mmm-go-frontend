@@ -934,8 +934,8 @@ button {
 }
 
 .card {
-  width: 100px;
-  height: 140px;
+  width: 120px;
+  height: 160px;
   perspective: 1000px;
 }
 
@@ -963,6 +963,7 @@ button {
   background-image: url('/assets/card-back.png');
   background-size: cover;
   background-position: center;
+  border: 1px solid green;
   backface-visibility: hidden;
 }
 
@@ -971,5 +972,6 @@ button {
   background-size: cover;
   background-position: center;
   backface-visibility: hidden;
+  border: 1px solid green;
   transform: rotateY(180deg);
 }
