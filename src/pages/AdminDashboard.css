@@ -149,3 +149,13 @@
   color: #15803d;
   font-weight: 600;
 }
+.sr-summary {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 16px;
+}
+.sr-summary .note {
+  color: #666;
+  font-style: italic;
+  margin-top: 4px;
+}

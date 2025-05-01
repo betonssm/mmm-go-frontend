@@ -37,53 +37,54 @@ export default function AdminSR() {
 
   return (
     <div className="admin-wrapper">
-      <h1 className="admin-title">SR Рейтинг игроков</h1>
+      <main className="admin-content">
+        <h2 className="admin-title">📊 SR Рейтинг игроков</h2>
   
-      {loading ? (
-        <p>Загрузка...</p>
-      ) : (
-        <>
-          <div className="sr-summary">
-            <p>Суммарный SR в топ-10%: <strong>{srSummary.totalTopSR}</strong></p>
-            <p className="note">* Только игроки с активной подпиской и SR &gt; 0</p>
-          </div>
+        {loading ? (
+          <p>Загрузка...</p>
+        ) : (
+          <>
+            <div className="admin-summary">
+              <p><strong>Суммарный SR в топ-10%:</strong> {srSummary.totalTopSR}</p>
+              <p className="admin-note">* Только игроки с активной подпиской и SR &gt; 0</p>
+            </div>
   
-          <div className="admin-table-wrapper">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Telegram ID</th>
-                  <th>Имя</th>
-                  <th>Группа</th>
-                  <th>SR</th>
-                  <th>Баланс</th>
-                  <th>Уровень</th>
-                  <th>Подписка до</th>
-                  <th>SR с</th>
-                  <th>Доля $</th>
-                </tr>
-              </thead>
-              <tbody>
-                {players.map((p, i) => (
-                  <tr key={p.telegramId}>
-                    <td>{i + 1}</td>
-                    <td className="monospace">{p.telegramId}</td>
-                    <td className="text-left">{p.playerName}</td>
-                    <td className="highlight">{p.group}</td>
-                    <td className="blue-bold">{p.srRating}</td>
-                    <td className="text-right">{p.balance}</td>
-                    <td>{p.level}</td>
-                    <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
-                    <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
-                    <td className="green-bold">${calculatePayout(p)}</td>
+            <div className="admin-table-wrapper">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Telegram ID</th>
+                    <th>Имя</th>
+                    <th>Группа</th>
+                    <th>SR</th>
+                    <th>Баланс</th>
+                    <th>Уровень</th>
+                    <th>Подписка до</th>
+                    <th>SR с</th>
+                    <th>Доля $</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
+                </thead>
+                <tbody>
+                  {players.map((p, i) => (
+                    <tr key={p.telegramId}>
+                      <td>{i + 1}</td>
+                      <td>{p.telegramId}</td>
+                      <td>{p.playerName}</td>
+                      <td>{p.group}</td>
+                      <td>{p.srRating}</td>
+                      <td>{p.balance}</td>
+                      <td>{p.level}</td>
+                      <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
+                      <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
+                      <td>${calculatePayout(p)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </main>
     </div>
   );
-}
