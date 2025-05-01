@@ -860,28 +860,22 @@ button {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  z-index: 9999;
   overflow: hidden;
-  z-index: 20;
 }
 
 .coin-drop {
   position: absolute;
-  top: -50px;
-  width: 18px;
-  height: 18px;
+  top: -30px;
   background-image: url("../assets/mavrodik-coin.png"); /* замени на нужную иконку монеты */
   background-size: contain;
   background-repeat: no-repeat;
-  animation: fall 1.8s linear infinite;
-  opacity: 0.9;
+  animation-name: coinFall;
+  animation-timing-function: linear;
 }
 
 @keyframes fall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
+  to {
     transform: translateY(110vh) rotate(360deg);
     opacity: 0;
   }

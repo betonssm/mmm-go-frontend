@@ -426,9 +426,19 @@ const progressToNextLevel = nextLevelThreshold !== null
         ></button>
         {boostActive && (
   <div className="coin-rain">
-    {[...Array(15)].map((_, i) => (
-      <div key={i} className="coin-drop" style={{ left: `${Math.random() * 100}%` }}></div>
-    ))}
+    {Array.from({ length: 20 }).map((_, i) => (
+  <div
+    key={i}
+    className="coin-drop"
+    style={{
+      left: `${Math.random() * 100}%`,
+      animationDuration: `${1.5 + Math.random()}s`,
+      animationDelay: `${Math.random()}s`,
+      width: `${15 + Math.random() * 15}px`,
+      height: `${15 + Math.random() * 15}px`,
+    }}
+  />
+))}
   </div>
 )}
   
