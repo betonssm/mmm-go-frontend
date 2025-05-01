@@ -416,7 +416,7 @@ const progressToNextLevel = nextLevelThreshold !== null
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="card">
             <div className="card-inner">
-              <div className="card-front">?</div>
+            <div className="card-front"></div>
               <div className="card-back">5000 мавродиков</div>
             </div>
           </div>
