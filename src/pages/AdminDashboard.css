@@ -122,3 +122,30 @@
   justify-content: center;
   z-index: 999;
 }
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.monospace {
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.highlight {
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.blue-bold {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.green-bold {
+  color: #15803d;
+  font-weight: 600;
+}
