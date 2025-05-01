@@ -50,6 +50,7 @@ export default function MMMGo() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const [showBoostCooldownNotice, setShowBoostCooldownNotice] = useState(false);
   const [showNotice, setShowNotice] = useState<string | null>(null);
+  const [coins, setCoins] = useState([]);
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
     "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
@@ -372,6 +373,23 @@ const progressToNextLevel = nextLevelThreshold !== null
       clearTimeout(stopBoost);
     };
   }, [boostActive, telegramId]);
+  useEffect(() => {
+    let interval: any;
+    if (boostActive) {
+      interval = setInterval(() => {
+        const newCoins = Array.from({ length: 10 }).map(() => ({
+          id: Math.random(),
+          left: Math.random() * 100,
+          size: 15 + Math.random() * 15,
+          duration: 1.5 + Math.random(),
+          delay: Math.random(),
+        }));
+        setCoins(prev => [...prev, ...newCoins]);
+      }, 500);
+    }
+  
+    return () => clearInterval(interval);
+  }, [boostActive]);
 
   return (
     <>
@@ -426,19 +444,19 @@ const progressToNextLevel = nextLevelThreshold !== null
         ></button>
         {boostActive && (
   <div className="coin-rain">
-    {Array.from({ length: 20 }).map((_, i) => (
-  <div
-    key={i}
-    className="coin-drop"
-    style={{
-      left: `${Math.random() * 100}%`,
-      animationDuration: `${1.5 + Math.random()}s`,
-      animationDelay: `${Math.random()}s`,
-      width: `${15 + Math.random() * 15}px`,
-      height: `${15 + Math.random() * 15}px`,
-    }}
-  />
-))}
+    {coins.map((coin) => (
+      <div
+        key={coin.id}
+        className="coin-drop"
+        style={{
+          left: `${coin.left}%`,
+          animationDuration: `${coin.duration}s`,
+          animationDelay: `${coin.delay}s`,
+          width: `${coin.size}px`,
+          height: `${coin.size}px`,
+        }}
+      />
+    ))}
   </div>
 )}
   
