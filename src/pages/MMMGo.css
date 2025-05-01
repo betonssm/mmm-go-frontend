@@ -886,12 +886,15 @@ button {
   }
 }
 .gift-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: fixed;
+  top: 12px;
+  left: 12px; /* вместо right */
+  width: 48px;
+  height: 48px;
   background: none;
   border: none;
-  width: 50px;
+  padding: 0;
+  z-index: 1000;
   cursor: pointer;
 }
 
