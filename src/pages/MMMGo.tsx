@@ -51,6 +51,7 @@ export default function MMMGo() {
   const [showBoostCooldownNotice, setShowBoostCooldownNotice] = useState(false);
   const [showNotice, setShowNotice] = useState<string | null>(null);
   const [coins, setCoins] = useState([]);
+  const [showPrizeModal, setShowPrizeModal] = useState(false);
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
     "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
@@ -459,6 +460,24 @@ const progressToNextLevel = nextLevelThreshold !== null
     ))}
   </div>
 )}
+{showPrizeModal && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <h2>🎁 Ежедневный розыгрыш</h2>
+      <div className="card-grid">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="card">
+            <div className="card-inner">
+              <div className="card-front">?</div>
+              <div className="card-back">5000 мавродиков</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <button onClick={() => setShowPrizeModal(false)}>Закрыть</button>
+    </div>
+  </div>
+)}
   
         {/* КНОПКИ НАД БАРАМИ */}
         <div className="bottom-buttons">
@@ -536,7 +555,9 @@ const progressToNextLevel = nextLevelThreshold !== null
     ⏳ Буст уже активен или на перезарядке. Попробуй позже!
   </div>
 )}
-  
+  <button className="gift-button" onClick={() => setShowPrizeModal(true)}>
+  <img src="/assets/gift-icon.png" alt="Подарок" />
+</button>
         <div className="rules-container">
           <Link to="/rules">
             <img src={rulesButton} alt="Правила" className="rules-button-top" />
