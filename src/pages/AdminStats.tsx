@@ -29,7 +29,7 @@ export default function AdminStats() {
         <li><strong>Покупок 50k мавродиков:</strong> {stats.topupPurchases}</li>
         <li><strong>Выполнено дневных миссий:</strong> {stats.completedDailyMissions}</li>
         <li><strong>Выполнено недельных миссий:</strong> {stats.completedWeeklyMissions}</li>
-        <li><strong>Игроков с балансом > 5 млн:</strong> {stats.playersWithLargeBalance}</li>
+        <li><strong>Игроков с балансом &gt; 5 млн:</strong> {stats.playersWithLargeBalance}</li>
       </ul>
     </div>
   );
