@@ -436,31 +436,33 @@ const shuffledPrizes = useMemo(() => {
     <div className="modal-content">
       <h2>🎁 Ежедневный розыгрыш</h2>
       <div className="card-grid">
-  {shuffledPrizes.map((prize, i) => (
-    <div
-      key={i}
-      className={`card ${revealedIndex === i ? "revealed" : ""}`}
-      onClick={() => {
-        if (revealedIndex !== null || prizeClaimed) return;
-        setRevealedIndex(i);
-        setPrizeClaimed(true);
-      
-        fetch("https://mmmgo-backend.onrender.com/player/claim-prize", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ telegramId, prizeAmount: prize.amount }),
-        })
-          .then(res => res.json())
-          .then(data => {
-            if (data.newBalance) {
-              setBalance(data.newBalance);
-              setWeeklyMavro(prev => prev + prize.amount);
-            } else if (data.error) {
-              alert(`❌ ${data.error}`);
-            }
-          })
-          .catch(err => console.error("Ошибка получения приза:", err));
-      }}
+        {shuffledPrizes.map((prize, i) => (
+          <div
+            key={i}
+            className={`card ${revealedIndex === i ? "revealed" : ""}`}
+            onClick={() => {
+              if (revealedIndex !== null || prizeClaimed) return;
+              setRevealedIndex(i);
+              setPrizeClaimed(true);
+
+              fetch("https://mmmgo-backend.onrender.com/player/claim-prize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ telegramId, prizeAmount: prize.amount }),
+              })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.newBalance) {
+                    setBalance(data.newBalance);
+                    // setDailyClicks(prev => prev + prize.amount); // ⛔️ Не учитываем в дневной миссии
+                    setWeeklyMavro(prev => prev + prize.amount);
+                  } else if (data.error) {
+                    alert(`❌ ${data.error}`);
+                  }
+                })
+                .catch(err => console.error("Ошибка получения приза:", err));
+            }}
+          
     >
       <div className="card-inner">
         <div className="card-front" />
