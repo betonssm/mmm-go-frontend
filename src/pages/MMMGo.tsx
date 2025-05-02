@@ -392,6 +392,18 @@ const progressToNextLevel = nextLevelThreshold !== null
   
     return () => clearInterval(interval);
   }, [boostActive]);
+  const prizeOptions = [
+    { amount: 1000, className: "card-back-1000" },
+    { amount: 1000, className: "card-back-1000" },
+    { amount: 1000, className: "card-back-1000" },
+    { amount: 5000, className: "card-back-5000" },
+    { amount: 10000, className: "card-back-10000" },
+    { amount: 20000, className: "card-back-20000" },
+  ];
+  
+  const shuffledPrizes = prizeOptions
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 6);
 
   return (
     <>
@@ -414,16 +426,18 @@ const progressToNextLevel = nextLevelThreshold !== null
     <div className="modal-content">
       <h2>🎁 Ежедневный розыгрыш</h2>
       <div className="card-grid">
-      {Array.from({ length: 6 }).map((_, i) => (
-  <div
-    key={i}
-    className={`card ${revealedIndex === i ? "revealed" : ""}`}
-    onClick={() => setRevealedIndex(i)}
-  >
-    <div className="card-inner">
-      <div className="card-front" />
-      <div className="card-back" />
-    </div>
+  {shuffledPrizes.map((prize, i) => (
+    <div
+      key={i}
+      className={`card ${revealedIndex === i ? "revealed" : ""}`}
+      onClick={() => setRevealedIndex(i)}
+    >
+      <div className="card-inner">
+        <div className="card-front" />
+        <div className={`card-back ${prize.className}`}>
+          <span>{prize.amount.toLocaleString()} мавродиков</span>
+        </div>
+        </div>
   </div>
 ))}
       </div>
