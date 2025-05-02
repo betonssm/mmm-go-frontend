@@ -54,6 +54,7 @@ export default function MMMGo() {
   const [coins, setCoins] = useState([]);
   const [showPrizeModal, setShowPrizeModal] = useState(false);
   const [revealedIndex, setRevealedIndex] = useState<number | null>(null);
+  const [showPrizeMessage, setShowPrizeMessage] = useState<string | null>(null);
   const [prizeClaimed, setPrizeClaimed] = useState(false);
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
@@ -454,10 +455,13 @@ const shuffledPrizes = useMemo(() => {
                 .then(data => {
                   if (data.newBalance) {
                     setBalance(data.newBalance);
+                    setShowPrizeMessage(`+${prize.amount.toLocaleString()} мавродиков! 🎉`);
+setTimeout(() => setShowPrizeMessage(null), 3000);
                     // setDailyClicks(prev => prev + prize.amount); // ⛔️ Не учитываем в дневной миссии
                     setWeeklyMavro(prev => prev + prize.amount);
                   } else if (data.error) {
-                    alert(`❌ ${data.error}`);
+                    setShowPrizeMessage(`❌ ${data.error}`);
+setTimeout(() => setShowPrizeMessage(null), 3000);
                   }
                 })
                 .catch(err => console.error("Ошибка получения приза:", err));
@@ -472,6 +476,9 @@ const shuffledPrizes = useMemo(() => {
         </div>
   </div>
 ))}
+{showPrizeMessage && (
+  <div className="prize-popup">{showPrizeMessage}</div>
+)}
       </div>
       <button onClick={() => setShowPrizeModal(false)}>Закрыть</button>
     </div>
