@@ -445,7 +445,7 @@ const shuffledPrizes = useMemo(() => {
               setRevealedIndex(i);
               setPrizeClaimed(true);
 
-              fetch("https://mmmgo-backend.onrender.com/player/claim-prize", {
+              fetch("https://mmmgo-backend.onrender.com/player/player/claim-prize", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ telegramId, prizeAmount: prize.amount }),
