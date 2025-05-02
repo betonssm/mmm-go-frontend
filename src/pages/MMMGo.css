@@ -983,6 +983,10 @@ button {
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   background: linear-gradient(to bottom, #ffe08a, #d4af37); /* лёгкий фон */
+  overflow: hidden;
+  word-break: break-word;
+  font-size: 16px;
+  line-height: 1.2;
 }
 .card-back span {
   font-size: 20px;

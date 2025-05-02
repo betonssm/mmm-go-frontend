@@ -440,7 +440,7 @@ const progressToNextLevel = nextLevelThreshold !== null
       <div className="card-inner">
         <div className="card-front" />
         <div className={`card-back ${prize.className}`}>
-          <span>{prize.amount.toLocaleString()} мавродиков</span>
+        <span>{prize.amount.toLocaleString()}</span>
         </div>
         </div>
   </div>
