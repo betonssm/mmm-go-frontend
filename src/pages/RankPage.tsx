@@ -132,16 +132,33 @@ export default function RankPage() {
   // Просмотр рекламы
   const handleAdWatch = () => {
     if (!telegramId || adsWatched >= 5) return;
-    const newCount = adsWatched + 1;
-    fetch("https://mmmgo-backend.onrender.com/player", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ telegramId, adsWatched: newCount }),
-      keepalive: true,
-    })
-      .then(res => res.json())
-      .then(updated => setAdsWatched(updated.adsWatched))
-      .catch(err => console.error(err));
+  
+    // Открываем "рекламу" в новой вкладке
+    window.open("https://wikipedia.org", "_blank"); // можно заменить на партнёрский сайт
+  
+    // Показываем уведомление
+    showTempNotice("▶ Реклама открыта. Возвращайся через 15 секунд для награды...");
+  
+    // Через 15 секунд разрешаем награду
+    setTimeout(() => {
+      const newCount = adsWatched + 1;
+  
+      fetch("https://mmmgo-backend.onrender.com/player", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ telegramId, adsWatched: newCount }),
+        keepalive: true,
+      })
+        .then(res => res.json())
+        .then(updated => {
+          setAdsWatched(updated.adsWatched);
+          showTempNotice("✅ Реклама засчитана — +1 к прогрессу!");
+        })
+        .catch(err => {
+          console.error("❌ Ошибка при сохранении рекламы:", err);
+          showTempNotice("🚫 Ошибка подключения");
+        });
+    }, 15000); // 15 сек
   };
 
   // Подписка на партнёра
