@@ -918,7 +918,7 @@ button {
 }
 
 .modal-content {
-  background: #fff;
+  background:#fff8e1; /* светло-бежевый оттенок */;
   padding: 2rem;
   border-radius: 12px;
   max-width: 600px;
