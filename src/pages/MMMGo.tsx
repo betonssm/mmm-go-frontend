@@ -19,6 +19,7 @@ import bg7 from "../assets/bg-level-7.png";
 import bg8 from "../assets/bg-level-8.png";
 import translations from "../locales.js";
 import { Link } from "react-router-dom";
+import { useMemo } from "react"; // если ещё не импортировал
 import { useEffect } from "react";
 Date.prototype.getWeek = function () {
   const oneJan = new Date(this.getFullYear(), 0, 1);
@@ -402,9 +403,10 @@ const progressToNextLevel = nextLevelThreshold !== null
     { amount: 20000, className: "card-back-20000" },
   ];
   
-  const shuffledPrizes = prizeOptions
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 6);
+
+const shuffledPrizes = useMemo(() => {
+  return prizeOptions.sort(() => Math.random() - 0.5).slice(0, 6);
+}, [showPrizeModal]);
     useEffect(() => {
       if (!showPrizeModal) {
         setRevealedIndex(null);
@@ -452,7 +454,6 @@ const progressToNextLevel = nextLevelThreshold !== null
           .then(data => {
             if (data.newBalance) {
               setBalance(data.newBalance);
-              setDailyClicks(prev => prev + prize.amount);
               setWeeklyMavro(prev => prev + prize.amount);
             } else if (data.error) {
               alert(`❌ ${data.error}`);
