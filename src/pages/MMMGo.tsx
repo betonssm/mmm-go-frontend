@@ -439,10 +439,9 @@ const progressToNextLevel = nextLevelThreshold !== null
     >
       <div className="card-inner">
         <div className="card-front" />
-        <div className={`card-back ${prize.className}`}>
-        <div className="flash-effect" />
-        <span>{prize.amount.toLocaleString()}</span>
-        </div>
+        <div className={`card-back ${prize.className} ${revealedIndex === i ? "flash" : ""}`}>
+  <span>{prize.amount.toLocaleString()}</span>
+</div>
         </div>
   </div>
 ))}
