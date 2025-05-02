@@ -53,6 +53,7 @@ export default function MMMGo() {
   const [coins, setCoins] = useState([]);
   const [showPrizeModal, setShowPrizeModal] = useState(false);
   const [revealedIndex, setRevealedIndex] = useState<number | null>(null);
+  const [prizeClaimed, setPrizeClaimed] = useState(false);
   const levelTitles = [
     "Новичок", "Подающий надежды", "Местный вкладчик", "Серьёзный игрок",
     "Опытный инвестор", "Финансовый магнат", "Серый кардинал", "Тайный куратор", "Легенда MMMGO"
@@ -407,8 +408,10 @@ const progressToNextLevel = nextLevelThreshold !== null
     useEffect(() => {
       if (!showPrizeModal) {
         setRevealedIndex(null);
+        setPrizeClaimed(false); // ← добавь эту строку
       }
     }, [showPrizeModal]);
+  
 
   return (
     <>
@@ -435,7 +438,28 @@ const progressToNextLevel = nextLevelThreshold !== null
     <div
       key={i}
       className={`card ${revealedIndex === i ? "revealed" : ""}`}
-      onClick={() => setRevealedIndex(i)}
+      onClick={() => {
+        if (revealedIndex !== null || prizeClaimed) return;
+        setRevealedIndex(i);
+        setPrizeClaimed(true);
+      
+        fetch("https://mmmgo-backend.onrender.com/player/claim-prize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ telegramId, prizeAmount: prize.amount }),
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.newBalance) {
+              setBalance(data.newBalance);
+              setDailyClicks(prev => prev + prize.amount);
+              setWeeklyMavro(prev => prev + prize.amount);
+            } else if (data.error) {
+              alert(`❌ ${data.error}`);
+            }
+          })
+          .catch(err => console.error("Ошибка получения приза:", err));
+      }}
     >
       <div className="card-inner">
         <div className="card-front" />
