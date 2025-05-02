@@ -440,7 +440,7 @@ const progressToNextLevel = nextLevelThreshold !== null
       <div className="card-inner">
         <div className="card-front" />
         <div className={`card-back ${prize.className} ${revealedIndex === i ? "flash" : ""}`}>
-        <span>{(prize.amount / 1000).toString().replace(/\.0$/, "")}К🪙</span>
+        <span>{(prize.amount / 1000).toString().replace(/\.0$/, "")}К</span>
 </div>
         </div>
   </div>
