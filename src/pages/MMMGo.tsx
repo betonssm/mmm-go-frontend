@@ -404,6 +404,11 @@ const progressToNextLevel = nextLevelThreshold !== null
   const shuffledPrizes = prizeOptions
     .sort(() => Math.random() - 0.5)
     .slice(0, 6);
+    useEffect(() => {
+      if (!showPrizeModal) {
+        setRevealedIndex(null);
+      }
+    }, [showPrizeModal]);
 
   return (
     <>
