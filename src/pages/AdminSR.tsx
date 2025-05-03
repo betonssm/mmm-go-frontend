@@ -68,43 +68,46 @@ export default function AdminSR() {
       <button onClick={() => exportCSV("top5")} style={{ marginRight: 8 }}>⬇️ ТОП 2–5%</button>
       <button onClick={() => exportCSV("top10")}>⬇️ ТОП 6–10%</button>
     </div>
-            <div className="admin-summary">
+    <div className="admin-summary">
+  <p><strong>Общий фонд для выплат:</strong> {fundTotal.toFixed(2)} USDT</p>
+  <p className="admin-note">* Выплаты рассчитаны по SR-группам в топ-10%</p>
               <p className="admin-note">* Только игроки с активной подпиской и SR &gt; 0</p>
             </div>
   
             <div className="admin-table-wrapper">
               <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Telegram ID</th>
-                    <th>Имя</th>
-                    <th>Группа</th>
-                    <th>SR</th>
-                    <th>Баланс</th>
-                    <th>Уровень</th>
-                    <th>Подписка до</th>
-                    <th>SR с</th>
-                    <th>Доля $</th>
-                    <th>Кошелёк TRC20</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {players.map((p, i) => (
-                    <tr key={p.telegramId}>
-                      <td>{i + 1}</td>
-                      <td>{p.telegramId}</td>
-                      <td>{p.playerName}</td>
-                      <td>{p.group}</td>
-                      <td>{p.srRating}</td>
-                      <td>{p.balance}</td>
-                      <td>{p.level}</td>
-                      <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
-                      <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
-                      <td>{p.walletAddressTRC20 || "—"}</td>
-                    </tr>
-                  ))}
-                </tbody>
+              <thead>
+  <tr>
+    <th>#</th>
+    <th>Telegram ID</th>
+    <th>Имя</th>
+    <th>Группа</th>
+    <th>SR</th>
+    <th>Баланс</th>
+    <th>Уровень</th>
+    <th>Подписка до</th>
+    <th>SR с</th>
+    <th>Кошелёк TRC20</th> {/* Поменял местами */}
+    <th>Доля $</th>
+  </tr>
+</thead>
+<tbody>
+  {players.map((p, i) => (
+    <tr key={p.telegramId}>
+      <td>{i + 1}</td>
+      <td>{p.telegramId}</td>
+      <td>{p.playerName}</td>
+      <td>{p.group}</td>
+      <td>{p.srRating}</td>
+      <td>{p.balance}</td>
+      <td>{p.level}</td>
+      <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
+      <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
+      <td>{p.walletAddressTRC20 || "—"}</td> {/* Поменял местами */}
+      <td>${p.usdtPayout}</td>
+    </tr>
+  ))}
+</tbody>
               </table>
             </div>
           </>
