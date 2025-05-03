@@ -32,8 +32,11 @@ export default function RankPage() {
           setWeeklyMavro(data.weeklyMission?.current || 0);
           setWeeklyReward(data.weeklyMission?.completed || false);
         })
-        .catch(err => console.error("Ошибка загрузки данных игрока", err));
-    }
+        .catch(err => console.error("Ошибка загрузки данных игрока", err))
+        .finally(() => setLoading(false)); // ✅ ЭТО ОБЯЗАТЕЛЬНО
+      } else {
+        setLoading(false); // 🛡 Если user нет — тоже не вешаться
+      }
   }, []);
 
   const showTempNotice = (msg: string) => {
@@ -177,7 +180,7 @@ export default function RankPage() {
       .then(() => setIsSubscribed(true))
       .catch(err => console.error(err));
   };
-  
+
   if (loading) {
     return <div className="loading-screen">Загрузка...</div>;
   }
