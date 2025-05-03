@@ -123,7 +123,6 @@ export default function AdminDashboard() {
                 <th>Рефералы</th>
                 <th>Оплаты</th>
                 <th>Источник</th>
-                <th>TRC20 кошелёк</th>
               </tr>
             </thead>
             <tbody>
@@ -142,7 +141,6 @@ export default function AdminDashboard() {
                     <td>{player.referrals || 0}</td>
                     <td>{player.paymentsCount || 0}</td>
                     <td>{player.refSource || "—"}</td>
-                    <td>{player.walletAddressTRC20 || "—"}</td>
                   </tr>
                 );
               })}
