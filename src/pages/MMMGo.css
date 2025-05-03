@@ -1047,3 +1047,22 @@ button {
   80% { opacity: 1; }
   100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
+.wallet-button {
+  padding: 10px 16px;
+  background: #1abc9c;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.wallet-input {
+  padding: 8px 12px;
+  width: 100%;
+  margin: 10px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
