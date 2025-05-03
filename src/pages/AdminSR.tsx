@@ -34,6 +34,34 @@ export default function AdminSR() {
     const share = player.srRating / groupTotalSR;
     return Math.round(share * fundTotal * groupWeight);
   };
+  const exportCSV = (group) => {
+    if (!srSummary || !["top1", "top5", "top10"].includes(group)) return;
+  
+    const groupPlayers = players.filter(p =>
+      (group === "top1" && p.group === "1%") ||
+      (group === "top5" && p.group === "2-5%") ||
+      (group === "top10" && p.group === "6-10%")
+    );
+  
+    const csvContent = [
+      ["TelegramID", "Имя", "SR", "Кошелёк", "Доля USDT"],
+      ...groupPlayers.map(p => [
+        p.telegramId,
+        p.playerName,
+        p.srRating,
+        p.walletAddressTRC20 || "",
+        calculatePayout(p)
+      ])
+    ].map(e => e.join(",")).join("\n");
+  
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", `${group}_MMMGO_PAYOUT.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="admin-wrapper">
@@ -41,9 +69,14 @@ export default function AdminSR() {
         <h2 className="admin-title">📊 SR Рейтинг игроков</h2>
   
         {loading ? (
-          <p>Загрузка...</p>
-        ) : (
-          <>
+  <p>Загрузка...</p>
+) : (
+  <>
+    <div style={{ marginBottom: "16px" }}>
+      <button onClick={() => exportCSV("top1")} style={{ marginRight: 8 }}>⬇️ Скачать ТОП 1%</button>
+      <button onClick={() => exportCSV("top5")} style={{ marginRight: 8 }}>⬇️ ТОП 2–5%</button>
+      <button onClick={() => exportCSV("top10")}>⬇️ ТОП 6–10%</button>
+    </div>
             <div className="admin-summary">
               <p><strong>Суммарный SR в топ-10%:</strong> {srSummary.totalTopSR}</p>
               <p className="admin-note">* Только игроки с активной подпиской и SR &gt; 0</p>
@@ -63,6 +96,7 @@ export default function AdminSR() {
                     <th>Подписка до</th>
                     <th>SR с</th>
                     <th>Доля $</th>
+                    <th>Кошелёк TRC20</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -78,6 +112,7 @@ export default function AdminSR() {
                       <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
                       <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
                       <td>${calculatePayout(p)}</td>
+                      <td>{p.walletAddressTRC20 || "—"}</td>
                     </tr>
                   ))}
                 </tbody>
