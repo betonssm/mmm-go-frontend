@@ -177,18 +177,7 @@ export default function RankPage() {
       .then(() => setIsSubscribed(true))
       .catch(err => console.error(err));
   };
-  fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
-  .then(res => res.json())
-  .then(data => {
-    setAdsWatched(data.adsWatched || 0);
-    setIsSubscribed(data.partnerSubscribed || false);
-    setDailyClicks(data.dailyTasks?.dailyTaps || 0);
-    setRewardCollected(data.dailyTasks?.rewardReceived || false);
-    setWeeklyMavro(data.weeklyMission?.current || 0);
-    setWeeklyReward(data.weeklyMission?.completed || false);
-  })
-  .catch(err => console.error("Ошибка загрузки данных игрока", err))
-  .finally(() => setLoading(false)); // 👈 обязательно
+  
   if (loading) {
     return <div className="loading-screen">Загрузка...</div>;
   }
