@@ -5,7 +5,6 @@ import DashboardLayout from "./DashboardLayout";
 export default function AdminSR() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [srSummary, setSrSummary] = useState(null);
   const [fundTotal, setFundTotal] = useState(1000); // Примерная сумма фонда
   const token = localStorage.getItem("adminToken") || "";
 
@@ -16,9 +15,8 @@ export default function AdminSR() {
     })
       .then((res) => res.json())
       .then((data) => {
-        const combined = [...data.top1, ...data.top5, ...data.top10];
-        setPlayers(combined);
-        setSrSummary(data.srSummary);
+        setPlayers(data.topPlayers);        // ← сюда записываем уже обработанных игроков
+        setFundTotal(data.total);           // ← общий фонд в USDT
         setLoading(false);
       })
       .catch((err) => {
@@ -27,16 +25,8 @@ export default function AdminSR() {
       });
   }, []);
 
-  const calculatePayout = (player) => {
-    if (!srSummary) return 0;
-    const groupWeight = player.group === "1%" ? 0.3 : player.group === "2-5%" ? 0.35 : 0.35;
-    const groupTotalSR = srSummary[player.group === "1%" ? "top1" : player.group === "2-5%" ? "top5" : "top10"] || 1;
-    const share = player.srRating / groupTotalSR;
-    return Math.round(share * fundTotal * groupWeight);
-  };
-  const exportCSV = (group) => {
-    if (!srSummary || !["top1", "top5", "top10"].includes(group)) return;
   
+  const exportCSV = (group) => {
     const groupPlayers = players.filter(p =>
       (group === "top1" && p.group === "1%") ||
       (group === "top5" && p.group === "2-5%") ||
@@ -44,13 +34,14 @@ export default function AdminSR() {
     );
   
     const csvContent = [
-      ["TelegramID", "Имя", "SR", "Кошелёк", "Доля USDT"],
+      ["TelegramID", "Имя", "SR", "Группа", "Кошелёк", "USDT"],
       ...groupPlayers.map(p => [
         p.telegramId,
-        p.playerName,
+        p.playerName || "",
         p.srRating,
+        p.group,
         p.walletAddressTRC20 || "",
-        calculatePayout(p)
+        p.usdtPayout
       ])
     ].map(e => e.join(",")).join("\n");
   
@@ -78,7 +69,6 @@ export default function AdminSR() {
       <button onClick={() => exportCSV("top10")}>⬇️ ТОП 6–10%</button>
     </div>
             <div className="admin-summary">
-              <p><strong>Суммарный SR в топ-10%:</strong> {srSummary.totalTopSR}</p>
               <p className="admin-note">* Только игроки с активной подпиской и SR &gt; 0</p>
             </div>
   
@@ -111,7 +101,6 @@ export default function AdminSR() {
                       <td>{p.level}</td>
                       <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
                       <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
-                      <td>${calculatePayout(p)}</td>
                       <td>{p.walletAddressTRC20 || "—"}</td>
                     </tr>
                   ))}
