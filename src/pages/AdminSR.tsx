@@ -104,7 +104,11 @@ export default function AdminSR() {
       <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
       <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
       <td>{p.walletAddressTRC20 || "—"}</td> {/* Поменял местами */}
-      <td>{`$${(p.usdtPayout || 0).toFixed(2)}`}</td>
+      <td>
+    {typeof p.usdtPayout === "number"
+      ? `$${p.usdtPayout.toFixed(2)}`
+      : "—"}
+  </td>
     </tr>
   ))}
 </tbody>
