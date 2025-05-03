@@ -146,13 +146,15 @@ export default function RankPage() {
       fetch("https://mmmgo-backend.onrender.com/player", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ telegramId, adsWatched: newCount }),
+        body: JSON.stringify({ telegramId, adsWatched: newCount,
+        balanceBonus: 1000, // 🎁 вот это — начисление бонуса
+         }),
         keepalive: true,
       })
         .then(res => res.json())
         .then(updated => {
           setAdsWatched(updated.adsWatched);
-          showTempNotice("✅ Реклама засчитана — +1 к прогрессу!");
+          showTempNotice("✅ +1 000 мавродиков за просмотр рекламы!");
         })
         .catch(err => {
           console.error("❌ Ошибка при сохранении рекламы:", err);
