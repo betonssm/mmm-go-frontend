@@ -60,7 +60,7 @@ export default function RankPage() {
           dailyTarget: 5000,
           rewardReceived: true,
         },
-        balanceBonus: 5000,
+        balanceBonus: 0,
       }),
       keepalive: true,
     })
