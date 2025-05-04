@@ -118,7 +118,7 @@ export default function RankPage() {
             current: 0,
             completed: true,
           },
-          balanceBonus: 10000,
+          balanceBonus: 0,
         }),
       });
   
