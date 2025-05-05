@@ -60,16 +60,15 @@ export default function App() {
     };
   }, [location.pathname]);
 
-  if (!started) {
-    return <StartScreen onStart={() => setStarted(true)} />;
-  }
-  if (isMaintenance) {
-    return <MaintenancePage />;
-  }
-  
-  if (!started) {
-    return <StartScreen onStart={() => setStarted(true)} />;
-  }
+  // 🛠 Проверяем сначала maintenance
+if (isMaintenance) {
+  return <MaintenancePage />;
+}
+
+// 🎮 Потом проверяем старт
+if (!started) {
+  return <StartScreen onStart={() => setStarted(true)} />;
+}
 
   return (
     <div>
