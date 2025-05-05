@@ -36,14 +36,14 @@ export default function App() {
   const location = useLocation();
   const [isMaintenance, setIsMaintenance] = useState(false);
   useEffect(() => {
-    fetch("https://mmmgo-backend.onrender.com/status")
+    fetch("https://mmmgo-backend.onrender.com/admin/maintenance")
       .then(res => res.json())
       .then(data => {
-        setIsMaintenance(data.maintenance === true);
+        setIsMaintenance(data.maintenanceMode === true);
       })
       .catch(err => {
         console.error("Ошибка получения статуса:", err);
-        setIsMaintenance(false); // по умолчанию false
+        setIsMaintenance(false);
       });
   }, []);
 
