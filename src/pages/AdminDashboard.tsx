@@ -37,20 +37,21 @@ export default function AdminDashboard() {
       .catch((err) => console.error("Ошибка загрузки игроков:", err));
   }, []);
   useEffect(() => {
-    fetch("https://mmmgo-backend.onrender.com/status")
+    fetch("https://mmmgo-backend.onrender.com/admin/maintenance", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then(res => res.json())
-      .then(data => setMaintenance(data.maintenance))
+      .then(data => setMaintenance(data.maintenanceMode))
       .catch(err => console.error("Ошибка загрузки статуса:", err));
   }, []);
-  
   const toggleMaintenance = () => {
-    fetch("https://mmmgo-backend.onrender.com/status", {
+    fetch("https://mmmgo-backend.onrender.com/admin/maintenance", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ maintenance: !maintenance }),
+      body: JSON.stringify({ maintenanceMode: !maintenance }),
     })
       .then(res => res.json())
       .then(() => setMaintenance(prev => !prev))
