@@ -21,11 +21,32 @@ import AdminSR from "./pages/AdminSR";
 
 
 Modal.setAppElement("#root");
+function MaintenancePage() {
+  return (
+    <div style={{ padding: "60px", textAlign: "center", background: "#111", color: "#fff", minHeight: "100vh" }}>
+      <h1>🔧 Технические работы</h1>
+      <p>Мы проводим обновление. Попробуйте позже 🙏</p>
+    </div>
+  );
+}
 
 
 export default function App() {
   const [started, setStarted] = useState(false);
   const location = useLocation();
+  const [isMaintenance, setIsMaintenance] = useState(false);
+  useEffect(() => {
+    fetch("https://mmmgo-backend.onrender.com/status")
+      .then(res => res.json())
+      .then(data => {
+        setIsMaintenance(data.maintenance === true);
+      })
+      .catch(err => {
+        console.error("Ошибка получения статуса:", err);
+        setIsMaintenance(false); // по умолчанию false
+      });
+  }, []);
+
 
   // 🔒 Блокируем скролл только на главной странице
   useEffect(() => {
@@ -34,12 +55,18 @@ export default function App() {
     } else {
       document.body.style.overflow = "auto";
     }
-
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [location.pathname]);
 
+  if (!started) {
+    return <StartScreen onStart={() => setStarted(true)} />;
+  }
+  if (isMaintenance) {
+    return <MaintenancePage />;
+  }
+  
   if (!started) {
     return <StartScreen onStart={() => setStarted(true)} />;
   }
