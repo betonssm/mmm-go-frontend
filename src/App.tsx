@@ -61,9 +61,7 @@ export default function App() {
       document.body.style.overflow = "auto";
     };
   }, [location.pathname]);
-  if (loading) {
-    return <div className="loading-screen">Проверка статуса...</div>;
-  }
+  if (loading) return null;
 
   // 🛠 Проверяем сначала maintenance
 if (isMaintenance) {
