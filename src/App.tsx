@@ -35,6 +35,7 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const location = useLocation();
   const [isMaintenance, setIsMaintenance] = useState(false);
+  const [loading, setLoading] = useState(true); // 👈 добавили
   useEffect(() => {
     fetch("https://mmmgo-backend.onrender.com/player/status")
       .then(res => res.json())
@@ -44,7 +45,8 @@ export default function App() {
       .catch(err => {
         console.error("Ошибка получения статуса:", err);
         setIsMaintenance(false);
-      });
+      })
+      .finally(() => setLoading(false)); // 👈 обязательно!
   }, []);
 
 
@@ -59,6 +61,9 @@ export default function App() {
       document.body.style.overflow = "auto";
     };
   }, [location.pathname]);
+  if (loading) {
+    return <div className="loading-screen">Проверка статуса...</div>;
+  }
 
   // 🛠 Проверяем сначала maintenance
 if (isMaintenance) {
