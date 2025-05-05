@@ -15,6 +15,7 @@ export default function AdminDashboard() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [resetId, setResetId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [maintenance, setMaintenance] = useState(false);
 
   const itemsPerPage = 15;
   const token = localStorage.getItem("adminToken") || "";
@@ -35,6 +36,26 @@ export default function AdminDashboard() {
       })
       .catch((err) => console.error("Ошибка загрузки игроков:", err));
   }, []);
+  useEffect(() => {
+    fetch("https://mmmgo-backend.onrender.com/status")
+      .then(res => res.json())
+      .then(data => setMaintenance(data.maintenance))
+      .catch(err => console.error("Ошибка загрузки статуса:", err));
+  }, []);
+  
+  const toggleMaintenance = () => {
+    fetch("https://mmmgo-backend.onrender.com/status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+      },
+      body: JSON.stringify({ maintenance: !maintenance }),
+    })
+      .then(res => res.json())
+      .then(() => setMaintenance(prev => !prev))
+      .catch(err => console.error("Ошибка обновления статуса:", err));
+  };
 
   const filtered = players.filter((p) => {
     const matchesSearch =
@@ -97,6 +118,12 @@ export default function AdminDashboard() {
             Только инвесторы
           </label>
         </div>
+        <div style={{ marginBottom: "20px" }}>
+  <h3>🛠 Режим технических работ</h3>
+  <button onClick={toggleMaintenance}>
+    {maintenance ? "Отключить" : "Включить"} технические работы
+  </button>
+</div>
 
         <div className="admin-controls">
           <input
