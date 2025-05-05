@@ -40,7 +40,7 @@ export default function App() {
     fetch("https://mmmgo-backend.onrender.com/player/status")
       .then(res => res.json())
       .then(data => {
-        setIsMaintenance(data.maintenanceMode === true);
+        setIsMaintenance(data.maintenance === true);
       })
       .catch(err => {
         console.error("Ошибка получения статуса:", err);
