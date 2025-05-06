@@ -19,6 +19,7 @@ import AdminLogs from "./pages/AdminLogs";
 import AdminStats from "./pages/AdminStats";
 import AdminSR from "./pages/AdminSR";
 import ProtectedAdmin from "./pages/ProtectedAdmin"; // добавь импорт
+import AdminLogin from "./pages/AdminLogin";
 
 
 Modal.setAppElement("#root");
@@ -86,6 +87,7 @@ if (!started) {
         <Route path="/referrals" element={<ReferralPage />} />
         <Route path="/rating" element={<RatingPage />} />
         <Route path="/rules" element={<RulesPage />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<DashboardLayout><ProtectedAdmin /></DashboardLayout>} />
   <Route path="/admin/logs" element={<DashboardLayout><AdminLogs /></DashboardLayout>} />
   <Route path="/admin/stats" element={<DashboardLayout><AdminStats /></DashboardLayout>} />
