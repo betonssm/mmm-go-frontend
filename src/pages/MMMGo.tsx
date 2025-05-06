@@ -109,8 +109,17 @@ const progressToNextLevel = nextLevelThreshold !== null
     tg.ready?.();
     tg.expand?.();
   
-    const ref = new URLSearchParams(window.location.search).get("ref");
-    setRefSource(ref ?? null);
+    let ref = new URLSearchParams(window.location.search).get("ref");
+
+// Добавляем поддержку Telegram WebApp start_param
+if (!ref && window.Telegram?.WebApp?.initDataUnsafe?.start_param) {
+  const param = window.Telegram.WebApp.initDataUnsafe.start_param;
+  if (param.startsWith("ref_")) {
+    ref = param.replace("ref_", "");
+  }
+}
+
+setRefSource(ref ?? null);
   
     const loadUser = () => {
       const user = tg.initDataUnsafe?.user;
