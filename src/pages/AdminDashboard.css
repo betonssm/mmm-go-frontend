@@ -184,3 +184,20 @@
   border-radius: 4px;
   cursor: pointer;
 }
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #222;
+  color: white;
+  padding: 10px 20px;
+}
+
+.dashboard-header button {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
