@@ -19,8 +19,7 @@ import bg7 from "../assets/bg-level-7.png";
 import bg8 from "../assets/bg-level-8.png";
 import translations from "../locales.js";
 import { Link } from "react-router-dom";
-import { useMemo } from "react"; // если ещё не импортировал
-import { useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 Date.prototype.getWeek = function () {
   const oneJan = new Date(this.getFullYear(), 0, 1);
   return Math.ceil((((this as any) - oneJan) / 86400000 + oneJan.getDay() + 1) / 7);
@@ -414,7 +413,8 @@ const shuffledPrizes = useMemo(() => {
         setPrizeClaimed(false); // ← добавь эту строку
       }
     }, [showPrizeModal]);
-    const balanceRef = useRef(null);
+
+   const balanceRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
       if (!balanceRef.current || initialLoad || balance === null) return;
@@ -515,7 +515,9 @@ setTimeout(() => setShowPrizeMessage(null), 3000);
         )}
  */} 
         <div className="balance-display" ref={balanceRef}>
-  {balance.toLocaleString()}
+  {initialLoad || balance === null
+    ? "Загрузка..."
+    : balance.toLocaleString()}
 </div>
   
         <button
