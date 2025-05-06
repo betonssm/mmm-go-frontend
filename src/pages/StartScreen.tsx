@@ -50,11 +50,12 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
               onClick={handleStart}
             />
 
-            {buttonVisible && (
-              <button className="start-button glow" onClick={handleStart}>
-                <img src={startButtonImg} alt="Начать" />
-              </button>
-            )}
+<button
+  className={`start-button glow ${!imageLoaded ? "hidden" : ""}`}
+  onClick={handleStart}
+>
+  <img src={startButtonImg} alt="Начать" />
+</button>
 
 <div className="start-screen-footer">
               🎮 Это WebApp-игра в стиле 90-х. Все персонажи и валюты вымышлены.
