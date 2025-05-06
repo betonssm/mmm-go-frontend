@@ -88,10 +88,10 @@ if (!started) {
         <Route path="/rating" element={<RatingPage />} />
         <Route path="/rules" element={<RulesPage />} />
         <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/admin" element={<DashboardLayout><ProtectedAdmin /></DashboardLayout>} />
-  <Route path="/admin/logs" element={<DashboardLayout><AdminLogs /></DashboardLayout>} />
-  <Route path="/admin/stats" element={<DashboardLayout><AdminStats /></DashboardLayout>} />
-  <Route path="/admin/sr" element={<DashboardLayout><AdminSR /></DashboardLayout>} />
+        <Route path="/admin" element={<DashboardLayout><ProtectedAdmin page="dashboard" /></DashboardLayout>} />
+<Route path="/admin/logs" element={<DashboardLayout><ProtectedAdmin page="logs" /></DashboardLayout>} />
+<Route path="/admin/stats" element={<DashboardLayout><ProtectedAdmin page="stats" /></DashboardLayout>} />
+<Route path="/admin/sr" element={<DashboardLayout><ProtectedAdmin page="sr" /></DashboardLayout>} />
       </Routes>
     </div>
   );

@@ -1,9 +1,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminDashboard from "./AdminDashboard"; // путь может отличаться
+import AdminDashboard from "./AdminDashboard";
+import AdminLogs from "./AdminLogs";
+import AdminStats from "./AdminStats";
+import AdminSR from "./AdminSR";
 
-export default function ProtectedAdmin() {
+export default function ProtectedAdmin({ page }) {
   const [authorized, setAuthorized] = useState<boolean | null>(null);
   const navigate = useNavigate();
 
@@ -29,11 +32,19 @@ export default function ProtectedAdmin() {
   }, []);
 
   if (authorized === null) return <p>🔒 Проверка доступа...</p>;
-
   if (!authorized) {
-    navigate("/");
+    navigate("/admin-login");
     return null;
   }
 
-  return <AdminDashboard />;
+  switch (page) {
+    case "logs":
+      return <AdminLogs />;
+    case "stats":
+      return <AdminStats />;
+    case "sr":
+      return <AdminSR />;
+    default:
+      return <AdminDashboard />;
+  }
 }
