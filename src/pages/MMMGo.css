@@ -1066,3 +1066,36 @@ button {
   border-radius: 8px;
   border: 1px solid #ccc;
 }
+.balance-display {
+  font-family: 'Rubik', sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #ffe082;
+  text-shadow: 2px 2px 4px #000;
+  margin-top: 20px;
+  margin-bottom: 24px;
+  text-align: center;
+  animation: balancePulse 0.5s ease-out;
+}
+
+@keyframes balancePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.15); }
+  60% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.balance-bounce {
+  animation: bounce 0.3s ease-out;
+}

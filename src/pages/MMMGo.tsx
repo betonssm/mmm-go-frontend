@@ -414,7 +414,15 @@ const shuffledPrizes = useMemo(() => {
         setPrizeClaimed(false); // ← добавь эту строку
       }
     }, [showPrizeModal]);
-  
+    const balanceRef = useRef(null);
+
+    useEffect(() => {
+      if (!balanceRef.current || initialLoad || balance === null) return;
+      const el = balanceRef.current;
+      el.classList.add("balance-bounce");
+      const timeout = setTimeout(() => el.classList.remove("balance-bounce"), 300);
+      return () => clearTimeout(timeout);
+    }, [balance]);
 
   return (
     <>
@@ -506,13 +514,9 @@ setTimeout(() => setShowPrizeMessage(null), 3000);
           </div>
         )}
  */} 
-        <h1>
-          Баланс:
-          <br />
-          {initialLoad || balance === null
-            ? "Загрузка мавродиков..."
-            : `${balance} мавродиков`}
-        </h1>
+        <div className="balance-display" ref={balanceRef}>
+  {balance.toLocaleString()}
+</div>
   
         <button
           className={`coin-button ${boostActive ? "boost-animation" : ""}`}
