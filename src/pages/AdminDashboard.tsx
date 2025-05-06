@@ -16,6 +16,8 @@ export default function AdminDashboard() {
   const [resetId, setResetId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [maintenance, setMaintenance] = useState(false);
+  const [addBalanceId, setAddBalanceId] = useState("");
+const [addBalanceAmount, setAddBalanceAmount] = useState("");
 
   const itemsPerPage = 15;
   const token = localStorage.getItem("adminToken") || "";
@@ -135,6 +137,50 @@ export default function AdminDashboard() {
           />
           <button onClick={handleReset}>🔄 Сбросить миссии игрока</button>
         </div>
+        <div className="admin-action-box">
+  <h4>➕ Добавить баланс игроку</h4>
+  <input
+    placeholder="ID игрока"
+    value={addBalanceId}
+    onChange={(e) => setAddBalanceId(e.target.value)}
+  />
+  <input
+    placeholder="Сумма"
+    value={addBalanceAmount}
+    type="number"
+    onChange={(e) => setAddBalanceAmount(e.target.value)}
+  />
+  <button
+    onClick={async () => {
+      if (!addBalanceId || !addBalanceAmount) return alert("Заполни все поля");
+      const ok = confirm(`Добавить ${addBalanceAmount} мавродиков игроку ${addBalanceId}?`);
+      if (!ok) return;
+
+      const res = await fetch("https://mmmgo-backend.onrender.com/admin/add-balance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          telegramId: Number(addBalanceId),
+          amount: Number(addBalanceAmount),
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("✅ Баланс успешно добавлен");
+        setAddBalanceId("");
+        setAddBalanceAmount("");
+      } else {
+        alert("❌ Ошибка: " + data.error);
+      }
+    }}
+  >
+    Добавить баланс
+  </button>
+</div>
 
         <div className="admin-table-wrapper">
           <table className="admin-table">

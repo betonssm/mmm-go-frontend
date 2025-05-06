@@ -159,3 +159,28 @@
   font-style: italic;
   margin-top: 4px;
 }
+.admin-action-box {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #333;
+  background: #1c1c1c;
+  border-radius: 8px;
+}
+
+.admin-action-box input {
+  display: block;
+  margin: 6px 0;
+  padding: 8px;
+  width: 200px;
+  border: none;
+  border-radius: 4px;
+}
+
+.admin-action-box button {
+  padding: 8px 16px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
