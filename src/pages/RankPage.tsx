@@ -141,7 +141,7 @@ export default function RankPage() {
     window.open("https://wikipedia.org", "_blank"); // можно заменить на партнёрский сайт
   
     // Показываем уведомление
-    showTempNotice("▶ Реклама открыта. Возвращайся через 15 секунд для награды...");
+    showTempNotice("🎬 Контент открыт. Возвращайся через 15 секунд для бонуса...");
   
     // Через 15 секунд разрешаем награду
     setTimeout(() => {
@@ -158,7 +158,7 @@ export default function RankPage() {
         .then(res => res.json())
         .then(updated => {
           setAdsWatched(updated.adsWatched);
-          showTempNotice("✅ +1 000 мавродиков за просмотр рекламы!");
+          showTempNotice("✅ +1 000 мавродиков за бонусную активность!");
         })
         .catch(err => {
           console.error("❌ Ошибка при сохранении рекламы:", err);
@@ -202,15 +202,13 @@ export default function RankPage() {
       <h2 className="section-title">🎯 Задания</h2>
       {showNotice && <div className="task-notification">{showNotice}</div>}
 
-      {/* Просмотры рекламы */}
+      {/* Просмотры видео */}
       <div className="task-block">
-        <h3>🎥 Просмотры рекламы</h3>
-        <p>Посмотрено сегодня: <strong>{adsWatched}/5</strong></p>
-        <button
-          className="task-button"
-          disabled={adsWatched >= 5}
-          onClick={handleAdWatch}
-        >▶ Посмотреть видео</button>
+      <h3>🎬 Бонус за просмотр</h3>
+<p>Доступных сегодня: <strong>{5 - adsWatched}</strong></p>
+<button className="task-button" disabled={adsWatched >= 5} onClick={handleAdWatch}>
+  🎁 Получить бонус
+</button>
       </div>
 
       {/* Подписка на партнёра */}
