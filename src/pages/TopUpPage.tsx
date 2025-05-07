@@ -12,9 +12,20 @@ export default function TopUpPage() {
     const img = new Image();
     img.src = "/assets/bg-topup.png";
     img.onload = () => setBgLoaded(true);
-      // ✅ Временная проверка Telegram API
-  console.log("initData:", window.Telegram?.WebApp?.initData);
-  console.log("initDataUnsafe:", window.Telegram?.WebApp?.initDataUnsafe);
+  
+    // ✅ Объявляем переменные
+    const initData = window.Telegram?.WebApp?.initData;
+    const initDataUnsafe = window.Telegram?.WebApp?.initDataUnsafe;
+  
+    // ✅ Отправляем лог на сервер
+    fetch("https://mmmgo-backend.onrender.com/player/log-init", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        initData: initData || "undefined",
+        initDataUnsafe: initDataUnsafe || "undefined",
+      }),
+    });
   }, []);
 
   const handleSubscribe = () => {
