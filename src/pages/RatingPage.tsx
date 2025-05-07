@@ -107,7 +107,7 @@ const [walletSaved, setWalletSaved] = useState(false);
       cursor: "pointer"
     }}
   >
-    💳 Введите адрес TRC20-кошелька для получения выплат
+    💳 Введите адрес TRC20-кошелька для получения бонуса
   </button>
 )}
           </>
@@ -119,10 +119,10 @@ const [walletSaved, setWalletSaved] = useState(false);
         )}
       </div>
       <div style={{ marginTop: 12, padding: 12, background: "rgba(0,0,0,0.5)", borderRadius: 8, color: "#ffe082", textAlign: "center" }}>
-  <h4>💰 Общий призовой фонд:</h4>
-  {fund !== null
-    ? <span>{fund.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})} USDT</span>
-    : <span>Загрузка…</span>}
+      <h4>🎁 Общий игровой бонус:</h4>
+{fund !== null
+  ? <span>{fund.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+  : <span>Загрузка…</span>}
 </div>
 
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "8px" }}>
