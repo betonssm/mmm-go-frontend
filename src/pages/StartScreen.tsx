@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 export default function StartScreen({ onStart }: { onStart: () => void }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const img = new Image();
@@ -34,7 +33,6 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
     }
 
     onStart();
-  
   };
 
   return (
@@ -52,12 +50,11 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
               onClick={handleStart}
             />
 
-<button
-  className={`start-button glow ${!imageLoaded ? "hidden" : ""}`}
-  onClick={handleStart}
->
-  <img src={startButtonImg} alt="Начать" />
-</button>
+            {buttonVisible && (
+              <button className="start-button glow" onClick={handleStart}>
+                <img src={startButtonImg} alt="Начать" />
+              </button>
+            )}
 
 <div className="start-screen-footer">
               🎮 Это WebApp-игра в стиле 90-х. Все персонажи и валюты вымышлены.
