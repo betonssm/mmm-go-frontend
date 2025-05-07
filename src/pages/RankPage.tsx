@@ -213,7 +213,7 @@ export default function RankPage() {
 
       {/* Подписка на партнёра */}
       <div className="task-block">
-        <h3>📢 Подпишись на партнёра</h3>
+        <h3>📢 Подпишись на наш новостной канал </h3>
         <p>Канал: <strong>@example_channel</strong></p>
         {isSubscribed
           ? <div className="task-complete">✅ Подписка подтверждена</div>
