@@ -5,75 +5,26 @@ import "./TopUpPage.css";
 
 export default function TopUpPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
-  const [telegramId, setTelegramId] = useState<number | null>(null);
   const [isPremiumLoading, setPremiumLoading] = useState(false);
   const [isBuyLoading, setBuyLoading] = useState(false);
+
   useEffect(() => {
     const img = new Image();
     img.src = "/assets/bg-topup.png";
     img.onload = () => setBgLoaded(true);
-
-    const tg = (window as any).Telegram?.WebApp;
-    const user = tg?.initDataUnsafe?.user;
-    if (user) setTelegramId(user.id);
   }, []);
 
-  const handlePlisioPayment = async () => {
-    if (!telegramId) return;
-  
+  const handleSubscribe = () => {
     setPremiumLoading(true);
-    try {
-      const response = await fetch(
-        "https://mmmgo-backend.onrender.com/plisio/create-payment",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ telegramId, amount: 10 }),
-        }
-      );
-      const data = await response.json();
-      if (data?.data?.invoice_url) {
-        window.location.href = data.data.invoice_url;
-      } else {
-        alert("Ошибка создания платежа. Попробуй позже.");
-      }
-    } catch (err) {
-      console.error("❌ Ошибка при создании платежа:", err);
-      alert("Сервер временно недоступен.");
-    } finally {
-      setPremiumLoading(false);
-    }
+    window.Telegram?.WebApp?.sendData("subscribe");
+  };
+
+  const handleTopUp = () => {
+    setBuyLoading(true);
+    window.Telegram?.WebApp?.sendData("topup");
   };
 
   if (!bgLoaded) return <div className="loading-screen">Загрузка...</div>;
-
-  const handleBuyMavrodiks = async () => {
-    if (!telegramId) return;
-    setBuyLoading(true)
-  
-    try {
-      const response = await fetch("https://mmmgo-backend.onrender.com/plisio/create-balance-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ telegramId }),
-      });
-  
-      const data = await response.json();
-      console.log("📦 Ответ от Plisio (докупка):", data); // 👈 добавим лог
-  
-      if (data?.data?.invoice_url) {
-        window.location.href = data.data.invoice_url; // ← вот здесь ключ
-      } else {
-        alert("❌ Ошибка создания счёта на оплату.");
-        console.warn("Ответ Plisio без invoice_url:", data); // 👈 лог если не пришёл URL
-      }
-    } catch (err) {
-      console.error("❌ Ошибка оплаты 50 000 мавродиков:", err);
-      alert("Произошла ошибка при создании платежа.");
-    } finally {
-      setBuyLoading(false);
-    }
-  };
 
   return (
     <div
@@ -88,49 +39,42 @@ export default function TopUpPage() {
         boxSizing: "border-box",
       }}
     >
-      {/* Overlay для загрузки */}
       {(isPremiumLoading || isBuyLoading) && (
         <div className="loading-overlay">
           <div className="spinner"></div>
-          <p>Загрузка платежа...</p>
+          <p>Обработка запроса...</p>
         </div>
       )}
-  
+
       <div className="note-box">
         <h1>🎁 Премиум-доступ</h1>
         <p>Разблокируй расширенные возможности и бонусы!</p>
       </div>
-  
+
       <div className="payment-options">
         <div className="payment-option">
-          <h3>🪙 Оплата через Plisio</h3>
-          <p>Поддерживаются USDT, BTC, ETH и другие криптовалюты</p>
-  
-          <button onClick={handlePlisioPayment} disabled={isPremiumLoading}>
+          <button onClick={handleSubscribe} disabled={isPremiumLoading}>
             {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум"}
           </button>
-  
+
           <button
             className="your-button-class"
-            onClick={handleBuyMavrodiks}
+            onClick={handleTopUp}
             disabled={isBuyLoading}
           >
             {isBuyLoading ? "⏳ Ожидание..." : "Купить 50 000 мавродиков — 10 $"}
           </button>
         </div>
       </div>
-  
+
       <div className="note-box">
-        💡 Убедись, что на кошельке есть средства на оплату и комиссию сети.
+        💡 После оплаты новые функции активируются автоматически. Платёж обрабатывается через Telegram.
       </div>
+
       <div className="note-box">
-  ⏳ <strong>Важно:</strong> После перевода средств обработка платежа может занять <strong>от 15 до 60 минут</strong>.  
-  <br />Ты можешь <strong>закрыть эту страницу</strong> или <strong>вернуться в игру</strong> — платёж будет зафиксирован автоматически после подтверждения.
-</div>
-      <div className="note-box">
-        💡 Платёж является добровольным. В MMMGO нет обещаний дохода или возврата средств.
+        🔐 Мы не запрашиваем доступ к твоим деньгам напрямую. Все операции проходят через Telegram-интерфейс оплаты.
       </div>
-  
+
       <Link to="/">
         <button className="back-btn">⬅ Вернуться в игру</button>
       </Link>
