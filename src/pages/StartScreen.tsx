@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function StartScreen({ onStart }: { onStart: () => void }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const img = new Image();
@@ -33,6 +34,7 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
     }
 
     onStart();
+    navigate("/main");
   };
 
   return (
