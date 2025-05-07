@@ -590,7 +590,7 @@ setTimeout(() => setShowPrizeMessage(null), 3000);
           <Link to="/referrals">
             <div className="bar-wrapper">
               <img src={barInvestors} className="bar-img" alt="Рефералы" />
-              <div className="bar-text">👥 Рефералы: {referrals}</div>
+              <div className="bar-text">👥 Друзья: {referrals}</div>
             </div>
           </Link>
   
