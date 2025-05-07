@@ -102,5 +102,6 @@ export default function RulesPage() {
       </button>
     </div>
     </div>
+    </div>
   );
 }
