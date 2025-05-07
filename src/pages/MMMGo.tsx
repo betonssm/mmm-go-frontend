@@ -315,7 +315,7 @@ setRefSource(ref ?? null);
         }).catch(err => console.error("Ошибка сохранения буста:", err));
       }
   
-      setAdsWatched(prev => prev + 1);
+
     }, 1500);
   };
   
@@ -618,7 +618,7 @@ setTimeout(() => setShowPrizeMessage(null), 3000);
         )}
         {showAdNotice && (
           <div className="toast-notice">
-            🎥 Реклама просмотрена! Буст активирован на 20 секунд.
+             🚀 Буст активирован на 20 секунд.
           </div>
         )}
         {showBoostCooldownNotice && (
