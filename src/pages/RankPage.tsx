@@ -205,7 +205,7 @@ export default function RankPage() {
       {/* Просмотры видео */}
       <div className="task-block">
       <h3>🎬 Бонус за просмотр</h3>
-<p>Доступных сегодня: <strong>{5 - adsWatched}</strong></p>
+      <p>Посмотрено сегодня: <strong>{adsWatched}/5</strong></p>
 <button className="task-button" disabled={adsWatched >= 5} onClick={handleAdWatch}>
   🎁 Получить бонус
 </button>
