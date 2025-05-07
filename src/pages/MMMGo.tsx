@@ -239,6 +239,13 @@ setRefSource(ref ?? null);
     const newTaps = totalTaps + 1;
     const newDaily = dailyClicks + 1;
     const newWeekly = weeklyMavro + coinsToAdd;
+    const previousLevel = getLevelByBalance(balance);
+const newLevel = getLevelByBalance(newBalance);
+
+if (newLevel > previousLevel) {
+  setShowLevelNotice(true);
+  setTimeout(() => setShowLevelNotice(false), 5000);
+}
   
     setBalance(newBalance);
     setTotalTaps(newTaps);
