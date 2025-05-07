@@ -34,7 +34,7 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
     }
 
     onStart();
-    navigate("/main");
+  
   };
 
   return (
