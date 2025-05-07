@@ -92,7 +92,6 @@ if (!started) {
 <Route path="/admin/logs" element={<DashboardLayout><ProtectedAdmin page="logs" /></DashboardLayout>} />
 <Route path="/admin/stats" element={<DashboardLayout><ProtectedAdmin page="stats" /></DashboardLayout>} />
 <Route path="/admin/sr" element={<DashboardLayout><ProtectedAdmin page="sr" /></DashboardLayout>} />
-<Route path="/main" element={<MMMGo />} /> // ← этот путь обязателен
       </Routes>
     </div>
   );
