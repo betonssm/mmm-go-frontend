@@ -12,6 +12,9 @@ export default function TopUpPage() {
     const img = new Image();
     img.src = "/assets/bg-topup.png";
     img.onload = () => setBgLoaded(true);
+      // ✅ Временная проверка Telegram API
+  console.log("initData:", window.Telegram?.WebApp?.initData);
+  console.log("initDataUnsafe:", window.Telegram?.WebApp?.initDataUnsafe);
   }, []);
 
   const handleSubscribe = () => {
