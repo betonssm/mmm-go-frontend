@@ -17,7 +17,7 @@ export default function TopUpPage() {
   const handleSubscribe = () => {
     setPremiumLoading(true);
     window.Telegram?.WebApp?.sendData("subscribe");
-    Telegram.WebApp.close(); // ⚠️ это важно!
+    window.Telegram?.WebApp?.close(); // ✅ корректно!
   };
 
   const handleTopUp = () => {
