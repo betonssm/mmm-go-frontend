@@ -118,26 +118,40 @@ const [walletSaved, setWalletSaved] = useState(false);
           </>
         )}
       </div>
-      <div style={{ marginTop: 12, padding: 12, background: "rgba(0,0,0,0.5)", borderRadius: 8, color: "#ffe082", textAlign: "center" }}>
-      <h4>🎁 Общий игровой бонус:</h4>
-{fund !== null
-  ? <span>{fund.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-  : <span>Загрузка…</span>}
+      <div style={{
+  margin: "30px auto",
+  padding: "20px",
+  background: "rgba(0, 0, 0, 0.6)",
+  borderRadius: "16px",
+  textAlign: "center",
+  color: "#fff",
+  maxWidth: "90%",
+  boxShadow: "0 0 15px rgba(255, 215, 0, 0.5)"
+}}>
+  <h2 style={{
+    marginBottom: "10px",
+    fontSize: "20px",
+    color: "#ffe082",
+    textShadow: "1px 1px 3px #000"
+  }}>
+    💰 Общий игровой бонус:
+  </h2>
+  {fund !== null ? (
+    <div style={{
+      fontSize: "32px",
+      fontWeight: "bold",
+      color: "#ffd700",
+      textShadow: "2px 2px 6px rgba(0,0,0,0.7)",
+      background: "linear-gradient(90deg, #fff176, #ffd54f, #ffb300)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    }}>
+      {fund.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+    </div>
+  ) : (
+    <span>Загрузка…</span>
+  )}
 </div>
-
-      <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000", marginBottom: "8px" }}>
-        📊 SR Рейтинг Игрока
-      </h2>
-
-      {isActive ? (
-        <p style={{ marginBottom: "8px", color: "#ffe082" }}>
-          Твой SR рейтинг: <strong>{srRating}</strong>
-        </p>
-      ) : (
-        <p style={{ marginBottom: "8px", color: "#ff8c00" }}>
-          Приобретите или продлите премиум, чтобы начать накапливать SR очки.
-        </p>
-      )}
 
       <button
         onClick={() => navigate("/")}
