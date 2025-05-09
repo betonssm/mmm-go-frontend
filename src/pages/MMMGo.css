@@ -918,7 +918,7 @@ button {
 }
 
 .modal-content {
-  background:#fff8e1; /* светло-бежевый оттенок */;
+ background: rgba(0, 128, 0, 0.8); /* зелёный с прозрачностью */
   padding: 2rem;
   border-radius: 12px;
   max-width: 600px;
