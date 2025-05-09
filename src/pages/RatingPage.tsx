@@ -71,26 +71,36 @@ const [walletSaved, setWalletSaved] = useState(false);
     >
       <div
         style={{
-          position: "relative",
-          marginBottom: "20px",
-          background: "rgba(255, 215, 0, 0.7)",
-          color: "#000",
-          fontSize: "18px",
-          padding: "8px 15px",
-          borderRadius: "12px",
-          fontWeight: "bold",
-          boxShadow: "0 0 10px #ffd700",
-          zIndex: 10,
-          textAlign: "center",
-          maxWidth: "90%",
-          margin: "0 auto",
+ position: "relative",
+  marginBottom: "24px",
+  background: "linear-gradient(135deg, #fff8dc, #ffe082)",
+  color: "#000",
+  padding: "20px",
+  borderRadius: "16px",
+  fontWeight: "bold",
+  boxShadow: "0 0 20px rgba(255, 215, 0, 0.7)",
+  textAlign: "center",
+  maxWidth: "92%",
+  margin: "0 auto",
+  border: "2px solid #c8b900",
+  fontFamily: "'Orbitron', sans-serif",
         }}
       >
         {isActive ? (
           <>
-            <h3>SR рейтинг игрока: {srRating}</h3>
-            <p>Подписка активна до: {expires?.toLocaleDateString()}<br />
-  <small>Подписка действует до конца следующего месяца независимо от даты покупки</small>
+            <h3 style={{
+  fontSize: "22px",
+  color: "#d4af37",
+  textShadow: "1px 1px 4px #000",
+  marginBottom: "10px"
+}}>
+  SR рейтинг игрока: {srRating}
+</h3>
+            <p style={{ fontSize: "14px", lineHeight: "1.5", color: "#333" }}>
+  Подписка активна до: <b style={{ color: "#4caf50" }}>{expires?.toLocaleDateString()}</b><br />
+  <small style={{ color: "#555" }}>
+    Подписка действует до конца следующего месяца независимо от даты покупки
+  </small>
 </p>
 {isActive && !walletSaved && (
   <button
