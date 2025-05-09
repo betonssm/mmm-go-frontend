@@ -67,16 +67,45 @@ export default function ReferralPage() {
     >
       <h2 style={{ color: "#ffe082", textShadow: "2px 2px 6px #000" }}>👥 Приглашай друзей в игру</h2>
 
-      <p style={{ color: "#fff" }}>
-      Приглашено друзей: <strong>{referrals}</strong>
-      </p>
+      <div style={{
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+  marginTop: "20px"
+}}>
+  <div style={{
+    background: "rgba(255, 255, 255, 0.1)",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    borderRadius: "12px",
+    padding: "12px 16px",
+    color: "#fff",
+    boxShadow: "0 0 8px rgba(0, 0, 0, 0.4)"
+  }}>
+    👥 Приглашено друзей: <strong>{referrals}</strong>
+  </div>
 
-      <p style={{ color: "#fff" }}>
-        Всего игроков в системе: <strong>{totalPlayers}</strong>
-      </p>
-      <p style={{ color: "#fff" }}>
-  🎁 Получено бонусов от друзей: <strong>{referralEarnings}</strong>
-</p>
+  <div style={{
+    background: "rgba(255, 255, 255, 0.1)",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    borderRadius: "12px",
+    padding: "12px 16px",
+    color: "#fff",
+    boxShadow: "0 0 8px rgba(0, 0, 0, 0.4)"
+  }}>
+    🌍 Всего игроков в системе: <strong>{totalPlayers}</strong>
+  </div>
+
+  <div style={{
+    background: "rgba(255, 255, 255, 0.1)",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    borderRadius: "12px",
+    padding: "12px 16px",
+    color: "#fff",
+    boxShadow: "0 0 8px rgba(0, 0, 0, 0.4)"
+  }}>
+    🎁 Получено бонусов от друзей: <strong>{referralEarnings}</strong>
+  </div>
+</div>
       <p style={{ color: "#fff", marginTop: "20px", fontStyle: "italic" }}>
       Скопируй свою личную ссылку и поделись с другом. При первом входе он будет отмечен как твой приглашённый.
       </p>
