@@ -29,10 +29,12 @@ export default function TopUpPage() {
   }, []);
 
   const handleSubscribe = () => {
-    setPremiumLoading(true);
-    window.Telegram?.WebApp?.sendData("subscribe");
-    window.Telegram?.WebApp?.close(); // ✅ корректно!
-  };
+  setPremiumLoading(true);
+  window.Telegram?.WebApp?.sendData("subscribe");
+  setTimeout(() => {
+    window.Telegram?.WebApp?.close();
+  }, 150);
+};
 
   const handleTopUp = () => {
     setBuyLoading(true);
