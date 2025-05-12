@@ -50,6 +50,41 @@ export default function TopUpPage() {
     alert("Не удалось подключить TON-кошелёк");
   }
 };
+const handleTonPayment = async (amountTON: number, type: "premium" | "topup") => {
+  try {
+    const transaction = {
+      validUntil: Math.floor(Date.now() / 1000) + 360,
+      messages: [
+        {
+          address: "UQDh-x69UU3p5DWPZ8Yz_4QMoTWwkAWYLMy6JoQSOPxLPT8A", // ← твой адрес
+          amount: (amountTON * 1e9).toString(),
+        },
+      ],
+    };
+
+    await tonConnect.sendTransaction(transaction);
+
+    const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+    if (!telegramId) return alert("Ошибка: нет Telegram ID");
+
+    // Проверка на backend — сразу после отправки
+    const res = await fetch("https://mmmgo-backend.onrender.com/api/payments/check-ton", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegramId, type }),
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+      alert(type === "premium" ? "🎉 Премиум активирован!" : "💰 Мавродики начислены!");
+    } else {
+      alert("Оплата отправлена, но начисление не выполнено. Обратитесь в поддержку.");
+    }
+  } catch (err) {
+    console.error("TON оплата:", err);
+    alert("Ошибка при оплате или отмена.");
+  }
+};
 
   if (!bgLoaded) return <div className="loading-screen">Загрузка...</div>;
 
@@ -81,15 +116,13 @@ export default function TopUpPage() {
 
       <div className="payment-options">
         <div className="payment-option">
-          <button onClick={handleSubscribe} disabled={isPremiumLoading}>
+         <button onClick={() => handleTonPayment(10, "premium")}>
+  🚀 Купить премиум (10 $)
             {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум"}
           </button>
 
-          <button
-            className="your-button-class"
-            onClick={handleTopUp}
-            disabled={isBuyLoading}
-          >
+          <button onClick={() => handleTonPayment(5, "topup")}>
+  💰 Купить 50 000 мавродиков (10 $)
             {isBuyLoading ? "⏳ Ожидание..." : "Купить 50 000 мавродиков — 10 $"}
           </button>
         </div>
