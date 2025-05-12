@@ -28,37 +28,17 @@ export default function TopUpPage() {
       }),
     });
   }, []);
-  const handleTonConnect = async () => {
-  alert("🔌 Пытаемся подключить TON кошелёк...");
+  const handleTonConnect = () => {
+  alert("Нажали подключение");
 
-  try {
-    await tonConnect.connect().catch(err => {
-      alert("❌ TON Connect ошибка (catch): " + err.message);
-      console.error("TON Connect Error (catch):", err);
+  tonConnect.connect()
+    .then(() => {
+      alert("✅ Успешно! Адрес: " + tonConnect.account?.address);
+    })
+    .catch(err => {
+      alert("❌ Ошибка при подключении: " + err.message);
+      console.error("TON Connect Error:", err);
     });
-
-    if (!tonConnect.account) {
-      alert("❗ TON кошелёк не найден после подключения");
-      return;
-    }
-
-    const wallet = tonConnect.account?.address;
-    alert("✅ TON кошелёк подключён: " + wallet);
-
-    const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-    alert("📦 Telegram ID: " + telegramId);
-
-    await fetch("https://mmmgo-backend.onrender.com/api/player/wallet", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ telegramId, tonWallet: wallet }),
-    });
-
-    alert("✅ Адрес сохранён на сервере!");
-  } catch (err) {
-    console.error("TON Connect Error (outer):", err);
-    alert("❌ Ошибка подключения: " + err.message);
-  }
 };
 const handleTonPayment = async (amountTON: number, type: "premium" | "topup") => {
   console.log("👉 Попытка оплаты через TON:", amountTON, type);
