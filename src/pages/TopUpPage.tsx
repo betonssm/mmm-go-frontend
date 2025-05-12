@@ -116,13 +116,13 @@ const handleTonPayment = async (amountTON: number, type: "premium" | "topup") =>
 
       <div className="payment-options">
         <div className="payment-option">
-         <button onClick={() => handleTonPayment(10, "premium")}>
-  🚀 Купить премиум (10 $)
+<button onClick={() => handleTonPayment(1.4, "premium")}>
+  🚀 Купить премиум (1.4 TON ≈ $10)
             {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум"}
           </button>
 
-          <button onClick={() => handleTonPayment(5, "topup")}>
-  💰 Купить 50 000 мавродиков (10 $)
+          <button onClick={() => handleTonPayment(1.4, "topup")}>
+  💰 Купить 50 000 мавродиков (1.4 TON ≈ $10)
             {isBuyLoading ? "⏳ Ожидание..." : "Купить 50 000 мавродиков — 10 $"}
           </button>
         </div>
