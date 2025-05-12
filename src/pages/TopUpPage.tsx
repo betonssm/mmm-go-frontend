@@ -41,7 +41,7 @@ function TopUpPageContent() {
     const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
 
     if (wallet?.address && telegramId) {
-      fetch("https://mmmgo-backend.onrender.com/api/player/wallet", {
+      fetch("https://mmmgo-backend.onrender.com/player/wallet", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ telegramId, tonWallet: wallet.address }),
