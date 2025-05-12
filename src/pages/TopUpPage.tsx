@@ -117,10 +117,9 @@ function TopUpPageContent() {
         <p>Разблокируй расширенные возможности и бонусы!</p>
       </div>
 
-      <button className="wallet-btn" onClick={() => tonConnectUI.openModal()}>
-  🔗 Подключить TON кошелёк
-</button>
-
+     <div className="wallet-button-wrapper">
+  <TonConnectButtonUI />
+</div>
       <div className="payment-options">
         <div className="payment-option">
           <button

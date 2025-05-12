@@ -91,48 +91,8 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-.wallet-connect-wrapper {
-  position: relative;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 16px;
+.wallet-button-wrapper {
+  display: flex;
+  justify-content: flex-end; /* 👉 прижимаем к правому краю */
   margin: 16px 0;
-  text-align: center;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
-  z-index: 10;
-  overflow: visible; /* ✅ добавь это */
-}
-
-/* Приводим кнопку подключения к общему стилю */
-.wallet-connect-wrapper .twa-button {
-  font-size: 16px;
-  padding: 12px 20px;
-  background: linear-gradient(90deg, #ffd700, #ffb300);
-  color: black;
-  border-radius: 12px;
-  font-weight: bold;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-}
-/* Переопределяем стили TonConnect dropdown */
-.tcu-dropdown__container {
-  z-index: 1000 !important;
-}
-
-.tcu-dropdown__menu {
-  transform: translateY(40px) !important; /* сдвигаем вниз */
-  z-index: 1000 !important;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-.wallet-btn {
-  font-size: 16px;
-  padding: 12px 20px;
-  background: linear-gradient(90deg, #ffd700, #ffb300);
-  color: black;
-  border-radius: 12px;
-  font-weight: bold;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-  width: 100%;
 }
