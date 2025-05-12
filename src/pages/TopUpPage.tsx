@@ -28,12 +28,27 @@ export default function TopUpPage() {
     });
   }, []);
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
   setPremiumLoading(true);
-  window.Telegram?.WebApp?.sendData("subscribe");
-  setTimeout(() => {
+
+  const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+
+  if (!telegramId) {
+    alert("Ошибка: не удалось определить Telegram ID");
+    return;
+  }
+
+  try {
+    await fetch("https://mmmgo-backend.onrender.com/payments/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegramId }),
+    });
+  } catch (error) {
+    console.error("Ошибка отправки запроса на подписку:", error);
+  } finally {
     window.Telegram?.WebApp?.close();
-  }, 150);
+  }
 };
 
   const handleTopUp = () => {
