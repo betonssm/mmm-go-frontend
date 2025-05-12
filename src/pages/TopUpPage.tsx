@@ -28,17 +28,16 @@ export default function TopUpPage() {
       }),
     });
   }, []);
-  const handleTonConnect = () => {
+  const handleTonConnect = async () => {
   alert("Нажали подключение");
 
-  tonConnect.connect()
-    .then(() => {
-      alert("✅ Успешно! Адрес: " + tonConnect.account?.address);
-    })
-    .catch(err => {
-      alert("❌ Ошибка при подключении: " + err.message);
-      console.error("TON Connect Error:", err);
-    });
+  try {
+    const walletsList = await tonConnect.connectWallet();
+    alert("Получено кошельков: " + walletsList.length);
+  } catch (err) {
+    alert("❌ Ошибка: " + err.message);
+    console.error("TON Connect Error:", err);
+  }
 };
 const handleTonPayment = async (amountTON: number, type: "premium" | "topup") => {
   console.log("👉 Попытка оплаты через TON:", amountTON, type);
