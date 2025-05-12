@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./TopUpPage.css";
@@ -6,6 +5,14 @@ import { TonConnectWrapper, TonConnectButtonUI } from "../lib/TonWalletConnect";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 
 export default function TopUpPage() {
+  return (
+    <TonConnectWrapper>
+      <TopUpPageContent />
+    </TonConnectWrapper>
+  );
+}
+
+function TopUpPageContent() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const [isPremiumLoading, setPremiumLoading] = useState(false);
   const [isBuyLoading, setBuyLoading] = useState(false);
@@ -43,7 +50,6 @@ export default function TopUpPage() {
   }, [tonConnectUI.account]);
 
   const handleTonPayment = async (amountTON, type) => {
-    console.log("\uD83D\uDC49 Попытка оплаты через TON:", amountTON, type);
     try {
       const wallet = tonConnectUI.account;
       if (!wallet) {
@@ -74,7 +80,7 @@ export default function TopUpPage() {
 
       const data = await res.json();
       if (data.ok) {
-        alert(type === "premium" ? "\uD83C\uDF89 Премиум активирован!" : "\uD83D\uDCB0 Мавродики начислены!");
+        alert(type === "premium" ? "🎉 Премиум активирован!" : "💰 Мавродики начислены!");
       } else {
         alert("Оплата отправлена, но начисление не выполнено. Обратитесь в поддержку.");
       }
@@ -87,67 +93,65 @@ export default function TopUpPage() {
   if (!bgLoaded) return <div className="loading-screen">Загрузка...</div>;
 
   return (
-    <TonConnectWrapper>
-      <div
-        className="topup-container"
-        style={{
-          backgroundImage: `url(/assets/bg-topup.png)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
-          padding: "30px 16px 60px",
-          boxSizing: "border-box",
-        }}
-      >
-        {(isPremiumLoading || isBuyLoading) && (
-          <div className="loading-overlay">
-            <div className="spinner"></div>
-            <p>Обработка запроса...</p>
-          </div>
-        )}
-
-        <div className="note-box">
-          <h1>\uD83C\uDF81 Премиум-доступ</h1>
-          <p>Разблокируй расширенные возможности и бонусы!</p>
+    <div
+      className="topup-container"
+      style={{
+        backgroundImage: `url(/assets/bg-topup.png)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        padding: "30px 16px 60px",
+        boxSizing: "border-box",
+      }}
+    >
+      {(isPremiumLoading || isBuyLoading) && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+          <p>Обработка запроса...</p>
         </div>
+      )}
 
-        <TonConnectButtonUI />
-
-        <div className="payment-options">
-          <div className="payment-option">
-            <button
-              onClick={() => {
-                setPremiumLoading(true);
-                handleTonPayment(1.4, "premium").finally(() => setPremiumLoading(false));
-              }}
-            >
-              {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум (1.4 TON ≈ $10)"}
-            </button>
-
-            <button
-              onClick={() => {
-                setBuyLoading(true);
-                handleTonPayment(1.4, "topup").finally(() => setBuyLoading(false));
-              }}
-            >
-              {isBuyLoading ? "⏳ Ожидание..." : "💰 Купить 50 000 мавродиков (1.4 TON ≈ $10)"}
-            </button>
-          </div>
-        </div>
-
-        <div className="note-box">
-          💡 После оплаты новые функции активируются автоматически. Платёж обрабатывается через Telegram.
-        </div>
-
-        <div className="note-box">
-          🔐 Мы не запрашиваем доступ к твоим деньгам напрямую. Все операции проходят через Telegram-интерфейс оплаты.
-        </div>
-
-        <Link to="/">
-          <button className="back-btn">⬅ Вернуться в игру</button>
-        </Link>
+      <div className="note-box">
+        <h1>🎁 Премиум-доступ</h1>
+        <p>Разблокируй расширенные возможности и бонусы!</p>
       </div>
-    </TonConnectWrapper>
+
+      <TonConnectButtonUI />
+
+      <div className="payment-options">
+        <div className="payment-option">
+          <button
+            onClick={() => {
+              setPremiumLoading(true);
+              handleTonPayment(1.4, "premium").finally(() => setPremiumLoading(false));
+            }}
+          >
+            {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум (1.4 TON ≈ $10)"}
+          </button>
+
+          <button
+            onClick={() => {
+              setBuyLoading(true);
+              handleTonPayment(1.4, "topup").finally(() => setBuyLoading(false));
+            }}
+          >
+            {isBuyLoading ? "⏳ Ожидание..." : "💰 Купить 50 000 мавродиков (1.4 TON ≈ $10)"}
+          </button>
+        </div>
+      </div>
+
+      <div className="note-box">
+        💡 После оплаты новые функции активируются автоматически. Платёж обрабатывается через Telegram.
+      </div>
+
+      <div className="note-box">
+        🔐 Мы не запрашиваем доступ к твоим деньгам напрямую. Все операции проходят через Telegram-интерфейс оплаты.
+      </div>
+
+      <Link to="/">
+        <button className="back-btn">⬅ Вернуться в игру</button>
+      </Link>
+    </div>
   );
 }
