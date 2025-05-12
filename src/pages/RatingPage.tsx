@@ -9,9 +9,6 @@ export default function PlayerRatingPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [fund, setFund] = useState<number | null>(null);
-  const [showWalletModal, setShowWalletModal] = useState(false);
-const [walletAddress, setWalletAddress] = useState("");
-const [walletSaved, setWalletSaved] = useState(false);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -21,9 +18,6 @@ const [walletSaved, setWalletSaved] = useState(false);
         .then((res) => res.json())
         .then((data) => {
           setPlayerData(data);
-          if (data.walletAddressTRC20 && data.walletAddressTRC20.length === 34) {
-            setWalletSaved(true);
-          }
         })
         .catch((err) => console.error("Ошибка загрузки данных игрока:", err))
         .finally(() => setLoading(false));
@@ -102,24 +96,7 @@ const [walletSaved, setWalletSaved] = useState(false);
     Подписка действует до конца следующего месяца независимо от даты покупки
   </small>
 </p>
-{isActive && !walletSaved && (
-  <button
-    className="wallet-button"
-    onClick={() => setShowWalletModal(true)}
-    style={{
-      marginTop: "16px",
-      background: "#4caf50",
-      padding: "10px 18px",
-      borderRadius: "10px",
-      color: "#fff",
-      fontWeight: "bold",
-      border: "none",
-      cursor: "pointer"
-    }}
-  >
-    💳 Введите адрес TRC20-кошелька для получения бонуса
-  </button>
-)}
+
           </>
           ) : (
           <>
@@ -181,72 +158,5 @@ const [walletSaved, setWalletSaved] = useState(false);
       >
         🔙 Назад
       </button>
-      {showWalletModal && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <h3>💳 Адрес TRC20-кошелька</h3>
-      <p>Укажите ваш TRC20-адрес (USDT, сеть TRON). Важно: проверьте, чтобы адрес был корректным.</p>
-      <input
-        type="text"
-        placeholder="T... (34 символа)"
-        value={walletAddress}
-        onChange={(e) => setWalletAddress(e.target.value)}
-        className="wallet-input"
-      />
-      <button
-        onClick={async () => {
-          if (!walletAddress.startsWith("T") || walletAddress.length !== 34) {
-            alert("❌ Неверный формат адреса TRC20");
-            return;
-          }
-
-          const res = await fetch("https://mmmgo-backend.onrender.com/player/wallet", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              telegramId: playerData.telegramId,
-              walletAddressTRC20: walletAddress,
-            }),
-          });
-
-          const data = await res.json();
-          if (data.success) {
-            setWalletSaved(true);
-            setShowWalletModal(false);
-            alert("✅ Адрес успешно сохранён");
-          } else {
-            alert("🚫 Ошибка при сохранении адреса");
-          }
-        }}
-        style={{
-          marginTop: "12px",
-          background: "#2196f3",
-          padding: "8px 14px",
-          border: "none",
-          borderRadius: "8px",
-          color: "white",
-          cursor: "pointer"
-        }}
-      >
-        💾 Сохранить адрес
-      </button>
-      <button
-        onClick={() => setShowWalletModal(false)}
-        style={{
-          marginTop: "8px",
-          background: "gray",
-          padding: "6px 12px",
-          border: "none",
-          borderRadius: "8px",
-          color: "white",
-          cursor: "pointer"
-        }}
-      >
-        ❌ Отмена
-      </button>
-    </div>
-  </div>
+      </div>
 )}
-    </div>
-  );
-}
