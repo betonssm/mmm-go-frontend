@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./TopUpPage.css";
+import { tonConnect } from "../lib/TonWalletConnect";
 
 export default function TopUpPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
@@ -27,34 +28,28 @@ export default function TopUpPage() {
       }),
     });
   }, []);
-
-  const handleSubscribe = async () => {
-  setPremiumLoading(true);
-
-  const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-
-  if (!telegramId) {
-    alert("Ошибка: не удалось определить Telegram ID");
-    return;
-  }
-
+  const handleTonConnect = async () => {
   try {
-    await fetch("https://mmmgo-backend.onrender.com/payments/subscribe", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ telegramId }),
-    });
+    await tonConnect.connect(); // Показывает список кошельков
+
+    const wallet = tonConnect.account?.address;
+
+    if (wallet) {
+      const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+
+      await fetch("https://mmmgo-backend.onrender.com/api/player/wallet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ telegramId, tonWallet: wallet }),
+      });
+
+      alert("TON кошелёк подключён!");
+    }
   } catch (error) {
-    console.error("Ошибка отправки запроса на подписку:", error);
-  } finally {
-    window.Telegram?.WebApp?.close();
+    console.error("Ошибка TON:", error);
+    alert("Не удалось подключить TON-кошелёк");
   }
 };
-
-  const handleTopUp = () => {
-    setBuyLoading(true);
-    window.Telegram?.WebApp?.sendData("topup");
-  };
 
   if (!bgLoaded) return <div className="loading-screen">Загрузка...</div>;
 
@@ -82,6 +77,7 @@ export default function TopUpPage() {
         <h1>🎁 Премиум-доступ</h1>
         <p>Разблокируй расширенные возможности и бонусы!</p>
       </div>
+      <button onClick={handleTonConnect}>🔗 Подключить TON кошелёк</button>
 
       <div className="payment-options">
         <div className="payment-option">

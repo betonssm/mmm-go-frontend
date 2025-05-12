@@ -1,0 +1,10 @@
+{
+  "manifest_version": "0.1.0",
+  "name": "MMM GO",
+  "short_name": "MMMGO",
+  "description": "WebApp-игра с подключением TON кошелька",
+  "icons": ["https://mmmgo-frontend.onrender.com/icon.png"],
+  "url": "https://mmmgo-frontend.onrender.com",
+  "terms_of_use_url": "https://mmmgo-frontend.onrender.com/terms",
+  "privacy_policy_url": "https://mmmgo-frontend.onrender.com/privacy"
+}
