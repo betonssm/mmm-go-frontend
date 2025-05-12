@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./TopUpPage.css";
-import { TonConnectWrapper, TonConnectButtonUI } from "../TonWalletConnect";
+import { TonConnectWrapper, TonConnectButtonUI } from "../lib/TonWalletConnect";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 
 export default function TopUpPage() {
