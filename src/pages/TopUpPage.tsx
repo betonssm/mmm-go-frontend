@@ -29,6 +29,7 @@ export default function TopUpPage() {
     });
   }, []);
   const handleTonConnect = async () => {
+    console.log("👉 Подключение TON кошелька запущено");
   try {
     await tonConnect.connect(); // Показывает список кошельков
 
@@ -51,12 +52,18 @@ export default function TopUpPage() {
   }
 };
 const handleTonPayment = async (amountTON: number, type: "premium" | "topup") => {
+  console.log("👉 Попытка оплаты через TON:", amountTON, type);
   try {
+    if (!tonConnect.account) {
+      alert("Пожалуйста, подключите TON кошелёк перед оплатой.");
+      return;
+    }
+
     const transaction = {
       validUntil: Math.floor(Date.now() / 1000) + 360,
       messages: [
         {
-          address: "UQDh-x69UU3p5DWPZ8Yz_4QMoTWwkAWYLMy6JoQSOPxLPT8A", // ← твой адрес
+          address: "UQDh-x69UU3p5DWPZ8Yz_4QMoTWwkAWYLMy6JoQSOPxLPT8A",
           amount: (amountTON * 1e9).toString(),
         },
       ],
@@ -67,7 +74,6 @@ const handleTonPayment = async (amountTON: number, type: "premium" | "topup") =>
     const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
     if (!telegramId) return alert("Ошибка: нет Telegram ID");
 
-    // Проверка на backend — сразу после отправки
     const res = await fetch("https://mmmgo-backend.onrender.com/api/payments/check-ton", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -116,15 +122,22 @@ const handleTonPayment = async (amountTON: number, type: "premium" | "topup") =>
 
       <div className="payment-options">
         <div className="payment-option">
-<button onClick={() => handleTonPayment(1.4, "premium")}>
-  🚀 Купить премиум (1.4 TON ≈ $10)
-            {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум"}
-          </button>
-
-          <button onClick={() => handleTonPayment(1.4, "topup")}>
-  💰 Купить 50 000 мавродиков (1.4 TON ≈ $10)
-            {isBuyLoading ? "⏳ Ожидание..." : "Купить 50 000 мавродиков — 10 $"}
-          </button>
+<button
+  onClick={() => {
+    setPremiumLoading(true);
+    handleTonPayment(1.4, "premium").finally(() => setPremiumLoading(false));
+  }}
+>
+  {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум (1.4 TON ≈ $10)"}
+</button>
+          <button
+  onClick={() => {
+    setBuyLoading(true);
+    handleTonPayment(1.4, "topup").finally(() => setBuyLoading(false));
+  }}
+>
+  {isBuyLoading ? "⏳ Ожидание..." : "💰 Купить 50 000 мавродиков (1.4 TON ≈ $10)"}
+</button>
         </div>
       </div>
 
