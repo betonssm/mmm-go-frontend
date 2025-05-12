@@ -125,19 +125,19 @@ function TopUpPageContent() {
           <button
             onClick={() => {
               setPremiumLoading(true);
-              handleTonPayment(1.4, "premium").finally(() => setPremiumLoading(false));
+              handleTonPayment(1.0, "premium").finally(() => setPremiumLoading(false));
             }}
           >
-            {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум (1.4 TON ≈ $10)"}
+            {isPremiumLoading ? "⏳ Ожидание..." : "🚀 Получить премиум (3.1 TON ≈ $10)"}
           </button>
 
           <button
             onClick={() => {
               setBuyLoading(true);
-              handleTonPayment(1.4, "topup").finally(() => setBuyLoading(false));
+              handleTonPayment(1.2, "topup").finally(() => setBuyLoading(false));
             }}
           >
-            {isBuyLoading ? "⏳ Ожидание..." : "💰 Купить 50 000 мавродиков (1.4 TON ≈ $10)"}
+            {isBuyLoading ? "⏳ Ожидание..." : "💰 Купить 50 000 мавродиков (3.2 TON ≈ $10)"}
           </button>
         </div>
       </div>
