@@ -117,7 +117,9 @@ function TopUpPageContent() {
         <p>Разблокируй расширенные возможности и бонусы!</p>
       </div>
 
-      <TonConnectButtonUI />
+      <div className="wallet-connect-wrapper">
+  <TonConnectButtonUI />
+</div>
 
       <div className="payment-options">
         <div className="payment-option">
