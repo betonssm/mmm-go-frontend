@@ -8,6 +8,8 @@
   border-radius: 12px;
   box-shadow: 0 0 15px #f0c040;
   text-align: center;
+    overflow: visible;
+  position: relative; /* тоже важно для TonConnect UI */
 }
 
 .payment-options {
@@ -89,13 +91,16 @@
   to { transform: rotate(360deg); }
 }
 .wallet-connect-wrapper {
+  position: relative;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  padding: 12px;
+  padding: 16px;
   margin: 16px 0;
   text-align: center;
   backdrop-filter: blur(4px);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+  z-index: 10;
+  overflow: visible; /* ✅ добавь это */
 }
 
 /* Приводим кнопку подключения к общему стилю */
