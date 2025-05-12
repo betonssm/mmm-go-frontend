@@ -10,6 +10,7 @@
   text-align: center;
     overflow: visible;
   position: relative; /* тоже важно для TonConnect UI */
+    z-index: 0;
 }
 
 .payment-options {
@@ -112,4 +113,16 @@
   border-radius: 12px;
   font-weight: bold;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+/* Переопределяем стили TonConnect dropdown */
+.tcu-dropdown__container {
+  z-index: 1000 !important;
+}
+
+.tcu-dropdown__menu {
+  transform: translateY(40px) !important; /* сдвигаем вниз */
+  z-index: 1000 !important;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
