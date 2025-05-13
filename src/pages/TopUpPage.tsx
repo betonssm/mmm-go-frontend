@@ -72,7 +72,7 @@ function TopUpPageContent() {
       const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
       if (!telegramId) return alert("Ошибка: нет Telegram ID");
 
-      const res = await fetch("https://mmmgo-backend.onrender.com/api/payments/check-ton", {
+      const res = await fetch("https://mmmgo-backend.onrender.com/check-ton", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ telegramId, type }),
