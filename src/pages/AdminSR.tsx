@@ -7,6 +7,8 @@ export default function AdminSR() {
   const [loading, setLoading] = useState(true);
   const [fundTotal, setFundTotal] = useState(1000); // Примерная сумма фонда
   const token = localStorage.getItem("adminToken") || "";
+  const [manualFund, setManualFund] = useState<number | null>(null);
+const [isSavingFund, setIsSavingFund] = useState(false);
 
   useEffect(() => {
     document.title = "SR Рейтинг | Админка MMM GO";
@@ -53,6 +55,25 @@ export default function AdminSR() {
     link.click();
     document.body.removeChild(link);
   };
+  const handleFundUpdate = async () => {
+  if (manualFund === null || isNaN(manualFund)) return;
+  setIsSavingFund(true);
+  try {
+    const res = await fetch("/api/admin/fund", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ newTotal: manualFund })
+    });
+    const data = await res.json();
+    if (data.success) alert("Фонд обновлён");
+    else alert("Ошибка обновления фонда");
+  } catch (err) {
+    console.error(err);
+    alert("Ошибка сервера");
+  } finally {
+    setIsSavingFund(false);
+  }
+};
 
   return (
     <div className="admin-wrapper">
@@ -68,6 +89,23 @@ export default function AdminSR() {
       <button onClick={() => exportCSV("top5")} style={{ marginRight: 8 }}>⬇️ ТОП 2–5%</button>
       <button onClick={() => exportCSV("top10")}>⬇️ ТОП 6–10%</button>
     </div>
+    <div style={{ margin: "20px 0", padding: "10px", border: "1px solid #ffd700", borderRadius: "8px" }}>
+  <h3>✏️ Редактировать сумму фонда</h3>
+  <input
+    type="number"
+    value={manualFund ?? ""}
+    onChange={(e) => setManualFund(parseFloat(e.target.value))}
+    placeholder="Введите сумму ($)"
+    style={{ padding: "8px", width: "200px", marginRight: "10px" }}
+  />
+  <button
+    onClick={handleFundUpdate}
+    disabled={isSavingFund}
+    style={{ padding: "8px 16px", cursor: "pointer" }}
+  >
+    {isSavingFund ? "Сохраняем..." : "Сохранить"}
+  </button>
+</div>
     <div className="admin-summary">
   <p><strong>Общий фонд для выплат:</strong> {fundTotal.toFixed(2)} USDT</p>
   <p className="admin-note">* Выплаты рассчитаны по SR-группам в топ-10%</p>
