@@ -66,13 +66,13 @@ function TopUpPageContent() {
           },
         ],
       };
-
+console.log("📤 Отправляем транзакцию TON:", transaction);
       await tonConnectUI.sendTransaction(transaction);
 
       const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
       if (!telegramId) return alert("Ошибка: нет Telegram ID");
 
-      const res = await fetch("https://mmmgo-backend.onrender.com/check-ton", {
+      const res = await fetch("https://mmmgo-backend.onrender.com/api/payments/check-ton", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ telegramId, type }),
@@ -86,6 +86,7 @@ function TopUpPageContent() {
       }
     } catch (err) {
       console.error("TON оплата:", err);
+      console.error("❌ Ошибка при отправке TON:", err);
       alert("Ошибка при оплате или отмена.");
     }
   };
