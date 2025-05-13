@@ -59,14 +59,21 @@ const [isSavingFund, setIsSavingFund] = useState(false);
   if (manualFund === null || isNaN(manualFund)) return;
   setIsSavingFund(true);
   try {
-    const res = await fetch("/api/admin/fund", {
+    const res = await fetch("https://mmmgo-backend.onrender.com/admin/fund", {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({ newTotal: manualFund })
     });
     const data = await res.json();
-    if (data.success) alert("Фонд обновлён");
-    else alert("Ошибка обновления фонда");
+    if (data.success) {
+      alert("Фонд обновлён");
+      setFundTotal(data.newTotal); // обновим отображение
+    } else {
+      alert("Ошибка обновления фонда");
+    }
   } catch (err) {
     console.error(err);
     alert("Ошибка сервера");
