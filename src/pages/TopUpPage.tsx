@@ -50,46 +50,54 @@ function TopUpPageContent() {
   }, [tonConnectUI.account]);
 
   const handleTonPayment = async (amountTON, type) => {
-    try {
-      const wallet = tonConnectUI.account;
-      if (!wallet) {
-        alert("Пожалуйста, подключите TON кошелёк перед оплатой.");
-        return;
-      }
-
-      const transaction = {
-        validUntil: Math.floor(Date.now() / 1000) + 360,
-        messages: [
-          {
-            address: "UQDh-x69UU3p5DWPZ8Yz_4QMoTWwkAWYLMy6JoQSOPxLPT8A",
-            amount: (amountTON * 1e9).toString(),
-          },
-        ],
-      };
-console.log("📤 Отправляем транзакцию TON:", transaction);
-      await tonConnectUI.sendTransaction(transaction);
-
-      const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-      if (!telegramId) return alert("Ошибка: нет Telegram ID");
-
-      const res = await fetch("https://mmmgo-backend.onrender.com/api/payments/check-ton", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ telegramId, type }),
-      });
-
-      const data = await res.json();
-      if (data.ok) {
-        alert(type === "premium" ? "🎉 Премиум активирован!" : "💰 Мавродики начислены!");
-      } else {
-        alert("Оплата отправлена, но начисление не выполнено. Обратитесь в поддержку.");
-      }
-    } catch (err) {
-      console.error("TON оплата:", err);
-      console.error("❌ Ошибка при отправке TON:", err);
-      alert("Ошибка при оплате или отмена.");
+  try {
+    const wallet = tonConnectUI.account;
+    if (!wallet) {
+      alert("Пожалуйста, подключите TON кошелёк перед оплатой.");
+      return;
     }
-  };
+
+    const transaction = {
+      validUntil: Math.floor(Date.now() / 1000) + 360,
+      messages: [
+        {
+          address: "UQDh-x69UU3p5DWPZ8Yz_4QMoTWwkAWYLMy6JoQSOPxLPT8A",
+          amount: (amountTON * 1e9).toString(),
+        },
+      ],
+    };
+
+    console.log("📤 Отправляем транзакцию TON:", transaction);
+    await tonConnectUI.sendTransaction(transaction);
+    console.log("✅ Транзакция отправлена");
+
+    const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+    if (!telegramId) return alert("Ошибка: нет Telegram ID");
+
+    // 🔁 ЗАДЕРЖКА для попадания транзакции в блокчейн
+    console.log("⏳ Ждём 5 секунд перед проверкой оплаты...");
+    await new Promise((r) => setTimeout(r, 5000));
+
+    console.log("📦 Отправляем запрос на backend для проверки оплаты...");
+    const res = await fetch("https://mmmgo-backend.onrender.com/api/payments/check-ton", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegramId, type }),
+    });
+
+    const data = await res.json();
+    console.log("📋 Ответ от backend:", data);
+
+    if (data.ok) {
+      alert(type === "premium" ? "🎉 Премиум активирован!" : "💰 Мавродики начислены!");
+    } else {
+      alert("Оплата отправлена, но начисление не выполнено. Обратитесь в поддержку.");
+    }
+  } catch (err) {
+    console.error("❌ Ошибка при отправке TON:", err);
+    alert("Ошибка при оплате или отмена.");
+  }
+};
 
   if (!bgLoaded) return <div className="loading-screen">Загрузка...</div>;
 
