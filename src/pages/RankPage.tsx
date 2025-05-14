@@ -14,6 +14,7 @@ export default function RankPage() {
   const [rewardCollected, setRewardCollected] = useState(false);
   const [weeklyReward, setWeeklyReward] = useState(false);
   const [showNotice, setShowNotice] = useState<string | null>(null);
+  const [bgLoaded, setBgLoaded] = useState(false);
   const [loading, setLoading] = useState(true); // 👈
 
   // Загрузка начальных данных игрока
@@ -38,6 +39,11 @@ export default function RankPage() {
         setLoading(false); // 🛡 Если user нет — тоже не вешаться
       }
   }, []);
+  useEffect(() => {
+  const img = new Image();
+  img.src = "/assets/bg-rank.png";
+  img.onload = () => setBgLoaded(true);
+}, []);
 
   const showTempNotice = (msg: string) => {
     setShowNotice(msg);
@@ -181,8 +187,8 @@ export default function RankPage() {
       .catch(err => console.error(err));
   };
 
-  if (loading) {
-    return <div className="loading-screen">Загрузка...</div>;
+  if (loading || !bgLoaded) {
+  return <div className="loading-screen">Загрузка...</div>;
   }
 
   return (
