@@ -97,6 +97,9 @@ export default function PlayerRatingPage() {
   </small>
 </p>
 
+<p style={{ marginTop: "12px", color: "#2e7d32", fontSize: "16px" }}>
+  🪙 Баланс MMMGO токенов: <strong>{playerData.mmmgoTokenBalance ?? 0}</strong>
+</p>
           </>
           ) : (
           <>
@@ -105,11 +108,6 @@ export default function PlayerRatingPage() {
           </>
         )}
       </div>
-      {typeof playerData.mmmgoTokenBalance === "number" && (
-  <p style={{ marginTop: "10px", color: "#2e7d32", fontSize: "16px" }}>
-    🪙 Баланс MMMGO токенов: <strong>{playerData.mmmgoTokenBalance}</strong>
-  </p>
-)}
       <div style={{
   margin: "30px auto",
   padding: "20px",
