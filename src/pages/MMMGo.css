@@ -1099,3 +1099,27 @@ button {
 .balance-bounce {
   animation: bounce 0.3s ease-out;
 }
+.exchange-button {
+  margin-top: 24px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background: linear-gradient(to right, #43a047, #1b5e20);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s, transform 0.2s;
+}
+
+.exchange-button.disabled {
+  background: linear-gradient(to right, #aaa, #888);
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -8,6 +8,7 @@ export default function LevelPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const [balance, setBalance] = useState(0);
   const [telegramId, setTelegramId] = useState<number | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   const levels = [
     { id: 1, name: "Новичок", required: 0 },
@@ -79,10 +80,34 @@ export default function LevelPage() {
           </div>
         ))}
       </div>
-
+      <button
+ className={`exchange-button ${currentLevelId !== 9 ? "disabled" : ""}`}
+  onClick={() => {
+    if (currentLevelId === 9) setShowModal(true);
+  }}
+>
+  💱 Обменять 5 000 000 мавродиков на 100 MMMGO
+</button>
+ 
       <button className="back-button" onClick={() => navigate("/")}>
         🔙 Назад
       </button>
+      {showModal && (
+  <div className="modal-overlay" onClick={() => setShowModal(false)}>
+    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <h2>🎯 Обмен на токен MMMGO</h2>
+      <p>
+        Достигнув максимального уровня и накопив 5 млн мавродиков,
+        ты можешь обменять их на <strong>100 токенов MMMGO</strong>.
+        <br /><br />
+        Эти токены будут отображаться в твоём аккаунте и смогут быть
+        выведены после листинга токена.
+      </p>
+      <button onClick={() => setShowModal(false)} className="task-button">
+        🔒 Понял
+      </button>
     </div>
-  );
-}
+  </div>
+      )}
+    </div>
+ )}
