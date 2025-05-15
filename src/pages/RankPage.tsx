@@ -33,7 +33,13 @@ export default function RankPage() {
         setRewardCollected(data.dailyTasks?.rewardReceived || false);
         setWeeklyMavro(data.weeklyMission?.current || 0);
         setWeeklyReward(data.weeklyMission?.completed || false);
-        setVideoWatched(data.videoWatched || false); // если добавишь в backend поле videoWatched
+        if (data.youtubeBonusLast) {
+  const last = new Date(data.youtubeBonusLast);
+  const now = new Date();
+  setVideoWatched(last.toDateString() === now.toDateString());
+} else {
+  setVideoWatched(false);
+}// если добавишь в backend поле videoWatched
       })
       .catch(err => console.error("Ошибка загрузки данных игрока", err));
   };
@@ -277,12 +283,34 @@ export default function RankPage() {
           />
         </div>
         <button
-          className="task-button"
-          onClick={handleYouTubeBonus}
-          disabled={videoWatched}
-        >
-          {videoWatched ? "Бонус получен" : "Я посмотрел(а)"}
-        </button>
+  className="task-button"
+  onClick={async () => {
+    if (!telegramId) return;
+    try {
+      const res = await fetch('https://mmmgo-backend.onrender.com/player/youtube-bonus', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ telegramId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setVideoWatched(true);
+        setNotice("✅ +1 000 мавродиков за просмотр видео!");
+        fetchPlayerData();
+      } else {
+        setVideoWatched(true);
+        setNotice("⚠️ Бонус уже получен сегодня!");
+      }
+      setTimeout(() => setNotice(null), 3500);
+    } catch {
+      setNotice("🚫 Ошибка, попробуй позже");
+      setTimeout(() => setNotice(null), 3500);
+    }
+  }}
+  disabled={videoWatched}
+>
+  {videoWatched ? "Бонус получен" : "Я посмотрел(а)"}
+</button>
         {notice && (
           <div
             style={{
