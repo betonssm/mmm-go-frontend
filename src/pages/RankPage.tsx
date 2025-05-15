@@ -33,14 +33,18 @@ export default function RankPage() {
         setRewardCollected(data.dailyTasks?.rewardReceived || false);
         setWeeklyMavro(data.weeklyMission?.current || 0);
         setWeeklyReward(data.weeklyMission?.completed || false);
-        if (data.youtubeBonusLast) {
-  const last = new Date(data.youtubeBonusLast);
-  const now = new Date();
-  setVideoWatched(last.toDateString() === now.toDateString());
-} else {
-  setVideoWatched(false);
-}// если добавишь в backend поле videoWatched
-      })
+       // Правильная проверка youtubeBonusLast:
+      if (data.youtubeBonusLast) {
+        const last = new Date(data.youtubeBonusLast);
+        const now = new Date();
+        // сравниваем только YYYY-MM-DD!
+        const lastDate = last.toISOString().slice(0, 10);
+        const nowDate = now.toISOString().slice(0, 10);
+        setVideoWatched(lastDate === nowDate);
+      } else {
+        setVideoWatched(false);
+      }
+    })
       .catch(err => console.error("Ошибка загрузки данных игрока", err));
   };
 
@@ -63,44 +67,44 @@ export default function RankPage() {
     img.onload = () => setBgLoaded(true);
   }, []);
 
-  // Логика начисления бонуса за просмотр рекламы
   useEffect(() => {
-    function onFocus() {
-      if (!adWaiting || !adStartTime) return;
-      const elapsed = (Date.now() - adStartTime) / 1000;
-      if (elapsed >= 15) {
-        const newCount = adsWatched + 1;
-        fetch("https://mmmgo-backend.onrender.com/player", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            telegramId,
-            adsWatched: newCount,
-            balanceBonus: 1000
-          }),
-          keepalive: true,
+  function onFocus() {
+    const adWaiting = localStorage.getItem('mmmgo-adWaiting') === '1';
+    const adStartTime = Number(localStorage.getItem('mmmgo-adStartTime') || 0);
+    if (!adWaiting || !adStartTime) return;
+    const elapsed = (Date.now() - adStartTime) / 1000;
+    if (elapsed >= 15) {
+      const newCount = adsWatched + 1;
+      fetch("https://mmmgo-backend.onrender.com/player", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          telegramId,
+          adsWatched: newCount,
+          balanceBonus: 1000
+        }),
+        keepalive: true,
+      })
+        .then(res => res.json())
+        .then(() => {
+          showTempNotice("✅ +1 000 мавродиков за бонусную активность!");
+          fetchPlayerData();
         })
-          .then(res => res.json())
-          .then(() => {
-            showTempNotice("✅ +1 000 мавродиков за бонусную активность!");
-            fetchPlayerData();
-          })
-          .catch(err => {
-            console.error("❌ Ошибка при сохранении рекламы:", err);
-            showTempNotice("🚫 Ошибка подключения");
-          });
-      } else {
-        showTempNotice("⏳ Посмотри рекламу минимум 15 секунд для получения бонуса!");
-      }
-      setAdStartTime(null);
-      setAdWaiting(false);
+        .catch(err => {
+          showTempNotice("🚫 Ошибка подключения");
+        });
+    } else {
+      showTempNotice("⏳ Посмотри рекламу минимум 15 секунд для получения бонуса!");
     }
+    // Сбросить данные!
+    localStorage.removeItem('mmmgo-adStartTime');
+    localStorage.removeItem('mmmgo-adWaiting');
+  }
 
-    window.addEventListener("focus", onFocus);
-    return () => window.removeEventListener("focus", onFocus);
-    // eslint-disable-next-line
-  }, [adWaiting, adStartTime, adsWatched, telegramId]);
-
+  window.addEventListener("focus", onFocus);
+  return () => window.removeEventListener("focus", onFocus);
+  // eslint-disable-next-line
+}, [adsWatched, telegramId]);
   // Показывать уведомление
   const showTempNotice = (msg: string) => {
     setShowNotice(msg);
@@ -193,14 +197,14 @@ export default function RankPage() {
     }
   };
 
-  // Просмотр рекламы
-  const handleAdWatch = () => {
-    if (!telegramId || adsWatched >= 5 || adWaiting) return;
-    setAdStartTime(Date.now());
-    setAdWaiting(true);
-    window.open("https://wikipedia.org", "_blank"); // можно заменить на партнёрский сайт
-    showTempNotice("🎬 Контент открыт. Возвращайся через 15 секунд для бонуса...");
-  };
+// Перед открытием рекламы
+const handleAdWatch = () => {
+  if (!telegramId || adsWatched >= 5) return;
+  localStorage.setItem('mmmgo-adStartTime', String(Date.now()));
+  localStorage.setItem('mmmgo-adWaiting', '1');
+  window.open("https://wikipedia.org", "_blank");
+  showTempNotice("🎬 Контент открыт. Возвращайся через 15 секунд для бонуса...");
+};
 
   // Просмотр видео MMMGO (YouTube)
   const handleYouTubeBonus = () => {
