@@ -815,7 +815,7 @@ margin-right: auto;
   text-align: center;
 }
 .task-block {
-  background: rgba(24, 34, 44, 0.68);    /* тёмно-синий с 68% прозрачности */
+  background: rgba(24, 34, 44, 0.68);   /* Тёмный полупрозрачный */
   border-radius: 16px;
   box-shadow: 0 2px 14px rgba(16, 185, 129, 0.07);
   padding: 20px 16px 16px 16px;
@@ -826,24 +826,26 @@ margin-right: auto;
   position: relative;
 }
 
-
-.task-block:not(:last-child) {
-  margin-bottom: 12px;
-}
-
+/* Заголовки в блоках заданий */
 .task-block h3 {
   margin-top: 0;
   font-size: 19px;
-  color: #09b876;
+  color: #ffd700;        /* Чистое золото */
   letter-spacing: 0.1px;
   font-weight: 700;
+  text-shadow: 0 2px 6px #412, 0 1px 1px #fff3;
 }
 
-.task-block p {
-  margin: 10px 0 0 0;
+/* Основной текст */
+.task-block p,
+.task-block span,
+.task-block b,
+.task-block strong {
+  color: #ffe082;      /* Светло-золотой (можно #ffd700 для ярче) */
   font-size: 16px;
-  color: #292929;
-  line-height: 1.35;
+  line-height: 1.36;
+  font-weight: 500;
+  text-shadow: 0 1px 5px #201e0b99;
 }
 
 .task-button {
