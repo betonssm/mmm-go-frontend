@@ -1127,27 +1127,29 @@ margin-right: auto;
 }
 .greeting-card {
   background: rgba(255, 255, 255, 0.13);
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  padding: 16px 20px 12px;
-  margin: 0 auto 18px auto;
-  max-width: 320px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  padding: 8px 12px 6px;
+  margin: 8px auto 12px auto; /* стало меньше сверху и снизу */
+  max-width: 180px; /* уже */
   text-align: center;
   color: #ffe082;
   position: relative;
+  word-break: break-word;
 }
 
 .greeting-hello {
-  font-size: 20px;
-  font-weight: 600;
-  text-shadow: 1px 1px 6px #333;
-  margin-bottom: 4px;
+  font-size: 14px;         /* меньше! */
+  font-weight: 500;
+  text-shadow: 1px 1px 3px #333;
+  margin-bottom: 2px;
+  line-height: 1.2;
 }
 
 .player-id {
-  font-size: 12px;
+  font-size: 11px;
   color: #ffee58;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
-  opacity: 0.88;
-  margin-top: 2px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.18);
+  opacity: 0.85;
+  margin-top: 0;
 }
