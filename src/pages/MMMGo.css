@@ -1129,8 +1129,8 @@ margin-right: auto;
   background: rgba(255,255,255,0.11);
   border-radius: 11px;
   box-shadow: 0 1px 7px rgba(0,0,0,0.12);
+   margin: 4px auto 10px auto;   /* стало почти у самого верха */
   padding: 10px 14px 8px;
-  margin: 20px auto 12px auto; /* Было 10px auto — стало 20px auto: выше к верху */
   max-width: 200px;
   text-align: center;
 }
