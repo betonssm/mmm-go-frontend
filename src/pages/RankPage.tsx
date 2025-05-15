@@ -16,6 +16,9 @@ export default function RankPage() {
   const [showNotice, setShowNotice] = useState<string | null>(null);
   const [bgLoaded, setBgLoaded] = useState(false);
   const [loading, setLoading] = useState(true); // 👈
+  const [videoWatched, setVideoWatched] = useState(false);
+  const [notice, setNotice] = useState(null);
+
 
   // Загрузка начальных данных игрока
   useEffect(() => {
@@ -216,6 +219,49 @@ export default function RankPage() {
   🎁 Получить бонус
 </button>
       </div>
+     <div className="task-block">
+  <h3>📺 Посмотри новое видео MMMGO</h3>
+  <div className="video-frame">
+    <iframe
+      width="100%"
+      height="180"
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+      title="YouTube video MMMGO"
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+      style={{ borderRadius: "12px" }}
+    />
+  </div>
+  <button
+    className="task-button"
+    onClick={() => {
+      setVideoWatched(true);
+      setNotice("✅ +1 000 мавродиков за просмотр видео!");
+      setTimeout(() => setNotice(null), 3500);
+    }}
+    disabled={videoWatched}
+  >
+    {videoWatched ? "Бонус получен" : "Я посмотрел(а)"}
+  </button>
+  {notice && (
+    <div
+      style={{
+        marginTop: 12,
+        background: "#e6fff4",
+        color: "#09b876",
+        borderRadius: 8,
+        fontSize: 15,
+        padding: "8px 0",
+        textAlign: "center",
+        fontWeight: 600,
+        boxShadow: "0 0 8px #b7ffdb77",
+      }}
+    >
+      {notice}
+    </div>
+  )}
+</div>
 
       {/* Подписка на партнёра */}
       <div className="task-block">
