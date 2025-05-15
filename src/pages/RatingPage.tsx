@@ -9,6 +9,8 @@ export default function PlayerRatingPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [fund, setFund] = useState<number | null>(null);
+  const tg = (window as any).Telegram?.WebApp;
+const telegramId = tg?.initDataUnsafe?.user?.id;
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
