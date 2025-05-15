@@ -98,13 +98,6 @@ const telegramId = tg?.initDataUnsafe?.user?.id;
     Подписка действует до конца следующего месяца независимо от даты покупки
   </small>
 </p>
-
-<p style={{ marginTop: "12px", color: "#2e7d32", fontSize: "16px" }}>
-  🪙 Баланс MMMGO токенов: <strong>{playerData.mmmgoTokenBalance ?? 0}</strong>
-</p>
-<p style={{ margin: "10px 0 0 0", color: "#2e7d32", fontSize: "16px" }}>
-  Ваш ID: <strong style={{ color: "#222" }}>{telegramId}</strong>
-</p>
           </>
           ) : (
           <>
@@ -112,6 +105,12 @@ const telegramId = tg?.initDataUnsafe?.user?.id;
             <p>Подписка не активна или истекла.</p>
           </>
         )}
+                  <p style={{ marginTop: "12px", color: "#2e7d32", fontSize: "16px" }}>
+  🪙 Баланс MMMGO токенов: <strong>{playerData.mmmgoTokenBalance ?? 0}</strong>
+</p>
+<p style={{ margin: "10px 0 0 0", color: "#2e7d32", fontSize: "16px" }}>
+  Ваш ID: <strong style={{ color: "#222" }}>{telegramId}</strong>
+</p>
       </div>
       <div style={{
   margin: "30px auto",
