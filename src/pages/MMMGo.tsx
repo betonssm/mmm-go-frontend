@@ -524,7 +524,6 @@ setTimeout(() => setShowPrizeMessage(null), 3000);
     {playerName || "Без имени"}
   </div>
 </div>
-</div>
   {/* 
         {showNoRefNotice && (
           <div className="ref-warning">
