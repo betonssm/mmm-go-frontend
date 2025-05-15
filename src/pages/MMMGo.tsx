@@ -516,8 +516,14 @@ setTimeout(() => setShowPrizeMessage(null), 3000);
           transition: "background-image 0.8s ease-in-out",
         }}
       >
-        <h2>Привет, {playerName || "вкладчик"}!</h2>
-        <p className="player-id">ID: {telegramId || "неизвестен"}</p>
+        <div className="greeting-card">
+  <div className="greeting-hello">
+    🏦 Инвестор — <b>{playerName || "Без имени"}</b>
+  </div>
+  <div className="player-id">
+    ID: <span>{telegramId || "неизвестен"}</span>
+  </div>
+</div>
   {/* 
         {showNoRefNotice && (
           <div className="ref-warning">
