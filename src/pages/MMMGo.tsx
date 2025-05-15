@@ -516,13 +516,14 @@ setTimeout(() => setShowPrizeMessage(null), 3000);
           transition: "background-image 0.8s ease-in-out",
         }}
       >
-        <div className="greeting-card">
-  <div className="greeting-hello">
-    🏦 Инвестор — <b>{playerName || "Без имени"}</b>
+  <div className="greeting-card">
+  <div className="greeting-level">
+    {levelTitles[calculatedLevel] || "Без уровня"}
   </div>
-  <div className="player-id">
-    ID: <span>{telegramId || "неизвестен"}</span>
+  <div className="greeting-name">
+    {playerName || "Без имени"}
   </div>
+</div>
 </div>
   {/* 
         {showNoRefNotice && (

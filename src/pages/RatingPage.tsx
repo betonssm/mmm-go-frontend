@@ -96,6 +96,9 @@ export default function PlayerRatingPage() {
     Подписка действует до конца следующего месяца независимо от даты покупки
   </small>
 </p>
+<div className="player-id-on-rating">
+  Ваш ID: <span>{telegramId}</span>
+</div>
 
 <p style={{ marginTop: "12px", color: "#2e7d32", fontSize: "16px" }}>
   🪙 Баланс MMMGO токенов: <strong>{playerData.mmmgoTokenBalance ?? 0}</strong>
