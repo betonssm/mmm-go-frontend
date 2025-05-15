@@ -383,6 +383,8 @@ button {
   cursor: pointer;
   box-shadow: 0 0 10px #ffca28;
   display: block;
+  margin-left: auto;
+margin-right: auto;
 }
 .investors-scroll-wrapper {
   max-height: 100vh;
