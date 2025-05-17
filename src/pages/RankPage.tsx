@@ -16,6 +16,9 @@ export default function RankPage() {
   const [showNotice, setShowNotice] = useState<string | null>(null);
   const [bgLoaded, setBgLoaded] = useState(false);
   const [loading, setLoading] = useState(true); // 👈
+  const [showVideoModal, setShowVideoModal] = useState(false);
+const [videoEnded, setVideoEnded] = useState(false);
+const [isLoading, setIsLoading] = useState(false);
 
   // Загрузка начальных данных игрока
   useEffect(() => {
@@ -139,40 +142,43 @@ export default function RankPage() {
       setTimeout(() => setShowNotice(null), 4000);
     }
   };
-  // Просмотр рекламы
-  const handleAdWatch = () => {
-    if (!telegramId || adsWatched >= 5) return;
-  
-    // Открываем "рекламу" в новой вкладке
-    window.open("https://wikipedia.org", "_blank"); // можно заменить на партнёрский сайт
-  
-    // Показываем уведомление
-    showTempNotice("🎬 Контент открыт. Возвращайся через 15 секунд для бонуса...");
-  
-    // Через 15 секунд разрешаем награду
-    setTimeout(() => {
-      const newCount = adsWatched + 1;
-  
-      fetch("https://mmmgo-backend.onrender.com/player", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ telegramId, adsWatched: newCount,
-        balanceBonus: 1000, // 🎁 вот это — начисление бонуса
-         }),
-        keepalive: true,
-      })
-        .then(res => res.json())
-        .then(updated => {
-          setAdsWatched(updated.adsWatched);
-          showTempNotice("✅ +1 000 мавродиков за бонусную активность!");
-        })
-        .catch(err => {
-          console.error("❌ Ошибка при сохранении рекламы:", err);
-          showTempNotice("🚫 Ошибка подключения");
-        });
-    }, 15000); // 15 сек
-  };
 
+const openVideoModal = () => {
+  setShowVideoModal(true);
+  setVideoEnded(false);
+};
+
+const closeVideoModal = () => {
+  setShowVideoModal(false);
+  setVideoEnded(false);
+};
+
+const handleGetAdBonus = () => {
+  if (!telegramId || adsWatched >= 5) return;
+  setIsLoading(true);
+
+  fetch("https://mmmgo-backend.onrender.com/player", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      telegramId,
+      adsWatched: adsWatched + 1,
+      balanceBonus: 1000,
+    }),
+    keepalive: true,
+  })
+    .then(res => res.json())
+    .then(updated => {
+      setAdsWatched(updated.adsWatched);
+      showTempNotice("✅ +1 000 мавродиков за просмотр видео!");
+      closeVideoModal();
+    })
+    .catch(err => {
+      showTempNotice("🚫 Ошибка при выдаче бонуса");
+      closeVideoModal();
+    })
+    .finally(() => setIsLoading(false));
+};
   // Подписка на партнёра
   const handleSubscribe = () => {
     if (!telegramId) return;
@@ -192,64 +198,128 @@ export default function RankPage() {
   }
 
   return (
-    <div
-      className="info-page"
-      style={{
-        backgroundImage: "url(/assets/bg-rank.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        padding: "30px 16px 60px",
-        minHeight: "100vh",
-        overflowY: "auto",
-        boxSizing: "border-box",
-      }}
-    >
-      <h2 className="section-title">🎯 Задания</h2>
-      {showNotice && <div className="task-notification">{showNotice}</div>}
+  <div
+    className="info-page"
+    style={{
+      backgroundImage: "url(/assets/bg-rank.png)",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      padding: "30px 16px 60px",
+      minHeight: "100vh",
+      overflowY: "auto",
+      boxSizing: "border-box",
+    }}
+  >
+    <h2 className="section-title">🎯 Задания</h2>
+    {showNotice && <div className="task-notification">{showNotice}</div>}
 
-      {/* Просмотры видео */}
-      <div className="task-block">
+    {/* Просмотры видео */}
+    <div className="task-block">
       <h3>🎬 Бонус за просмотр</h3>
       <p>Посмотрено сегодня: <strong>{adsWatched}/5</strong></p>
-<button className="task-button" disabled={adsWatched >= 5} onClick={handleAdWatch}>
-  🎁 Получить бонус
-</button>
-      </div>
-
-      {/* Подписка на партнёра */}
-      <div className="task-block">
-        <h3>📢 Подпишись на наш новостной канал </h3>
-        <p>Канал: <strong>@example_channel</strong></p>
-        {isSubscribed
-          ? <div className="task-complete">✅ Подписка подтверждена</div>
-          : <button className="task-button" onClick={handleSubscribe}>📎 Я подписался</button>
-        }
-      </div>
-
-      {/* Ежедневные задания */}
-      <div className="task-block">
-        <h3>🌀 Ежедневные задания</h3>
-        <p>Натапай 5 000 мавродиков<br/>Прогресс: <strong>{dailyClicks}/5000</strong></p>
-        <button
-          className="task-button"
-          onClick={claimDailyReward}
-          disabled={rewardCollected}
-        >🎁 Забрать награду</button>
-      </div>
-
-      {/* Миссия недели */}
-      <div className="task-block">
-        <h3>🧭 Миссия недели</h3>
-        <p>Накопи 100 000 мавродиков<br/>Прогресс: <strong>{weeklyMavro}/100000</strong></p>
-        <button
-          className="task-button"
-          onClick={claimWeeklyReward}
-          disabled={weeklyReward}
-        >🎁 Забрать награду</button>
-      </div>
-
-      <button className="back-button" onClick={() => navigate("/")}>🔙 Назад</button>
+      <button
+        className="task-button"
+        disabled={adsWatched >= 5}
+        onClick={openVideoModal}
+      >
+        🎁 Получить бонус
+      </button>
     </div>
-  );
-}
+
+    {/* Модальное окно с видео */}
+    {showVideoModal && (
+      <div className="modal-overlay" onClick={closeVideoModal}>
+        <div
+          className="modal-content"
+          onClick={e => e.stopPropagation()}
+          style={{ background: "rgba(30,30,30,0.94)" }}
+        >
+          <h3 style={{ color: "#ffe082" }}>
+            Посмотри видео до конца для получения бонуса!
+          </h3>
+          <div className="video-frame" style={{ marginBottom: 20 }}>
+            <video
+              width="100%"
+              height="180"
+              controls
+              onEnded={() => setVideoEnded(true)}
+              style={{
+                borderRadius: 12,
+                maxWidth: 340,
+                background: "#000",
+                outline: "none",
+              }}
+            >
+              <source src="/assets/ad-video.mp4" type="video/mp4" />
+              Ваш браузер не поддерживает видео.
+            </video>
+          </div>
+          <button
+            className="task-button"
+            disabled={!videoEnded || isLoading}
+            onClick={handleGetAdBonus}
+            style={{
+              margin: "16px 0 0 0",
+              opacity: videoEnded ? 1 : 0.7,
+              background: videoEnded
+                ? "linear-gradient(to bottom, #ffe259, #ffa751)"
+                : "linear-gradient(to bottom, #e0e0e0, #ffa751)",
+              color: videoEnded ? "#874900" : "#b0a080",
+            }}
+          >
+            {videoEnded ? "✅ Получить 1000 мавродиков" : "⏳ Досмотри видео"}
+          </button>
+          <button
+            style={{
+              marginTop: 12,
+              background: "#222",
+              color: "#fff",
+              border: "none",
+              borderRadius: 8,
+              padding: "7px 24px",
+            }}
+            onClick={closeVideoModal}
+          >
+            Отмена
+          </button>
+        </div>
+      </div>
+    )}
+
+    {/* Подписка на партнёра */}
+    <div className="task-block">
+      <h3>📢 Подпишись на наш новостной канал </h3>
+      <p>Канал: <strong>@example_channel</strong></p>
+      {isSubscribed
+        ? <div className="task-complete">✅ Подписка подтверждена</div>
+        : <button className="task-button" onClick={handleSubscribe}>📎 Я подписался</button>
+      }
+    </div>
+
+    {/* Ежедневные задания */}
+    <div className="task-block">
+      <h3>🌀 Ежедневные задания</h3>
+      <p>Натапай 5 000 мавродиков<br />Прогресс: <strong>{dailyClicks}/5000</strong></p>
+      <button
+        className="task-button"
+        onClick={claimDailyReward}
+        disabled={rewardCollected}
+      >🎁 Забрать награду</button>
+    </div>
+
+    {/* Миссия недели */}
+    <div className="task-block">
+      <h3>🧭 Миссия недели</h3>
+      <p>Накопи 100 000 мавродиков<br />Прогресс: <strong>{weeklyMavro}/100000</strong></p>
+      <button
+        className="task-button"
+        onClick={claimWeeklyReward}
+        disabled={weeklyReward}
+      >🎁 Забрать награду</button>
+    </div>
+
+    <button className="back-button" onClick={() => navigate("/")}>🔙 Назад</button>
+  </div>
+);
+} 
