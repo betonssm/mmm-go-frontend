@@ -52,7 +52,7 @@ export default function PlayerRatingPage() {
   }
 
   if (!playerData) {
-     alert('playerData пустой после загрузки!'); /
+     alert('playerData пустой после загрузки!'); 
     return <div className="error">Не удалось загрузить данные игрока.</div>;
   }
 
