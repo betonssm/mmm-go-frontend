@@ -74,17 +74,13 @@ console.log("DEBUG leaderboard (final)", leaderboard, Array.isArray(leaderboard)
 
 
 
-const playerPosition = useMemo(() => {
-  try {
-    if (!Array.isArray(leaderboard) || leaderboard.length === 0 || !telegramId) return null;
-    const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
-    if (idx === -1) return null;
-    return { ...leaderboard[idx], place: idx + 1 };
-  } catch (e) {
-    console.error("Ошибка в useMemo playerPosition:", e);
-    return null;
+let playerPosition = null;
+if (Array.isArray(leaderboard) && leaderboard.length > 0 && telegramId) {
+  const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
+  if (idx !== -1) {
+    playerPosition = { ...leaderboard[idx], place: idx + 1 };
   }
-}, [leaderboard, telegramId]);
+}
   return (
     <div
       className="info-page"
