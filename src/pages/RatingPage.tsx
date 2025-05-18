@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css";
 
@@ -16,7 +16,7 @@ export default function PlayerRatingPage() {
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user;
-     console.log("🧩 Telegram initDataUnsafe.user:", user);
+    console.log("🧩 Telegram initDataUnsafe.user:", user);
     if (user) {
       fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
         .then((res) => res.json())
@@ -28,10 +28,12 @@ export default function PlayerRatingPage() {
     } else {
       setLoading(false);
     }
+
     fetch(`https://mmmgo-backend.onrender.com/fund`)
       .then(res => res.json())
       .then(data => setFund(data.total))
       .catch(err => console.error("Ошибка загрузки пула:", err));
+
     const img = new Image();
     img.src = "/assets/bg-rating.png";
     img.onload = () => setBgLoaded(true);
@@ -39,48 +41,55 @@ export default function PlayerRatingPage() {
 
   // Получаем leaderboard (ТОЛЬКО когда есть игрок)
   useEffect(() => {
-  if (!playerData) return;
-  const now = new Date();
-  const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
-  fetch(`https://mmmgo-backend.onrender.com/player/sr-leaderboard?month=${month}`)
-    .then(res => res.json())
-    .then(data => {
-      if (Array.isArray(data)) {
-        setLeaderboard(data);
-      } else {
-        console.error("Leaderboard НЕ массив!", data);
-        setLeaderboard([]); // защита от краша
-      }
-    })
-    .catch((e) => {
-      console.error("Ошибка leaderboard:", e);
-      setLeaderboard([]);
-    });
-}, [playerData]);
+    if (!playerData) return;
+    const now = new Date();
+    const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    fetch(`https://mmmgo-backend.onrender.com/player/sr-leaderboard?month=${month}`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setLeaderboard(data);
+        } else {
+          console.error("Leaderboard НЕ массив!", data);
+          setLeaderboard([]);
+        }
+      })
+      .catch((e) => {
+        console.error("Ошибка leaderboard:", e);
+        setLeaderboard([]);
+      });
+  }, [playerData]);
 
   if (!bgLoaded || loading) {
     return <div className="loading-screen">Загрузка...</div>;
   }
 
-if (!playerData) {
-  return <div className="error">Не удалось загрузить данные игрока.</div>;
-}
-
-  const { srRating, isInvestor, premiumExpires } = playerData;
-  const now = new Date();
-  const expires = premiumExpires ? new Date(premiumExpires) : null;
-  const isActive = isInvestor && expires && now < expires;
-console.log("DEBUG leaderboard (final)", leaderboard, Array.isArray(leaderboard));
-
-
-
-let playerPosition = null;
-if (Array.isArray(leaderboard) && leaderboard.length > 0 && telegramId) {
-  const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
-  if (idx !== -1) {
-    playerPosition = { ...leaderboard[idx], place: idx + 1 };
+  if (!playerData) {
+    return <div className="error">Не удалось загрузить данные игрока.</div>;
   }
-}
+
+  const { srRating, isInvestor, premiumSince } = playerData;
+
+  const getEndOfNextMonth = (startDate: Date): Date => {
+    const year = startDate.getFullYear();
+    const month = startDate.getMonth(); // текущий месяц
+    return new Date(year, month + 2, 0); // 0-й день — последний день предыдущего месяца
+  };
+
+  const now = new Date();
+  const premiumStart = premiumSince ? new Date(premiumSince) : null;
+  const expires = premiumStart ? getEndOfNextMonth(premiumStart) : null;
+  const isActive = isInvestor && expires && now < expires;
+
+  console.log("DEBUG leaderboard (final)", leaderboard, Array.isArray(leaderboard));
+
+  let playerPosition = null;
+  if (Array.isArray(leaderboard) && leaderboard.length > 0 && telegramId) {
+    const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
+    if (idx !== -1) {
+      playerPosition = { ...leaderboard[idx], place: idx + 1 };
+    }
+  }
   return (
     <div
       className="info-page"
