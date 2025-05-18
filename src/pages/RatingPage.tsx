@@ -38,14 +38,24 @@ export default function PlayerRatingPage() {
 
   // Получаем leaderboard (ТОЛЬКО когда есть игрок)
   useEffect(() => {
-    if (!playerData) return;
-    const now = new Date();
-    const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
-    fetch(`https://mmmgo-backend.onrender.com/player/sr-leaderboard?month=${month}`)
-      .then(res => res.json())
-      .then(data => setLeaderboard(data))
-      .catch(() => setLeaderboard([]));
-  }, [playerData]);
+  if (!playerData) return;
+  const now = new Date();
+  const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  fetch(`https://mmmgo-backend.onrender.com/player/sr-leaderboard?month=${month}`)
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data)) {
+        setLeaderboard(data);
+      } else {
+        console.error("Leaderboard НЕ массив!", data);
+        setLeaderboard([]); // защита от краша
+      }
+    })
+    .catch((e) => {
+      console.error("Ошибка leaderboard:", e);
+      setLeaderboard([]);
+    });
+}, [playerData]);
 
   if (!bgLoaded || loading) {
     return <div className="loading-screen">Загрузка...</div>;
@@ -63,8 +73,9 @@ if (!playerData) {
   const now = new Date();
   const expires = premiumExpires ? new Date(premiumExpires) : null;
   const isActive = isInvestor && expires && now < expires;
-  
-console.log("DEBUG leaderboard value:", leaderboard, "typeof:", typeof leaderboard, "telegramId:", telegramId);
+console.log("DEBUG leaderboard (final)", leaderboard, Array.isArray(leaderboard));
+if (leaderboard && !Array.isArray(leaderboard)) alert('leaderboard НЕ массив!');
+
 
 const playerPosition = useMemo(() => {
   // Защита: только если это массив и есть telegramId
