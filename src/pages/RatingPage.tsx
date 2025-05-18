@@ -51,10 +51,13 @@ export default function PlayerRatingPage() {
     return <div className="loading-screen">Загрузка...</div>;
   }
 
-  if (!playerData) {
-     alert('playerData пустой после загрузки!'); 
-    return <div className="error">Не удалось загрузить данные игрока.</div>;
-  }
+if (!bgLoaded || loading) {
+  return <div className="loading-screen">Загрузка...</div>;
+}
+
+if (!playerData) {
+  return <div className="error">Не удалось загрузить данные игрока.</div>;
+}
 
   const { srRating, isInvestor, premiumExpires } = playerData;
   const now = new Date();
@@ -68,7 +71,6 @@ const playerPosition = useMemo(() => {
   if (idx === -1) return null;
   return { ...leaderboard[idx], place: idx + 1 };
 }, [leaderboard, telegramId]);
-alert('Все данные есть, будет рендериться основная страница!');
 
   return (
     <div
