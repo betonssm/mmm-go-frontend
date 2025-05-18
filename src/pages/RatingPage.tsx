@@ -20,7 +20,6 @@ export default function PlayerRatingPage() {
       fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
         .then((res) => res.json())
         .then((data) => {
-          alert('Данные игрока загружены!');
           setPlayerData(data);
         })
         .catch((err) => console.error("Ошибка загрузки данных игрока:", err))
@@ -53,6 +52,7 @@ export default function PlayerRatingPage() {
   }
 
   if (!playerData) {
+     alert('playerData пустой после загрузки!'); /
     return <div className="error">Не удалось загрузить данные игрока.</div>;
   }
 
@@ -68,6 +68,7 @@ const playerPosition = useMemo(() => {
   if (idx === -1) return null;
   return { ...leaderboard[idx], place: idx + 1 };
 }, [leaderboard, telegramId]);
+alert('Все данные есть, будет рендериться основная страница!');
 
   return (
     <div
