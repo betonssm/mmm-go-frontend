@@ -16,6 +16,7 @@ export default function PlayerRatingPage() {
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user;
+     console.log("🧩 Telegram initDataUnsafe.user:", user);
     if (user) {
       fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
         .then((res) => res.json())
@@ -61,10 +62,6 @@ export default function PlayerRatingPage() {
     return <div className="loading-screen">Загрузка...</div>;
   }
 
-if (!bgLoaded || loading) {
-  return <div className="loading-screen">Загрузка...</div>;
-}
-
 if (!playerData) {
   return <div className="error">Не удалось загрузить данные игрока.</div>;
 }
@@ -78,18 +75,14 @@ if (leaderboard && !Array.isArray(leaderboard)) alert('leaderboard НЕ масс
 
 
 const playerPosition = useMemo(() => {
-  // Защита: только если это массив и есть telegramId
-  if (!Array.isArray(leaderboard) || !telegramId) {
-    console.warn('leaderboard не массив или нет telegramId!', leaderboard, telegramId);
-    return null;
-  }
+  if (!Array.isArray(leaderboard) || !telegramId) return null;
+
   const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
   if (idx === -1) return null;
+
   return { ...leaderboard[idx], place: idx + 1 };
 }, [leaderboard, telegramId]);
-console.log("leaderboard:", leaderboard);
-console.log("telegramId:", telegramId);
-console.log("playerPosition:", playerPosition);
+
   return (
     <div
       className="info-page"
