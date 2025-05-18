@@ -129,20 +129,14 @@ const playerPosition = useMemo(() => {
                 Подписка действует до конца следующего месяца независимо от даты покупки
               </small>
             </p>
-            {playerPosition && typeof playerPosition.place === "number" && (
-              <div style={{
-                margin: "14px 0 0 0",
-                fontWeight: "bold",
-                color: "#009688",
-                fontSize: "17px",
-              }}>
-                Ваша позиция в рейтинге: <b>#{playerPosition.place}</b> из <b>{leaderboard.length}</b>
-                <br />
-                {playerPosition.place <= Math.ceil(leaderboard.length * 0.1) && (
-                  <span style={{ color: "#ff5722", fontWeight: 700 }}>🔥 Топ-10%!</span>
-                )}
-              </div>
-            )}
+           {playerPosition && Number.isInteger(playerPosition.place) && (
+  <div>
+    Ваша позиция в рейтинге: <b>#{playerPosition.place}</b> из <b>{leaderboard.length}</b>
+    {playerPosition.place <= Math.ceil(leaderboard.length * 0.1) && (
+      <div style={{ color: "#ff5722", fontWeight: 700 }}>🔥 Топ-10%!</div>
+    )}
+  </div>
+)}
           </>
         ) : (
           <>
