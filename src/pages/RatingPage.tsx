@@ -132,14 +132,14 @@ const playerPosition = useMemo(() => {
                 Подписка действует до конца следующего месяца независимо от даты покупки
               </small>
             </p>
-           {playerPosition?.place != null && (
+           {playerPosition && typeof playerPosition.place === "number" ? (
   <div>
     Ваша позиция в рейтинге: <b>#{playerPosition.place}</b> из <b>{leaderboard.length}</b>
     {leaderboard.length > 0 && playerPosition.place <= Math.ceil(leaderboard.length * 0.1) && (
       <div style={{ color: "#ff5722", fontWeight: 700 }}>🔥 Топ-10%!</div>
     )}
   </div>
-)}
+) : null}
           </>
         ) : (
           <>
