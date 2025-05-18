@@ -61,10 +61,12 @@ export default function PlayerRatingPage() {
   const isActive = isInvestor && expires && now < expires;
 
   // Находим позицию игрока в leaderboard
-  const playerPosition = useMemo(() => {
-    if (!leaderboard || !Array.isArray(leaderboard)) return null;
-    return leaderboard.find(entry => String(entry.telegramId) === String(telegramId));
-  }, [leaderboard, telegramId]);
+const playerPosition = useMemo(() => {
+  if (!Array.isArray(leaderboard) || !telegramId) return null;
+  const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
+  if (idx === -1) return null;
+  return { ...leaderboard[idx], place: idx + 1 };
+}, [leaderboard, telegramId]);
 
   return (
     <div
@@ -113,7 +115,7 @@ export default function PlayerRatingPage() {
                 Подписка действует до конца следующего месяца независимо от даты покупки
               </small>
             </p>
-            {playerPosition && (
+            {playerPosition && typeof playerPosition.place === "number" && (
               <div style={{
                 margin: "14px 0 0 0",
                 fontWeight: "bold",
