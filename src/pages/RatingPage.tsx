@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/MMMGo.css";
 
@@ -9,9 +9,11 @@ export default function PlayerRatingPage() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [fund, setFund] = useState<number | null>(null);
+  const [leaderboard, setLeaderboard] = useState([]);
   const tg = (window as any).Telegram?.WebApp;
-const telegramId = tg?.initDataUnsafe?.user?.id;
+  const telegramId = tg?.initDataUnsafe?.user?.id;
 
+  // Получение данных игрока
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user;
@@ -27,15 +29,24 @@ const telegramId = tg?.initDataUnsafe?.user?.id;
       setLoading(false);
     }
     fetch(`https://mmmgo-backend.onrender.com/fund`)
-    .then(res => res.json())
-    .then(data => setFund(data.total))
-    .catch(err => console.error("Ошибка загрузки пула:", err));
-    
-
+      .then(res => res.json())
+      .then(data => setFund(data.total))
+      .catch(err => console.error("Ошибка загрузки пула:", err));
     const img = new Image();
     img.src = "/assets/bg-rating.png";
     img.onload = () => setBgLoaded(true);
   }, []);
+
+  // Получаем leaderboard (ТОЛЬКО когда есть игрок)
+  useEffect(() => {
+    if (!playerData) return;
+    const now = new Date();
+    const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    fetch(`https://mmmgo-backend.onrender.com/player/sr-leaderboard?month=${month}`)
+      .then(res => res.json())
+      .then(data => setLeaderboard(data))
+      .catch(() => setLeaderboard([]));
+  }, [playerData]);
 
   if (!bgLoaded || loading) {
     return <div className="loading-screen">Загрузка...</div>;
@@ -49,8 +60,12 @@ const telegramId = tg?.initDataUnsafe?.user?.id;
   const now = new Date();
   const expires = premiumExpires ? new Date(premiumExpires) : null;
   const isActive = isInvestor && expires && now < expires;
-  
 
+  // Находим позицию игрока в leaderboard
+  const playerPosition = useMemo(() => {
+    if (!leaderboard || !Array.isArray(leaderboard)) return null;
+    return leaderboard.find(entry => entry.telegramId === telegramId);
+  }, [leaderboard, telegramId]);
   return (
     <div
       className="info-page"
@@ -98,6 +113,20 @@ const telegramId = tg?.initDataUnsafe?.user?.id;
     Подписка действует до конца следующего месяца независимо от даты покупки
   </small>
 </p>
+ {playerPosition && (
+      <div style={{
+        margin: "14px 0 0 0",
+        fontWeight: "bold",
+        color: "#009688",
+        fontSize: "17px",
+      }}>
+        Ваша позиция в рейтинге: <b>#{playerPosition.place}</b> из <b>{leaderboard.length}</b>
+        <br />
+        {playerPosition.place <= Math.ceil(leaderboard.length * 0.1) && (
+          <span style={{ color: "#ff5722", fontWeight: 700 }}>🔥 Топ-10%!</span>
+        )}
+      </div>
+    )}
           </>
           ) : (
           <>
