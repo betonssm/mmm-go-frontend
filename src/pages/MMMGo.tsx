@@ -206,11 +206,6 @@ setRefSource(ref ?? null);
   useEffect(() => {
     if (!telegramId || balance === null || initialLoad) return;
 
-    const srRatingCalculated = Math.floor(
-      Math.log2((referrals || 0) + 1) * 40 +
-      Math.log2((totalTaps || 0) + 1) * 25 +
-      Math.log2((adsWatched || 0) + 1) * 35
-    );
 
     fetch("https://mmmgo-backend.onrender.com/player", {
       method: "POST",
@@ -224,7 +219,6 @@ setRefSource(ref ?? null);
         referrals,
         totalTaps,
         adsWatched,
-        srRating: srRatingCalculated,
         boostCooldownUntil: boostCooldownUntil?.toISOString() ?? null
       }),
     }).catch((err) => console.error("❌ Ошибка автосохранения:", err));
