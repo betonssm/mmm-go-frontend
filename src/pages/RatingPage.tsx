@@ -71,18 +71,17 @@ if (!playerData) {
   const expires = premiumExpires ? new Date(premiumExpires) : null;
   const isActive = isInvestor && expires && now < expires;
 console.log("DEBUG leaderboard (final)", leaderboard, Array.isArray(leaderboard));
-if (leaderboard && !Array.isArray(leaderboard)) alert('leaderboard НЕ массив!');
+
 
 
 const playerPosition = useMemo(() => {
-  if (!Array.isArray(leaderboard) || !telegramId) return null;
+  if (!Array.isArray(leaderboard) || leaderboard.length === 0 || !telegramId) return null;
 
   const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
   if (idx === -1) return null;
 
   return { ...leaderboard[idx], place: idx + 1 };
 }, [leaderboard, telegramId]);
-
   return (
     <div
       className="info-page"
