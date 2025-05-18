@@ -64,14 +64,29 @@ if (!playerData) {
   const expires = premiumExpires ? new Date(premiumExpires) : null;
   const isActive = isInvestor && expires && now < expires;
 
-  // Находим позицию игрока в leaderboard
-const playerPosition = useMemo(() => {
-  if (!Array.isArray(leaderboard) || !telegramId) return null;
-  const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
+ const playerPosition = useMemo(() => {
+  // Дополнительно логируем для дебага
+  if (!Array.isArray(leaderboard)) {
+    console.log('leaderboard не массив:', leaderboard);
+    return null;
+  }
+  if (!leaderboard.length) {
+    // Массив пустой
+    return null;
+  }
+  if (!telegramId) {
+    console.log('telegramId не определён:', telegramId);
+    return null;
+  }
+  const idx = leaderboard.findIndex(entry => {
+    // Защита от неожиданных структур
+    if (!entry) return false;
+    // В backend leaderboard должен приходить telegramId — число или строка!
+    return String(entry.telegramId) === String(telegramId);
+  });
   if (idx === -1) return null;
   return { ...leaderboard[idx], place: idx + 1 };
 }, [leaderboard, telegramId]);
-
   return (
     <div
       className="info-page"
