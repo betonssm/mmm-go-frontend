@@ -62,10 +62,10 @@ export default function PlayerRatingPage() {
   const isActive = isInvestor && expires && now < expires;
 
   // Находим позицию игрока в leaderboard
-  const playerPosition = useMemo(() => {
-    if (!leaderboard || !Array.isArray(leaderboard)) return null;
-    return leaderboard.find(entry => entry.telegramId === telegramId);
-  }, [leaderboard, telegramId]);
+const playerPosition = useMemo(() => {
+  if (!leaderboard || !Array.isArray(leaderboard)) return null;
+  return leaderboard.find(entry => String(entry.telegramId) === String(telegramId));
+}, [leaderboard, telegramId]);
   return (
     <div
       className="info-page"
