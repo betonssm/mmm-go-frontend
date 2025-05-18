@@ -75,12 +75,15 @@ console.log("DEBUG leaderboard (final)", leaderboard, Array.isArray(leaderboard)
 
 
 const playerPosition = useMemo(() => {
-  if (!Array.isArray(leaderboard) || leaderboard.length === 0 || !telegramId) return null;
-
-  const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
-  if (idx === -1) return null;
-
-  return { ...leaderboard[idx], place: idx + 1 };
+  try {
+    if (!Array.isArray(leaderboard) || leaderboard.length === 0 || !telegramId) return null;
+    const idx = leaderboard.findIndex(entry => String(entry.telegramId) === String(telegramId));
+    if (idx === -1) return null;
+    return { ...leaderboard[idx], place: idx + 1 };
+  } catch (e) {
+    console.error("Ошибка в useMemo playerPosition:", e);
+    return null;
+  }
 }, [leaderboard, telegramId]);
   return (
     <div
@@ -129,10 +132,10 @@ const playerPosition = useMemo(() => {
                 Подписка действует до конца следующего месяца независимо от даты покупки
               </small>
             </p>
-           {playerPosition && Number.isInteger(playerPosition.place) && (
+           {playerPosition?.place != null && (
   <div>
     Ваша позиция в рейтинге: <b>#{playerPosition.place}</b> из <b>{leaderboard.length}</b>
-    {playerPosition.place <= Math.ceil(leaderboard.length * 0.1) && (
+    {leaderboard.length > 0 && playerPosition.place <= Math.ceil(leaderboard.length * 0.1) && (
       <div style={{ color: "#ff5722", fontWeight: 700 }}>🔥 Топ-10%!</div>
     )}
   </div>
