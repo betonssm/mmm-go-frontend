@@ -14,13 +14,13 @@ export default function PlayerRatingPage() {
 
   // Получение данных игрока
   useEffect(() => {
-     alert('PlayerRatingPage монтируется!');
     const tg = (window as any).Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user;
     if (user) {
       fetch(`https://mmmgo-backend.onrender.com/player/${user.id}`)
         .then((res) => res.json())
         .then((data) => {
+          alert('Данные игрока загружены!');
           setPlayerData(data);
         })
         .catch((err) => console.error("Ошибка загрузки данных игрока:", err))
