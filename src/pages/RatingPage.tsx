@@ -87,6 +87,9 @@ const playerPosition = useMemo(() => {
   if (idx === -1) return null;
   return { ...leaderboard[idx], place: idx + 1 };
 }, [leaderboard, telegramId]);
+console.log("leaderboard:", leaderboard);
+console.log("telegramId:", telegramId);
+console.log("playerPosition:", playerPosition);
   return (
     <div
       className="info-page"
