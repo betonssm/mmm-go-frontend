@@ -14,6 +14,7 @@ export default function PlayerRatingPage() {
 
   // Получение данных игрока
   useEffect(() => {
+     alert('PlayerRatingPage монтируется!');
     const tg = (window as any).Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user;
     if (user) {
