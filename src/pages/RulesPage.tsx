@@ -65,6 +65,18 @@ export default function RulesPage() {
     <li>🏆 Используется для участия в игровых наградах и сезонных событиях.</li>
   </ul>
 </div>
+<div className="space-y-3">
+  <h2 className="text-xl font-semibold text-gray-800">🎁 Бонусы и награды</h2>
+  <ul className="list-disc list-inside text-gray-700 space-y-1">
+    <li>🎲 <strong>Ежедневный розыгрыш</strong>: шанс выиграть 1 000, 5 000, 10 000 или 20 000 мавродиков.</li>
+    <li>👥 <strong>За каждого друга</strong>: +5 000 мавродиков и 10% с каждого его тапа.</li>
+    <li>📺 <strong>Просмотр видео</strong>: +1 000 мавродиков.</li>
+    <li>✅ <strong>Выполнение ежедневной цели</strong>: +5 000 мавродиков.</li>
+    <li>🏆 <strong>Выполнение недельной цели</strong>: +10 000 мавродиков.</li>
+    <li>⚡ <strong>Буст Х3</strong>: 20 секунд автотапа по 3 мавродика за тап.</li>
+    <li>💎 <strong>Покупка подписки</strong>: +50 000 мавродиков сразу.</li>
+  </ul>
+</div>
 
 <div className="space-y-3">
   <h2 className="text-xl font-semibold text-gray-800">🎯 Цель игры</h2>
