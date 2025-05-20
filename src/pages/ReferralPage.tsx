@@ -106,6 +106,18 @@ export default function ReferralPage() {
     🎁 Получено бонусов от друзей: <strong>{referralEarnings}</strong>
   </div>
 </div>
+<div style={{
+  background: "rgba(255, 255, 255, 0.1)",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+  borderRadius: "12px",
+  padding: "12px 16px",
+  color: "#fff",
+  boxShadow: "0 0 8px rgba(0, 0, 0, 0.4)",
+  marginTop: "10px"
+}}>
+  💸 <strong>+5 000</strong> мавродиков за каждого друга<br />
+  ➕ <strong>10%</strong> от его заработка — к твоему балансу!
+</div>
       <p style={{ color: "#fff", marginTop: "20px", fontStyle: "italic" }}>
       Скопируй свою личную ссылку и поделись с другом. При первом входе он будет отмечен как твой приглашённый.
       </p>
