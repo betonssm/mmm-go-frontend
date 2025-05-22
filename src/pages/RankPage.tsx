@@ -217,10 +217,10 @@ const handleGetAdBonus = () => {
     {/* Просмотры видео */}
     <div className="task-block">
       <h3>🎬 Бонус за просмотр</h3>
-      <p>Посмотрено сегодня: <strong>{adsWatched}/5</strong></p>
+      <p>Посмотри видео до конца и получи 1 000 мавродиков. Доступно 1 раз в день.</p>
       <button
         className="task-button"
-        disabled={adsWatched >= 5}
+        disabled={adsWatched >= 1}
         onClick={openVideoModal}
       >
         🎁 Получить бонус
