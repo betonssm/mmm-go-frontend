@@ -207,3 +207,9 @@
   gap: 16px;
   margin-bottom: 30px;
 }
+.admin-action-box h4 {
+  color: #ffd700;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
