@@ -42,7 +42,7 @@ const [isSavingFund, setIsSavingFund] = useState(false);
         p.playerName || "",
         p.srRating,
         p.group,
-        p.walletAddressTRC20 || "",
+        p.tonWallet || "",
         p.usdtPayout
       ])
     ].map(e => e.join(",")).join("\n");
@@ -132,7 +132,7 @@ const [isSavingFund, setIsSavingFund] = useState(false);
     <th>Уровень</th>
     <th>Подписка до</th>
     <th>SR с</th>
-    <th>Кошелёк TRC20</th> {/* Поменял местами */}
+    <th>Кошелёк TON</th> {/* Поменял местами */}
     <th>Доля $</th>
   </tr>
 </thead>
@@ -148,7 +148,7 @@ const [isSavingFund, setIsSavingFund] = useState(false);
       <td>{p.level}</td>
       <td>{p.premiumExpires ? new Date(p.premiumExpires).toLocaleDateString() : "—"}</td>
       <td>{p.srActiveSince ? new Date(p.srActiveSince).toLocaleDateString() : "—"}</td>
-      <td>{p.walletAddressTRC20 || "—"}</td> {/* Поменял местами */}
+      <td>{p.tonWallet || "—"}</td>
       <td>
     {typeof p.usdtPayout === "number"
       ? `$${p.usdtPayout.toFixed(2)}`
