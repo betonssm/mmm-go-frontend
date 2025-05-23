@@ -9,6 +9,11 @@ export default function AdminSR() {
   const token = localStorage.getItem("adminToken") || "";
   const [manualFund, setManualFund] = useState<number | null>(null);
 const [isSavingFund, setIsSavingFund] = useState(false);
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 20; // или любое удобное количество
+const startIndex = (currentPage - 1) * itemsPerPage;
+const paginatedPlayers = players.slice(startIndex, startIndex + itemsPerPage);
+const totalPages = Math.ceil(players.length / itemsPerPage);
 
   useEffect(() => {
     document.title = "SR Рейтинг | Админка MMM GO";
@@ -137,9 +142,9 @@ const [isSavingFund, setIsSavingFund] = useState(false);
   </tr>
 </thead>
 <tbody>
-  {players.map((p, i) => (
+  {paginatedPlayers.map((p, i) => (
     <tr key={p.telegramId}>
-      <td>{i + 1}</td>
+        <td>{startIndex + i + 1}</td>
       <td>{p.telegramId}</td>
       <td>{p.playerName}</td>
       <td>{p.group}</td>
@@ -158,6 +163,22 @@ const [isSavingFund, setIsSavingFund] = useState(false);
   ))}
 </tbody>
               </table>
+              <div className="admin-pagination">
+  <p>Страница {currentPage} из {totalPages}</p>
+  <div>
+    <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&larr;</button>
+    {[...Array(totalPages)].map((_, i) => (
+      <button
+        key={i}
+        className={currentPage === i + 1 ? "current-page" : ""}
+        onClick={() => setCurrentPage(i + 1)}
+      >
+        {i + 1}
+      </button>
+    ))}
+    <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>&rarr;</button>
+  </div>
+</div>
             </div>
           </>
         )}

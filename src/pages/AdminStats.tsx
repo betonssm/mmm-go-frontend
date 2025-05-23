@@ -6,6 +6,14 @@ export default function AdminStats() {
   const [stats, setStats] = useState(null);
   const [suspiciousPlayers, setSuspiciousPlayers] = useState([]);
   const token = localStorage.getItem("adminToken") || ""; // ✅ Глобально доступен
+ const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 10;
+const totalPages = Math.ceil(suspiciousPlayers.length / itemsPerPage);
+
+const paginatedSuspicious = suspiciousPlayers.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
 
   useEffect(() => {
     document.title = "Аналитика | Админка MMM GO";
@@ -34,15 +42,34 @@ export default function AdminStats() {
       <div className="admin-card">
   <h3>⚠️ Подозрительная активность</h3>
   <ul>
-    {suspiciousPlayers.length === 0
-      ? <p>Нет подозрительной активности</p>
-      : suspiciousPlayers.map(p => (
-          <li key={p.telegramId}>
-            {p.playerName || "Без имени"} (ID: {p.telegramId}) — {p.dailyTasks.dailyTaps} тапов
-          </li>
-        ))
-    }
-  </ul>
+  {paginatedSuspicious.length === 0
+    ? <p>Нет подозрительной активности</p>
+    : paginatedSuspicious.map(p => (
+        <li key={p.telegramId}>
+          {p.playerName || "Без имени"} (ID: {p.telegramId}) — {p.dailyTasks.dailyTaps} тапов
+        </li>
+      ))
+  }
+</ul>
+ {totalPages > 1 && (
+    <div className="admin-pagination">
+      <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>
+        ←
+      </button>
+      {[...Array(totalPages)].map((_, i) => (
+        <button
+          key={i}
+          className={currentPage === i + 1 ? "current-page" : ""}
+          onClick={() => setCurrentPage(i + 1)}
+        >
+          {i + 1}
+        </button>
+      ))}
+      <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>
+        →
+      </button>
+    </div>
+  )}
 </div>
       <h2 className="admin-title">📈 Общая статистика</h2>
       <div className="admin-table-wrapper">
