@@ -92,7 +92,7 @@ const [addBalanceAmount, setAddBalanceAmount] = useState("");
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`, // из localStorage// в .env
       },
-      body: JSON.stringify({ telegramId: player.telegramId }),
+      body: JSON.stringify({ telegramId: selectedPlayer.telegramId }),
     });
 
     const data = await res.json();
