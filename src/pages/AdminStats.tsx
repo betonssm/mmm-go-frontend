@@ -4,6 +4,7 @@ import "./AdminDashboard.css";
 
 export default function AdminStats() {
   const [stats, setStats] = useState(null);
+  const [suspiciousPlayers, setSuspiciousPlayers] = useState([]);
 
   useEffect(() => {
     document.title = "Аналитика | Админка MMM GO";
@@ -16,11 +17,32 @@ export default function AdminStats() {
       .then((data) => setStats(data))
       .catch((err) => console.error("Ошибка загрузки аналитики:", err));
   }, []);
+  useEffect(() => {
+  fetch("https://mmmgo-backend.onrender.com/admin/suspicious-taps", {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+    .then(res => res.json())
+    .then(data => setSuspiciousPlayers(data.players || []))
+    .catch(err => console.error("Ошибка загрузки подозрительных таперов:", err));
+}, []);
 
   if (!stats) return <p className="admin-loading">Загрузка аналитики...</p>;
 
   return (
     <div className="admin-content">
+      <div className="admin-card">
+  <h3>⚠️ Подозрительная активность</h3>
+  <ul>
+    {suspiciousPlayers.length === 0
+      ? <p>Нет подозрительной активности</p>
+      : suspiciousPlayers.map(p => (
+          <li key={p.telegramId}>
+            {p.playerName || "Без имени"} (ID: {p.telegramId}) — {p.dailyTasks.dailyTaps} тапов
+          </li>
+        ))
+    }
+  </ul>
+</div>
       <h2 className="admin-title">📈 Общая статистика</h2>
       <div className="admin-table-wrapper">
         <table className="admin-table">
