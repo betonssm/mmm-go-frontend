@@ -77,7 +77,7 @@ const [addBalanceAmount, setAddBalanceAmount] = useState("");
     const now = new Date();
     const date = new Date(dateStr);
     const daysLeft = Math.ceil((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    if (daysLeft < 0) return { text: date.toLocaleDateString(), color: "expired" };
+    if (daysLeft < 0) return { text: "неактивна", color: "expired" };
     if (daysLeft <= 3) return { text: `${date.toLocaleDateString()} ⏳`, color: "warning" };
     return { text: date.toLocaleDateString(), color: "active" };
   };
@@ -283,7 +283,12 @@ const [addBalanceAmount, setAddBalanceAmount] = useState("");
                 <li><strong>Инвестор:</strong> {selectedPlayer.isInvestor ? "Да" : "Нет"}</li>
                 <li><strong>Рефералов:</strong> {selectedPlayer.referrals}</li>
                 <li><strong>Рейтинг SR:</strong> {selectedPlayer.srRating}</li>
-                <li><strong>Подписка до:</strong> {selectedPlayer.premiumExpires ? new Date(selectedPlayer.premiumExpires).toLocaleDateString() : "—"}</li>
+                <li>
+  <strong>Подписка:</strong>{" "}
+  {selectedPlayer.premiumExpires && new Date(selectedPlayer.premiumExpires) > new Date()
+    ? `до ${new Date(selectedPlayer.premiumExpires).toLocaleDateString()}`
+    : "неактивна"}
+</li>
                 <li><strong>Источник регистрации:</strong> {selectedPlayer.refSource || "—"}</li>
                 <li><strong>Оплат:</strong> {selectedPlayer.paymentsCount || 0}</li>
               </ul>
