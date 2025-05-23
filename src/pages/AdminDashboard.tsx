@@ -81,6 +81,31 @@ const [addBalanceAmount, setAddBalanceAmount] = useState("");
     if (daysLeft <= 3) return { text: `${date.toLocaleDateString()} ⏳`, color: "warning" };
     return { text: date.toLocaleDateString(), color: "active" };
   };
+  const handleGiveSubscription = async () => {
+  const confirm = window.confirm("Выдать подписку этому игроку?");
+  if (!confirm) return;
+
+  try {
+    const res = await fetch("https://mmmgo-backend.onrender.com/admin/give-subscription", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // из localStorage// в .env
+      },
+      body: JSON.stringify({ telegramId: player.telegramId }),
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+      alert("✅ Подписка успешно выдана!");
+    } else {
+      alert("Ошибка: " + data.error);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Ошибка при запросе");
+  }
+};
 
   const handleReset = async () => {
     if (!resetId) return alert("Введите ID игрока");
@@ -259,6 +284,9 @@ const [addBalanceAmount, setAddBalanceAmount] = useState("");
                 <li><strong>Источник регистрации:</strong> {selectedPlayer.refSource || "—"}</li>
                 <li><strong>Оплат:</strong> {selectedPlayer.paymentsCount || 0}</li>
               </ul>
+              <button onClick={handleGiveSubscription} style={{ marginTop: "12px" }}>
+  🎟 Выдать подписку вручную
+</button>
               <button onClick={() => setSelectedPlayer(null)}>Закрыть</button>
             </div>
           )}
