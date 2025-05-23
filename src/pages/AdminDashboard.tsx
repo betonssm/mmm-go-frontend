@@ -213,7 +213,7 @@ const [addBalanceAmount, setAddBalanceAmount] = useState("");
                     <td>{player.srRating}</td>
                     <td className={sub.color}>{sub.text}</td>
                     <td>{player.referrals || 0}</td>
-                    <td>{player.paymentsCount || 0}</td>
+                    <td>{player.donatesCount || 0}</td>
                     <td>{player.refSource || "—"}</td>
                   </tr>
                 );
