@@ -130,53 +130,58 @@ const [addBalanceAmount, setAddBalanceAmount] = useState("");
   return (
     <div className="admin-wrapper">
       <main className="admin-content">
-        <div className="admin-controls">
-          <input
-            type="text"
-            placeholder="Поиск по имени или ID..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <label>
-            <input
-              type="checkbox"
-              checked={showInvestorsOnly}
-              onChange={(e) => setShowInvestorsOnly(e.target.checked)}
-            />
-            Только инвесторы
-          </label>
-        </div>
-        <div style={{ marginBottom: "20px" }}>
-  <h3>🛠 Режим технических работ</h3>
-  <button onClick={toggleMaintenance}>
-    {maintenance ? "Отключить" : "Включить"} технические работы
-  </button>
-</div>
+        <div className="admin-controls unified-panel">
+  <div className="admin-action-box">
+    <h4>🔍 Поиск</h4>
+    <input
+      type="text"
+      placeholder="Поиск по имени или ID..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+    <label style={{ color: "#fff", marginTop: "8px" }}>
+      <input
+        type="checkbox"
+        checked={showInvestorsOnly}
+        onChange={(e) => setShowInvestorsOnly(e.target.checked)}
+        style={{ marginRight: "6px" }}
+      />
+      Только инвесторы
+    </label>
+  </div>
 
-        <div className="admin-controls">
-          <input
-            type="text"
-            placeholder="ID игрока для сброса"
-            value={resetId}
-            onChange={(e) => setResetId(e.target.value)}
-          />
-          <button onClick={handleReset}>🔄 Сбросить миссии игрока</button>
-        </div>
-        <div className="admin-action-box">
-  <h4>➕ Добавить баланс игроку</h4>
-  <input
-    placeholder="ID игрока"
-    value={addBalanceId}
-    onChange={(e) => setAddBalanceId(e.target.value)}
-  />
-  <input
-    placeholder="Сумма"
-    value={addBalanceAmount}
-    type="number"
-    onChange={(e) => setAddBalanceAmount(e.target.value)}
-  />
-  <button
-    onClick={async () => {
+  <div className="admin-action-box">
+    <h4>🛠 Технические работы</h4>
+    <button onClick={toggleMaintenance}>
+      {maintenance ? "Отключить" : "Включить"} режим
+    </button>
+  </div>
+
+  <div className="admin-action-box">
+    <h4>🔄 Сброс миссий</h4>
+    <input
+      type="text"
+      placeholder="ID игрока"
+      value={resetId}
+      onChange={(e) => setResetId(e.target.value)}
+    />
+    <button onClick={handleReset}>Сбросить</button>
+  </div>
+
+  <div className="admin-action-box">
+    <h4>➕ Добавить баланс</h4>
+    <input
+      placeholder="ID игрока"
+      value={addBalanceId}
+      onChange={(e) => setAddBalanceId(e.target.value)}
+    />
+    <input
+      placeholder="Сумма"
+      value={addBalanceAmount}
+      type="number"
+      onChange={(e) => setAddBalanceAmount(e.target.value)}
+    />
+    <button onClick={async () => {
       if (!addBalanceId || !addBalanceAmount) return alert("Заполни все поля");
       const ok = confirm(`Добавить ${addBalanceAmount} мавродиков игроку ${addBalanceId}?`);
       if (!ok) return;
@@ -201,10 +206,8 @@ const [addBalanceAmount, setAddBalanceAmount] = useState("");
       } else {
         alert("❌ Ошибка: " + data.error);
       }
-    }}
-  >
-    Добавить баланс
-  </button>
+    }}>Добавить</button>
+  </div>
 </div>
 
         <div className="admin-table-wrapper">
