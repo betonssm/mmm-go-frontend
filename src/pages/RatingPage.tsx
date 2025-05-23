@@ -70,16 +70,9 @@ export default function PlayerRatingPage() {
 
   const { srRating, isInvestor, premiumSince } = playerData;
 
-  const getEndOfNextMonth = (startDate: Date): Date => {
-    const year = startDate.getFullYear();
-    const month = startDate.getMonth(); // текущий месяц
-    return new Date(year, month + 2, 0); // 0-й день — последний день предыдущего месяца
-  };
-
-  const now = new Date();
-  const premiumStart = premiumSince ? new Date(premiumSince) : null;
-  const expires = premiumStart ? getEndOfNextMonth(premiumStart) : null;
-  const isActive = isInvestor && expires && now < expires;
+const now = new Date();
+const expires = playerData.premiumExpires ? new Date(playerData.premiumExpires) : null;
+const isActive = isInvestor && expires && now < expires;
 
   console.log("DEBUG leaderboard (final)", leaderboard, Array.isArray(leaderboard));
 
