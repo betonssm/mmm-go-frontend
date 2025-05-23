@@ -515,8 +515,11 @@ setTimeout(() => setShowPrizeMessage(null), 3000);
     {levelTitles[calculatedLevel] || "Без уровня"}
   </div>
   <div className="greeting-name">
-    {playerName || "Без имени"}
-  </div>
+  {playerName || "Без имени"}{" "}
+  {isInvestor && premiumExpires && new Date(premiumExpires) > new Date() && (
+    <span className="premium-star">⭐️</span>
+  )}
+</div>
 </div>
   {/* 
         {showNoRefNotice && (

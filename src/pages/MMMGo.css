@@ -1196,4 +1196,18 @@ margin-right: auto;
   font-weight: 500;
   letter-spacing: 0.5px;
 }
+.premium-star {
+  color: #ffd700;
+  margin-left: 6px;
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 4px #fff59d, 0 0 8px #ffeb3b;
+  }
+  to {
+    text-shadow: 0 0 10px #fff176, 0 0 20px #fdd835;
+  }
+}
 
