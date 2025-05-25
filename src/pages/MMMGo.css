@@ -540,6 +540,54 @@ margin-right: auto;
     padding: 10px 20px;
   }
 }
+@media (min-width: 769px) and (max-width: 1024px) {
+  .coin-button {
+    width: 26vw;
+    max-width: 220px;
+  }
+
+  .boost-tap-button,
+  .recharge-gold-button {
+    width: 80px;
+    height: 80px;
+  }
+
+  .bar-wrapper {
+    max-width: 300px;
+  }
+
+  .bar-text {
+    font-size: 15px;
+    padding: 0 6px;
+  }
+
+  .bottom-buttons {
+    max-width: 440px;
+    gap: 24px;
+  }
+
+  .balance-display {
+    font-size: 28px;
+  }
+
+  .level-block h3 {
+    font-size: 20px;
+  }
+
+  .level-block p {
+    font-size: 17px;
+  }
+
+  .info-page,
+  .investors-page {
+    padding: 24px 40px 60px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+}
+
 .levels-list {
   display: flex;
   flex-direction: column;
